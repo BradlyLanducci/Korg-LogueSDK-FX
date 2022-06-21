@@ -7,13 +7,9 @@ static dsp::DelayLine s_delay;
 static __sdram float s_delay_ram[BUF_SIZE];
 
 uint32_t s_len;
-
 static float s_mix;
 static float gain;
-static int w_pos;
-
-float dryXN, wetXN;
-
+float wetXN;
 float bpm;
 
 void DELFX_INIT(uint32_t platform, uint32_t api)
@@ -34,10 +30,9 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
   for (int i=0;i<frames*2;i++)
   {
     const float delSample = gain * s_delay.read(s_len);
-    dryXN = xn[i];
     wetXN = wet * delSample;
-    xn[i] = dryXN + wetXN;
-    s_delay.write(dryXN + wetXN);
+    xn[i] = xn[i] + wetXN;
+    s_delay.write(xn[i]+ wetXN);
   }
 }
 
