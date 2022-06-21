@@ -12,6 +12,8 @@ static float s_mix;
 static float gain;
 static int w_pos;
 
+float dryXN, wetXN;
+
 float bpm;
 
 void DELFX_INIT(uint32_t platform, uint32_t api)
@@ -19,7 +21,7 @@ void DELFX_INIT(uint32_t platform, uint32_t api)
   s_delay.setMemory(s_delay_ram, BUF_SIZE);  
   s_delay.clear();
   bpm = _fx_get_bpmf();
-  s_len = (60 / bpm * 48000) * 32;
+  s_len = (60 / bpm * BUF_SIZE) * 32;
   s_mix = .5f;
 }
 
@@ -27,12 +29,15 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
 {
   const float dry = 1.f - s_mix;
   const float wet = s_mix;
+  
 
   for (int i=0;i<frames*2;i++)
   {
     const float delSample = gain * s_delay.read(s_len);
-    xn[i] = (dry * xn[i] + wet * delSample);
-    s_delay.write(xn[i] + wet * delSample);
+    dryXN = xn[i];
+    wetXN = wet * delSample;
+    xn[i] = dryXN + wetXN;
+    s_delay.write(dryXN + wetXN);
   }
 }
 
@@ -49,19 +54,19 @@ void DELFX_PARAM(uint8_t index, int32_t value)
     bpm = _fx_get_bpm();
     if (valf < 0.25) 
     {
-      s_len = (60 / bpm * 48000) * 32;
+      s_len = (60 / bpm * BUF_SIZE) * 32;
     } 
     else if (valf < 0.5) 
     {
-      s_len = (60 / bpm * 48000) * 16;
+      s_len = (60 / bpm * BUF_SIZE) * 16;
     } 
     else if (valf < 0.75) 
     {
-      s_len = (60 / bpm * 48000) * 8;
+      s_len = (60 / bpm * BUF_SIZE) * 8;
     } 
     else 
     {
-      s_len = (60 / bpm * 48000) * 4;
+      s_len = (60 / bpm * BUF_SIZE) * 4;
     }
     break;
 
