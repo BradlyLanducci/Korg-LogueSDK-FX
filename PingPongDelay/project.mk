@@ -2,11 +2,11 @@
 # Project Customization
 # #############################################################################
 
-PROJECT = SimpleDelay
+PROJECT = PingPongDelay
 
 UCSRC =
 
-UCXXSRC = ./src/simpledelay.cpp
+UCXXSRC = ./src/pingpong.cpp
 
 UINCDIR =
 
