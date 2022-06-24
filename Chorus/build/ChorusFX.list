@@ -1,0 +1,509 @@
+
+build/ChorusFX.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+20019048 <_text_start>:
+20019048:	4770      	bx	lr
+
+2001904a <_hook_resume>:
+2001904a:	4770      	bx	lr
+2001904c:	4770      	bx	lr
+
+2001904e <_hook_suspend>:
+2001904e:	4770      	bx	lr
+20019050:	4770      	bx	lr
+
+20019052 <_entry>:
+20019052:	4b10      	ldr	r3, [pc, #64]	; (20019094 <_entry+0x42>)
+20019054:	4a10      	ldr	r2, [pc, #64]	; (20019098 <_entry+0x46>)
+20019056:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+2001905a:	4688      	mov	r8, r1
+2001905c:	4607      	mov	r7, r0
+2001905e:	2100      	movs	r1, #0
+20019060:	4293      	cmp	r3, r2
+20019062:	d002      	beq.n	2001906a <_entry+0x18>
+20019064:	f803 1f01 	strb.w	r1, [r3, #1]!
+20019068:	e7fa      	b.n	20019060 <_entry+0xe>
+2001906a:	4b0c      	ldr	r3, [pc, #48]	; (2001909c <_entry+0x4a>)
+2001906c:	4c0c      	ldr	r4, [pc, #48]	; (200190a0 <_entry+0x4e>)
+2001906e:	1ae4      	subs	r4, r4, r3
+20019070:	10a4      	asrs	r4, r4, #2
+20019072:	2500      	movs	r5, #0
+20019074:	461e      	mov	r6, r3
+20019076:	42a5      	cmp	r5, r4
+20019078:	d005      	beq.n	20019086 <_entry+0x34>
+2001907a:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+2001907e:	b103      	cbz	r3, 20019082 <_entry+0x30>
+20019080:	4798      	blx	r3
+20019082:	3501      	adds	r5, #1
+20019084:	e7f7      	b.n	20019076 <_entry+0x24>
+20019086:	4641      	mov	r1, r8
+20019088:	4638      	mov	r0, r7
+2001908a:	f000 f80b 	bl	200190a4 <_hook_init>
+2001908e:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+20019092:	bf00      	nop
+20019094:	200192df 	.word	0x200192df
+20019098:	20019317 	.word	0x20019317
+2001909c:	20019040 	.word	0x20019040
+200190a0:	20019044 	.word	0x20019044
+
+200190a4 <_hook_init>:
+
+/*
+  Give the s_delay_ram to s_delay object, instantiate variables
+*/
+void DELFX_INIT(uint32_t platform, uint32_t api)
+{
+200190a4:	b510      	push	{r4, lr}
+     *
+     * @note Will round size to next power of two.
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    void setMemory(f32pair_t *ram, size_t line_size) {
+      mLine = ram;
+200190a6:	4c1b      	ldr	r4, [pc, #108]	; (20019114 <_hook_init+0x70>)
+200190a8:	4b1b      	ldr	r3, [pc, #108]	; (20019118 <_hook_init+0x74>)
+200190aa:	6023      	str	r3, [r4, #0]
+      mSize = nextpow2_u32(line_size); // must be power of 2
+200190ac:	f44f 2280 	mov.w	r2, #262144	; 0x40000
+200190b0:	60e2      	str	r2, [r4, #12]
+      mMask = (mSize-1);
+200190b2:	3a01      	subs	r2, #1
+200190b4:	6122      	str	r2, [r4, #16]
+200190b6:	3310      	adds	r3, #16
+      mWriteIdx = 0;
+200190b8:	2200      	movs	r2, #0
+200190ba:	6162      	str	r2, [r4, #20]
+200190bc:	f503 1100 	add.w	r1, r3, #2097152	; 0x200000
+void buf_clr_f32(float * __restrict__ ptr,
+                 const uint32_t len)
+{
+  const float *end = ptr + ((len>>2)<<2);
+  for (; ptr != end; ) {
+    REP4(*(ptr++) = 0);
+200190c0:	2200      	movs	r2, #0
+200190c2:	f843 2c10 	str.w	r2, [r3, #-16]
+200190c6:	f843 2c0c 	str.w	r2, [r3, #-12]
+200190ca:	f843 2c08 	str.w	r2, [r3, #-8]
+200190ce:	f843 2c04 	str.w	r2, [r3, #-4]
+200190d2:	3310      	adds	r3, #16
+static inline __attribute__((optimize("Ofast"),always_inline))
+void buf_clr_f32(float * __restrict__ ptr,
+                 const uint32_t len)
+{
+  const float *end = ptr + ((len>>2)<<2);
+  for (; ptr != end; ) {
+200190d4:	4299      	cmp	r1, r3
+200190d6:	d1f4      	bne.n	200190c2 <_hook_init+0x1e>
+     * Reset phase
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    void reset(void) 
+    {
+      phi0 = 0x80000000;
+200190d8:	f04f 4300 	mov.w	r3, #2147483648	; 0x80000000
+200190dc:	61a3      	str	r3, [r4, #24]
+  s_delay.setMemory(s_delay_ram, BUF_SIZE);  
+  s_delay.clear();
+  s_lfo.reset();
+  bpm = _fx_get_bpm();
+200190de:	f000 f8f5 	bl	200192cc <___fx_get_bpm_veneer>
+  s_len = (60 / (bpm / 10) * BUF_SIZE) * 32;
+200190e2:	230a      	movs	r3, #10
+void DELFX_INIT(uint32_t platform, uint32_t api)
+{
+  s_delay.setMemory(s_delay_ram, BUF_SIZE);  
+  s_delay.clear();
+  s_lfo.reset();
+  bpm = _fx_get_bpm();
+200190e4:	6220      	str	r0, [r4, #32]
+  s_len = (60 / (bpm / 10) * BUF_SIZE) * 32;
+200190e6:	fb90 f0f3 	sdiv	r0, r0, r3
+200190ea:	233c      	movs	r3, #60	; 0x3c
+200190ec:	fb93 f0f0 	sdiv	r0, r3, r0
+200190f0:	4b0a      	ldr	r3, [pc, #40]	; (2001911c <_hook_init+0x78>)
+     * param fsrecip Reciprocal of sampling frequency (1/Fs)
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    void setF0(const float f0, const float fsrecip) 
+    {
+      w0 = f32_to_q31(2.f * f0 * fsrecip);
+200190f2:	ed9f 7a0b 	vldr	s14, [pc, #44]	; 20019120 <_hook_init+0x7c>
+200190f6:	4358      	muls	r0, r3
+  s_mix = .5f;
+200190f8:	f04f 537c 	mov.w	r3, #1056964608	; 0x3f000000
+200190fc:	62a3      	str	r3, [r4, #40]	; 0x28
+  s_lfo.setF0(lfo_speed, k_samplerate_recipf);
+200190fe:	4b09      	ldr	r3, [pc, #36]	; (20019124 <_hook_init+0x80>)
+{
+  s_delay.setMemory(s_delay_ram, BUF_SIZE);  
+  s_delay.clear();
+  s_lfo.reset();
+  bpm = _fx_get_bpm();
+  s_len = (60 / (bpm / 10) * BUF_SIZE) * 32;
+20019100:	6260      	str	r0, [r4, #36]	; 0x24
+20019102:	edd3 7a00 	vldr	s15, [r3]
+20019106:	ee67 7a87 	vmul.f32	s15, s15, s14
+2001910a:	eefe 7ac0 	vcvt.s32.f32	s15, s15, #32
+2001910e:	edc4 7a07 	vstr	s15, [r4, #28]
+20019112:	bd10      	pop	{r4, pc}
+20019114:	200192e0 	.word	0x200192e0
+20019118:	c0420000 	.word	0xc0420000
+2001911c:	00668a00 	.word	0x00668a00
+20019120:	37aec33e 	.word	0x37aec33e
+20019124:	200192d8 	.word	0x200192d8
+
+20019128 <_hook_process>:
+void DELFX_PROCESS(float *xn, uint32_t frames)
+{
+  float * __restrict x = xn;
+  const float * x_e = x + 2*frames;
+
+  const float wet = s_mix;
+20019128:	4b39      	ldr	r3, [pc, #228]	; (20019210 <_hook_process+0xe8>)
+     * Get value of bipolar sine wave for current phase 
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    float sine_bi(void) 
+    {
+      const float phif = q31_to_f32(phi0);
+2001912a:	ed9f 4a3a 	vldr	s8, [pc, #232]	; 20019214 <_hook_process+0xec>
+2001912e:	edd3 5a0a 	vldr	s11, [r3, #40]	; 0x28
+  f32pair_t valf;
+
+  for (; x != x_e ; x+=2) 
+  {
+    const float delSample1 = gain * s_delay.read0(1680) * (s_lfo.sine_bi() * 2);
+20019132:	ed93 5a0b 	vldr	s10, [r3, #44]	; 0x2c
+     * Step phase one cycle forward
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    void cycle(void)
+    {
+      phi0 += w0;
+20019136:	f8d3 c01c 	ldr.w	ip, [r3, #28]
+{
+    return 1.5f * in - 0.5f * in *in * in;
+}
+
+void DELFX_PROCESS(float *xn, uint32_t frames)
+{
+2001913a:	e92d 43f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, lr}
+2001913e:	695d      	ldr	r5, [r3, #20]
+20019140:	f8d3 e018 	ldr.w	lr, [r3, #24]
+     * @param pos Offset from write index.
+     * @return Sample at given position from write index
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    float read0(const uint32_t pos) {
+      return (mLine[(mWriteIdx + pos) & mMask]).a;
+20019144:	681e      	ldr	r6, [r3, #0]
+20019146:	691f      	ldr	r7, [r3, #16]
+  float * __restrict x = xn;
+  const float * x_e = x + 2*frames;
+20019148:	00c9      	lsls	r1, r1, #3
+2001914a:	eb00 0801 	add.w	r8, r0, r1
+2001914e:	46f1      	mov	r9, lr
+20019150:	462a      	mov	r2, r5
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    float sine_bi(void) 
+    {
+      const float phif = q31_to_f32(phi0);
+      return 4 * phif * (si_fabsf(phif) - 1.f);
+20019152:	eeb7 6a00 	vmov.f32	s12, #112	; 0x3f800000  1.0
+20019156:	eef1 4a00 	vmov.f32	s9, #16	; 0x40800000  4.0
+
+  const float wet = s_mix;
+  f32pair_t valf;
+
+  for (; x != x_e ; x+=2) 
+2001915a:	4580      	cmp	r8, r0
+2001915c:	ee07 9a90 	vmov	s15, r9
+20019160:	f100 0408 	add.w	r4, r0, #8
+20019164:	44e1      	add	r9, ip
+20019166:	d04a      	beq.n	200191fe <_hook_process+0xd6>
+     * Get value of bipolar sine wave for current phase 
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    float sine_bi(void) 
+    {
+      const float phif = q31_to_f32(phi0);
+20019168:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+2001916c:	ee27 7a84 	vmul.f32	s14, s15, s8
+ */
+static inline __attribute__((optimize("Ofast"),always_inline))
+float si_fabsf(float x)
+{
+  f32_t xs = {x};
+  xs.i &= 0x7fffffff;
+20019170:	ee17 0a10 	vmov	r0, s14
+20019174:	f020 4000 	bic.w	r0, r0, #2147483648	; 0x80000000
+20019178:	ee07 0a90 	vmov	s15, r0
+     * @param pos Offset from write index.
+     * @return Sample at given position from write index
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    float read1(const uint32_t pos) {
+      return (mLine[(mWriteIdx + pos) & mMask]).b;
+2001917c:	f502 6034 	add.w	r0, r2, #2880	; 0xb40
+      return 4 * phif * (si_fabsf(phif) - 1.f);
+20019180:	ee77 7ac6 	vsub.f32	s15, s15, s12
+20019184:	4038      	ands	r0, r7
+20019186:	eb06 00c0 	add.w	r0, r6, r0, lsl #3
+2001918a:	ee67 7a87 	vmul.f32	s15, s15, s14
+  {
+    const float delSample1 = gain * s_delay.read0(1680) * (s_lfo.sine_bi() * 2);
+    const float delSample2 = gain * s_delay.read1(2880) * s_lfo.sine_bi();
+2001918e:	ed90 7a01 	vldr	s14, [r0, #4]
+     * @param pos Offset from write index.
+     * @return Sample at given position from write index
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    float read0(const uint32_t pos) {
+      return (mLine[(mWriteIdx + pos) & mMask]).a;
+20019192:	f502 60d2 	add.w	r0, r2, #1680	; 0x690
+20019196:	ee67 7aa4 	vmul.f32	s15, s15, s9
+2001919a:	ee25 7a07 	vmul.f32	s14, s10, s14
+2001919e:	4038      	ands	r0, r7
+200191a0:	eb06 00c0 	add.w	r0, r6, r0, lsl #3
+200191a4:	ee67 6a27 	vmul.f32	s13, s14, s15
+    wetXNL = wet * delSample1;
+200191a8:	ed90 7a00 	vldr	s14, [r0]
+200191ac:	ee77 7aa7 	vadd.f32	s15, s15, s15
+200191b0:	ee25 7a07 	vmul.f32	s14, s10, s14
+     *
+     * @param p Reference to float pair.
+     */
+    inline __attribute__((optimize("Ofast"),always_inline))
+    void write(const f32pair_t &p) {
+      mLine[(mWriteIdx--) & mMask] = p;
+200191b4:	ea07 0002 	and.w	r0, r7, r2
+200191b8:	ee67 7a27 	vmul.f32	s15, s14, s15
+    wetXNR = wet * delSample2;
+200191bc:	ee25 7aa6 	vmul.f32	s14, s11, s13
+
+  for (; x != x_e ; x+=2) 
+  {
+    const float delSample1 = gain * s_delay.read0(1680) * (s_lfo.sine_bi() * 2);
+    const float delSample2 = gain * s_delay.read1(2880) * s_lfo.sine_bi();
+    wetXNL = wet * delSample1;
+200191c0:	ee67 7aa5 	vmul.f32	s15, s15, s11
+    wetXNR = wet * delSample2;
+200191c4:	ed83 7a0d 	vstr	s14, [r3, #52]	; 0x34
+
+  for (; x != x_e ; x+=2) 
+  {
+    const float delSample1 = gain * s_delay.read0(1680) * (s_lfo.sine_bi() * 2);
+    const float delSample2 = gain * s_delay.read1(2880) * s_lfo.sine_bi();
+    wetXNL = wet * delSample1;
+200191c8:	edc3 7a0c 	vstr	s15, [r3, #48]	; 0x30
+    wetXNR = wet * delSample2;
+    *x = (*x) + wetXNL;
+200191cc:	ed14 7a02 	vldr	s14, [r4, #-8]
+200191d0:	ee77 7a87 	vadd.f32	s15, s15, s14
+    *(x+1) = (*(x+1)) + wetXNR;
+200191d4:	ed14 7a01 	vldr	s14, [r4, #-4]
+  {
+    const float delSample1 = gain * s_delay.read0(1680) * (s_lfo.sine_bi() * 2);
+    const float delSample2 = gain * s_delay.read1(2880) * s_lfo.sine_bi();
+    wetXNL = wet * delSample1;
+    wetXNR = wet * delSample2;
+    *x = (*x) + wetXNL;
+200191d8:	ed44 7a02 	vstr	s15, [r4, #-8]
+    *(x+1) = (*(x+1)) + wetXNR;
+200191dc:	edd3 6a0d 	vldr	s13, [r3, #52]	; 0x34
+200191e0:	ee37 7a26 	vadd.f32	s14, s14, s13
+200191e4:	eb06 00c0 	add.w	r0, r6, r0, lsl #3
+200191e8:	ed04 7a01 	vstr	s14, [r4, #-4]
+200191ec:	edc0 7a00 	vstr	s15, [r0]
+200191f0:	ee77 7a86 	vadd.f32	s15, s15, s12
+200191f4:	3a01      	subs	r2, #1
+200191f6:	edc0 7a01 	vstr	s15, [r0, #4]
+  const float * x_e = x + 2*frames;
+
+  const float wet = s_mix;
+  f32pair_t valf;
+
+  for (; x != x_e ; x+=2) 
+200191fa:	4620      	mov	r0, r4
+200191fc:	e7ad      	b.n	2001915a <_hook_process+0x32>
+200191fe:	08c9      	lsrs	r1, r1, #3
+20019200:	1a6d      	subs	r5, r5, r1
+20019202:	fb0c e101 	mla	r1, ip, r1, lr
+20019206:	615d      	str	r5, [r3, #20]
+20019208:	6199      	str	r1, [r3, #24]
+2001920a:	e8bd 83f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+2001920e:	bf00      	nop
+20019210:	200192e0 	.word	0x200192e0
+20019214:	30000000 	.word	0x30000000
+
+20019218 <_hook_param>:
+    s_lfo.cycle();
+  }
+}
+
+void DELFX_PARAM(uint8_t index, int32_t value)
+{
+20019218:	b508      	push	{r3, lr}
+2001921a:	ed2d 8b02 	vpush	{d8}
+  const float valf = q31_to_f32(value);
+2001921e:	ee08 1a10 	vmov	s16, r1
+  switch (index) 
+20019222:	2801      	cmp	r0, #1
+  }
+}
+
+void DELFX_PARAM(uint8_t index, int32_t value)
+{
+  const float valf = q31_to_f32(value);
+20019224:	eeba 8ae0 	vcvt.f32.s32	s16, s16, #31
+  switch (index) 
+20019228:	d00a      	beq.n	20019240 <_hook_param+0x28>
+2001922a:	d305      	bcc.n	20019238 <_hook_param+0x20>
+2001922c:	2803      	cmp	r0, #3
+2001922e:	d135      	bne.n	2001929c <_hook_param+0x84>
+      s_len = ((60 * 48000) / bpm) / 2;
+    }
+    break;
+  case 3:
+    // Mix Val
+    s_mix = valf;
+20019230:	4b1c      	ldr	r3, [pc, #112]	; (200192a4 <_hook_param+0x8c>)
+20019232:	ed83 8a0a 	vstr	s16, [r3, #40]	; 0x28
+    break;
+  default:
+    break;
+  }
+20019236:	e031      	b.n	2001929c <_hook_param+0x84>
+  const float valf = q31_to_f32(value);
+  switch (index) 
+  {
+  case 0:
+    // Gain == Feedback //
+    gain = valf;
+20019238:	4b1a      	ldr	r3, [pc, #104]	; (200192a4 <_hook_param+0x8c>)
+2001923a:	ed83 8a0b 	vstr	s16, [r3, #44]	; 0x2c
+    break;
+2001923e:	e02d      	b.n	2001929c <_hook_param+0x84>
+  case 1:
+    bpm = _fx_get_bpm() / 10;
+20019240:	f000 f844 	bl	200192cc <___fx_get_bpm_veneer>
+    // Calculate note intervals
+    if (valf < 0.25) 
+20019244:	eef5 7a00 	vmov.f32	s15, #80	; 0x3e800000  0.250
+  case 0:
+    // Gain == Feedback //
+    gain = valf;
+    break;
+  case 1:
+    bpm = _fx_get_bpm() / 10;
+20019248:	230a      	movs	r3, #10
+    // Calculate note intervals
+    if (valf < 0.25) 
+2001924a:	eeb4 8ae7 	vcmpe.f32	s16, s15
+  case 0:
+    // Gain == Feedback //
+    gain = valf;
+    break;
+  case 1:
+    bpm = _fx_get_bpm() / 10;
+2001924e:	fbb0 f0f3 	udiv	r0, r0, r3
+20019252:	4b14      	ldr	r3, [pc, #80]	; (200192a4 <_hook_param+0x8c>)
+20019254:	b280      	uxth	r0, r0
+    // Calculate note intervals
+    if (valf < 0.25) 
+20019256:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+  case 0:
+    // Gain == Feedback //
+    gain = valf;
+    break;
+  case 1:
+    bpm = _fx_get_bpm() / 10;
+2001925a:	6218      	str	r0, [r3, #32]
+    // Calculate note intervals
+    if (valf < 0.25) 
+2001925c:	d505      	bpl.n	2001926a <_hook_param+0x52>
+    {
+      // Full note
+      s_len = ((60 * 48000) / bpm) * 4;
+2001925e:	4a12      	ldr	r2, [pc, #72]	; (200192a8 <_hook_param+0x90>)
+20019260:	fb92 f0f0 	sdiv	r0, r2, r0
+20019264:	0080      	lsls	r0, r0, #2
+20019266:	6258      	str	r0, [r3, #36]	; 0x24
+20019268:	e018      	b.n	2001929c <_hook_param+0x84>
+    } 
+    else if (valf < 0.5) 
+2001926a:	eef6 7a00 	vmov.f32	s15, #96	; 0x3f000000  0.5
+2001926e:	eeb4 8ae7 	vcmpe.f32	s16, s15
+20019272:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+20019276:	d505      	bpl.n	20019284 <_hook_param+0x6c>
+    {
+      // 1/2 note
+      s_len = ((60 * 48000) / bpm) * 2;
+20019278:	4a0b      	ldr	r2, [pc, #44]	; (200192a8 <_hook_param+0x90>)
+2001927a:	fb92 f0f0 	sdiv	r0, r2, r0
+2001927e:	0040      	lsls	r0, r0, #1
+20019280:	6258      	str	r0, [r3, #36]	; 0x24
+20019282:	e00b      	b.n	2001929c <_hook_param+0x84>
+    } 
+    else if (valf < 0.75) 
+20019284:	eef6 7a08 	vmov.f32	s15, #104	; 0x3f400000  0.750
+20019288:	eeb4 8ae7 	vcmpe.f32	s16, s15
+2001928c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+    {
+      // 1/4 note
+      s_len = ((60 * 48000) / bpm);
+20019290:	bf4c      	ite	mi
+20019292:	4a05      	ldrmi	r2, [pc, #20]	; (200192a8 <_hook_param+0x90>)
+    } 
+    else 
+    {
+      // 1/8 note
+      s_len = ((60 * 48000) / bpm) / 2;
+20019294:	4a05      	ldrpl	r2, [pc, #20]	; (200192ac <_hook_param+0x94>)
+20019296:	fb92 f0f0 	sdiv	r0, r2, r0
+2001929a:	6258      	str	r0, [r3, #36]	; 0x24
+    s_mix = valf;
+    break;
+  default:
+    break;
+  }
+2001929c:	ecbd 8b02 	vpop	{d8}
+200192a0:	bd08      	pop	{r3, pc}
+200192a2:	bf00      	nop
+200192a4:	200192e0 	.word	0x200192e0
+200192a8:	002bf200 	.word	0x002bf200
+200192ac:	0015f900 	.word	0x0015f900
+
+200192b0 <_GLOBAL__sub_I_lfo_speed>:
+     */
+    DualDelayLine(void) :
+      mLine(0),
+      mSize(0),
+      mMask(0),
+      mWriteIdx(0)
+200192b0:	4b05      	ldr	r3, [pc, #20]	; (200192c8 <_GLOBAL__sub_I_lfo_speed+0x18>)
+200192b2:	2200      	movs	r2, #0
+
+    /**
+     * Default constructor
+     */
+    SimpleLFO(void) :
+      phi0(0x80000000), w0(0)
+200192b4:	f04f 4100 	mov.w	r1, #2147483648	; 0x80000000
+200192b8:	601a      	str	r2, [r3, #0]
+200192ba:	60da      	str	r2, [r3, #12]
+200192bc:	611a      	str	r2, [r3, #16]
+200192be:	615a      	str	r2, [r3, #20]
+200192c0:	6199      	str	r1, [r3, #24]
+200192c2:	61da      	str	r2, [r3, #28]
+200192c4:	4770      	bx	lr
+200192c6:	bf00      	nop
+200192c8:	200192e0 	.word	0x200192e0
+
+200192cc <___fx_get_bpm_veneer>:
+200192cc:	f85f f000 	ldr.w	pc, [pc]	; 200192d0 <___fx_get_bpm_veneer+0x4>
+200192d0:	0807ca89 	.word	0x0807ca89
