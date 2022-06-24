@@ -1,7 +1,7 @@
 #include "userdelfx.h"
 #include "delayline.hpp"
 
-#define BUF_SIZE 48000
+#define BUF_SIZE 96000
 
 // Initilizaing Variables // 
 static dsp::DelayLine s_delay;
@@ -11,7 +11,7 @@ uint32_t s_len;
 static float s_mix;
 static float gain;
 float wetXN;
-float bpm;
+int bpm;
 
 /*
   Give the s_delay_ram to s_delay object, instantiate variables
@@ -20,8 +20,8 @@ void DELFX_INIT(uint32_t platform, uint32_t api)
 {
   s_delay.setMemory(s_delay_ram, BUF_SIZE);  
   s_delay.clear();
-  bpm = _fx_get_bpmf();
-  s_len = (60 / bpm * BUF_SIZE) * 32;
+  bpm = _fx_get_bpm();
+  s_len = (60 / (bpm / 10) * BUF_SIZE) * 32;
   s_mix = .5f;
 }
 
@@ -36,7 +36,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
     const float delSample = gain * s_delay.read(s_len);
     wetXN = wet * delSample;
     xn[i] = xn[i] + wetXN;
-    s_delay.write(xn[i] + wetXN);
+    s_delay.write(xn[i]);
   }
 }
 
@@ -51,23 +51,27 @@ void DELFX_PARAM(uint8_t index, int32_t value)
     break;
   case 1:
 
-    bpm = _fx_get_bpm();
+    bpm = _fx_get_bpm() / 10;
     // Calculate note intervals
     if (valf < 0.25) 
     {
-      s_len = (60 / bpm * BUF_SIZE) * 32;
+      // 1/2 note
+      s_len = ((60 * 48000) / bpm) * 2;
     } 
     else if (valf < 0.5) 
     {
-      s_len = (60 / bpm * BUF_SIZE) * 16;
+      // 1/4 note
+      s_len = ((60 * 48000) / bpm);
     } 
     else if (valf < 0.75) 
     {
-      s_len = (60 / bpm * BUF_SIZE) * 8;
+      // 1/8 note
+      s_len = ((60 * 48000) / bpm) / 2;
     } 
     else 
     {
-      s_len = (60 / bpm * BUF_SIZE) * 4;
+      // 1/16 note
+      s_len = ((60 * 48000) / bpm) / 4;
     }
     break;
 
