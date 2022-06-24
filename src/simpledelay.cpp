@@ -25,6 +25,11 @@ void DELFX_INIT(uint32_t platform, uint32_t api)
   s_mix = .5f;
 }
 
+float __fast_inline waveshape(float in) 
+{
+    return 1.5f * in - 0.5f * in *in * in;
+}
+
 void DELFX_PROCESS(float *xn, uint32_t frames)
 {
   const float dry = 1.f - s_mix;
@@ -35,7 +40,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
   {
     const float delSample = gain * s_delay.read(s_len);
     wetXN = wet * delSample;
-    xn[i] = xn[i] + wetXN;
+    xn[i] = xn[i] + waveshape(wetXN);
     s_delay.write(xn[i]);
   }
 }
@@ -55,23 +60,23 @@ void DELFX_PARAM(uint8_t index, int32_t value)
     // Calculate note intervals
     if (valf < 0.25) 
     {
+      // Full note
+      s_len = ((60 * 48000) / bpm) * 4;
+    } 
+    else if (valf < 0.5) 
+    {
       // 1/2 note
       s_len = ((60 * 48000) / bpm) * 2;
     } 
-    else if (valf < 0.5) 
+    else if (valf < 0.75) 
     {
       // 1/4 note
       s_len = ((60 * 48000) / bpm);
     } 
-    else if (valf < 0.75) 
+    else 
     {
       // 1/8 note
       s_len = ((60 * 48000) / bpm) / 2;
-    } 
-    else 
-    {
-      // 1/16 note
-      s_len = ((60 * 48000) / bpm) / 4;
     }
     break;
 
