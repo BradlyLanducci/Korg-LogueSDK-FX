@@ -1,7 +1,8 @@
 #include "userdelfx.h"
 #include "delayline.hpp"
 
-#define BUF_SIZE 96000
+// Calculated for the minimum bpm of Minilogue-XD //
+#define BUF_SIZE 210000
 
 // Initilizaing Variables // 
 static dsp::DelayLine s_delay;
