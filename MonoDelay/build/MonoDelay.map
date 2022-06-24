@@ -28,7 +28,7 @@ LOAD ./build/obj/monodelay.o
                 0x20019044                . = ALIGN (0x4)
                 0x20019044                PROVIDE (__init_array_end, .)
 
-.text           0x20019048      0x204
+.text           0x20019048      0x1f4
                 0x20019048                . = ALIGN (0x4)
                 0x20019048                _text_start = .
  *(.text)
@@ -36,94 +36,94 @@ LOAD ./build/obj/monodelay.o
                 0x2001904a                _hook_resume
                 0x2001904e                _hook_suspend
                 0x20019052                _entry
- .text          0x200190a4      0x188 ./build/obj/monodelay.o
+ .text          0x200190a4      0x178 ./build/obj/monodelay.o
                 0x200190a4                _hook_init
                 0x20019108                _hook_process
                 0x20019184                _hook_param
  *(.text.*)
- .text.startup  0x2001922c       0x18 ./build/obj/monodelay.o
+ .text.startup  0x2001921c       0x18 ./build/obj/monodelay.o
  .text.startup.__stub
-                0x20019244        0x8 linker stubs
+                0x20019234        0x8 linker stubs
  *(.glue_7)
- .glue_7        0x2001924c        0x0 linker stubs
+ .glue_7        0x2001923c        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x2001924c        0x0 linker stubs
+ .glue_7t       0x2001923c        0x0 linker stubs
  *(.gcc*)
-                0x2001924c                . = ALIGN (0x4)
-                0x2001924c                _text_end = .
+                0x2001923c                . = ALIGN (0x4)
+                0x2001923c                _text_end = .
 
-.vfp11_veneer   0x2001924c        0x0
- .vfp11_veneer  0x2001924c        0x0 linker stubs
+.vfp11_veneer   0x2001923c        0x0
+ .vfp11_veneer  0x2001923c        0x0 linker stubs
 
-.v4_bx          0x2001924c        0x0
- .v4_bx         0x2001924c        0x0 linker stubs
+.v4_bx          0x2001923c        0x0
+ .v4_bx         0x2001923c        0x0 linker stubs
 
-.iplt           0x2001924c        0x0
- .iplt          0x2001924c        0x0 ./build/obj/_unit.o
+.iplt           0x2001923c        0x0
+ .iplt          0x2001923c        0x0 ./build/obj/_unit.o
 
-.rel.dyn        0x2001924c        0x0
- .rel.iplt      0x2001924c        0x0 ./build/obj/_unit.o
+.rel.dyn        0x2001923c        0x0
+ .rel.iplt      0x2001923c        0x0 ./build/obj/_unit.o
 
-.rodata         0x2001924c        0x0
-                0x2001924c                . = ALIGN (0x4)
-                0x2001924c                _rodata_start = .
+.rodata         0x2001923c        0x0
+                0x2001923c                . = ALIGN (0x4)
+                0x2001923c                _rodata_start = .
  *(.rodata)
  *(.rodata.*)
-                0x2001924c                . = ALIGN (0x4)
-                0x2001924c                _rodata_end = .
+                0x2001923c                . = ALIGN (0x4)
+                0x2001923c                _rodata_end = .
 
-.data           0x20019250        0x0
-                0x20019250                . = ALIGN (0x8)
-                0x20019250                _data_start = .
+.data           0x20019240        0x0
+                0x20019240                . = ALIGN (0x8)
+                0x20019240                _data_start = .
  *(.data)
- .data          0x20019250        0x0 ./build/obj/_unit.o
- .data          0x20019250        0x0 ./build/obj/monodelay.o
+ .data          0x20019240        0x0 ./build/obj/_unit.o
+ .data          0x20019240        0x0 ./build/obj/monodelay.o
  *(.data.*)
-                0x20019250                . = ALIGN (0x8)
-                0x20019250                _data_end = .
+                0x20019240                . = ALIGN (0x8)
+                0x20019240                _data_end = .
 
-.igot.plt       0x20019250        0x0
- .igot.plt      0x20019250        0x0 ./build/obj/_unit.o
+.igot.plt       0x20019240        0x0
+ .igot.plt      0x20019240        0x0 ./build/obj/_unit.o
 
-.bss            0x20019250       0x28
-                0x20019250                . = ALIGN (0x4)
-                0x20019250                _bss_start = .
+.bss            0x20019240       0x28
+                0x20019240                . = ALIGN (0x4)
+                0x20019240                _bss_start = .
  *(.bss)
- .bss           0x20019250        0x0 ./build/obj/_unit.o
- .bss           0x20019250       0x28 ./build/obj/monodelay.o
-                0x20019264                bpm
-                0x20019268                s_len
-                0x20019274                wetXN
+ .bss           0x20019240        0x0 ./build/obj/_unit.o
+ .bss           0x20019240       0x28 ./build/obj/monodelay.o
+                0x20019254                bpm
+                0x20019258                s_len
+                0x20019264                wetXN
  *(.bss.*)
  *(COMMON)
-                0x20019278                . = ALIGN (0x4)
-                0x20019278                _bss_end = .
+                0x20019268                . = ALIGN (0x4)
+                0x20019268                _bss_end = .
 
-.ARM.extab      0x20019278        0x0
-                0x20019278                . = ALIGN (0x4)
-                0x20019278                __extab_start = .
+.ARM.extab      0x20019268        0x0
+                0x20019268                . = ALIGN (0x4)
+                0x20019268                __extab_start = .
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x20019278                . = ALIGN (0x4)
-                0x20019278                __extab_end = .
+                0x20019268                . = ALIGN (0x4)
+                0x20019268                __extab_end = .
 
-.ARM.exidx      0x20019278        0x0
-                0x20019278                __exidx_start = .
+.ARM.exidx      0x20019268        0x0
+                0x20019268                __exidx_start = .
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x20019278                __exidx_end = .
+                0x20019268                __exidx_end = .
 
-.eh_frame_hdr   0x20019278        0x0
-                0x20019278                . = ALIGN (0x4)
-                0x20019278                _eh_frame_hdr_start = .
+.eh_frame_hdr   0x20019268        0x0
+                0x20019268                . = ALIGN (0x4)
+                0x20019268                _eh_frame_hdr_start = .
  *(.eh_frame_hdr)
-                0x20019278                . = ALIGN (0x4)
-                0x20019278                _eh_frame_hdr_end = .
+                0x20019268                . = ALIGN (0x4)
+                0x20019268                _eh_frame_hdr_end = .
 
-.eh_frame       0x20019278        0x0
-                0x20019278                . = ALIGN (0x4)
-                0x20019278                _eh_frame_start = .
+.eh_frame       0x20019268        0x0
+                0x20019268                . = ALIGN (0x4)
+                0x20019268                _eh_frame_start = .
  *(.eh_frame)
-                0x20019278                . = ALIGN (0x4)
-                0x20019278                _eh_frame_end = .
+                0x20019268                . = ALIGN (0x4)
+                0x20019268                _eh_frame_end = .
 
 .sdram          0xc0420000    0xcd140
                 0xc0420000                . = ALIGN (0x4)
@@ -148,11 +148,11 @@ LOAD ./ld/main_api.syms
                 0x0807c964                _fx_white = 0x807c964
                 0x0807ca88                _fx_get_bpm = 0x807ca88
                 0x0807ca8c                _fx_get_bpmf = 0x807ca8c
-LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfx/monodelay/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libm.a
+LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libm.a
 START GROUP
-LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfx/monodelay/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a
-LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfx/monodelay/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg.a
-LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfx/monodelay/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a
+LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a
+LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg.a
+LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a
 END GROUP
 OUTPUT(build/MonoDelay.elf elf32-littlearm)
 

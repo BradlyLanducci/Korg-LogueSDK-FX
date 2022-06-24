@@ -37,7 +37,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
   const float wet = s_mix;
   
   // Delay Algorithm //
-  for (int i=0;i<frames*2;i++)
+  for (int i = 0; i < frames * 2; i++)
   {
     const float delSample = gain * s_delay.read(s_len);
     wetXN = wet * delSample;
@@ -52,8 +52,7 @@ void DELFX_PARAM(uint8_t index, int32_t value)
   switch (index) {
   case 0:
     // Gain == Feedback //
-    if (valf == 0.f) gain = 0.1f;
-    else gain = valf;
+    gain = valf;
     break;
   case 1:
 

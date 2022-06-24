@@ -48,8 +48,8 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
     wetXNR = wet * delSample2;
     *x = (*x) + wetXNL;
     *(x+1) = (*(x+1)) + wetXNR;
-    valf.a = waveshape(*x);
-    valf.b = waveshape(*x + 1);    
+    valf.a = (*x);
+    valf.b = (*x + 1);    
     s_delay.write(valf);
   }
 }
@@ -57,14 +57,13 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
 void DELFX_PARAM(uint8_t index, int32_t value)
 {
   const float valf = q31_to_f32(value);
-  switch (index) {
+  switch (index) 
+  {
   case 0:
     // Gain == Feedback //
-    if (valf == 0.f) gain = 0.1f;
-    else gain = valf;
+    gain = valf;
     break;
   case 1:
-
     bpm = _fx_get_bpm() / 10;
     // Calculate note intervals
     if (valf < 0.25) 
@@ -88,7 +87,6 @@ void DELFX_PARAM(uint8_t index, int32_t value)
       s_len = ((60 * 48000) / bpm) / 2;
     }
     break;
-
   case 3:
     // Mix Val
     s_mix = valf;
