@@ -17,6 +17,7 @@ static dsp::SimpleLFO s_lfo;
 float lfo_speed = 5.f;
 
 uint32_t s_len;
+float trem_rate = 0.5f;
 static float s_mix;
 static float gain;
 float wetXNL;
@@ -52,8 +53,8 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
 
   for (; x != x_e ; x+=2) 
   {
-    const float delSample1 = gain * s_delay.read0(1680) * (s_lfo.sine_bi() * 2);
-    const float delSample2 = gain * s_delay.read1(2880) * s_lfo.sine_bi();
+    const float delSample1 = gain * s_delay.read0(1200) * s_lfo.sine_bi();
+    const float delSample2 = gain * s_delay.read1(1680) * s_lfo.sine_bi();
     wetXNL = wet * delSample1;
     wetXNR = wet * delSample2;
     *x = (*x) + wetXNL;
@@ -73,6 +74,22 @@ void DELFX_PARAM(uint8_t index, int32_t value)
   case 0:
     // Gain == Feedback //
     gain = valf;
+    if (valf < 0.25) 
+    {
+      trem_rate = 0.125f;
+    } 
+    else if (valf < 0.5) 
+    {
+      trem_rate = 0.25f;
+    } 
+    else if (valf < 0.75) 
+    {
+      trem_rate = 0.5f;
+    } 
+    else 
+    {
+      trem_rate = 1.f;
+    }
     break;
   case 1:
     bpm = _fx_get_bpm() / 10;
