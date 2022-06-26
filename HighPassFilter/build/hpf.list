@@ -1,0 +1,185 @@
+
+build/hpf.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+20019040 <_text_start>:
+  (void)api;
+}
+
+__attribute__((weak))
+void _hook_process(float *xn, uint32_t frames)
+{
+20019040:	4770      	bx	lr
+
+20019042 <_hook_resume>:
+
+}
+
+__attribute__((weak))
+void _hook_resume(void)
+{
+20019042:	4770      	bx	lr
+
+}
+
+__attribute__((weak))
+void _hook_param(uint8_t index, int32_t value)
+{
+20019044:	4770      	bx	lr
+
+20019046 <_hook_suspend>:
+20019046:	4770      	bx	lr
+  _hook_init(platform, api);
+}
+
+__attribute__((weak))
+void _hook_init(uint32_t platform, uint32_t api)
+{
+20019048:	4770      	bx	lr
+
+2001904a <_entry>:
+ * @{
+ */
+
+__attribute__((used))
+void _entry(uint32_t platform, uint32_t api)
+{
+2001904a:	4b10      	ldr	r3, [pc, #64]	; (2001908c <_entry+0x42>)
+2001904c:	4a10      	ldr	r2, [pc, #64]	; (20019090 <_entry+0x46>)
+2001904e:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+20019052:	4688      	mov	r8, r1
+20019054:	4607      	mov	r7, r0
+  // Ensure zero-clear BSS segment
+  uint8_t * __restrict bss_p = (uint8_t *)&_bss_start;
+  const uint8_t * const bss_e = (uint8_t *)&_bss_end;
+
+  for (; bss_p != bss_e;)
+    *(bss_p++) = 0;
+20019056:	2100      	movs	r1, #0
+{
+  // Ensure zero-clear BSS segment
+  uint8_t * __restrict bss_p = (uint8_t *)&_bss_start;
+  const uint8_t * const bss_e = (uint8_t *)&_bss_end;
+
+  for (; bss_p != bss_e;)
+20019058:	4293      	cmp	r3, r2
+2001905a:	d002      	beq.n	20019062 <_entry+0x18>
+    *(bss_p++) = 0;
+2001905c:	f803 1f01 	strb.w	r1, [r3, #1]!
+20019060:	e7fa      	b.n	20019058 <_entry+0xe>
+20019062:	4b0c      	ldr	r3, [pc, #48]	; (20019094 <_entry+0x4a>)
+20019064:	4c0c      	ldr	r4, [pc, #48]	; (20019098 <_entry+0x4e>)
+20019066:	1ae4      	subs	r4, r4, r3
+20019068:	10a4      	asrs	r4, r4, #2
+
+  // Call constructors if any.  
+  const size_t count = __init_array_end - __init_array_start;
+  for (size_t i = 0; i<count; ++i) {
+2001906a:	2500      	movs	r5, #0
+2001906c:	461e      	mov	r6, r3
+2001906e:	42a5      	cmp	r5, r4
+20019070:	d005      	beq.n	2001907e <_entry+0x34>
+    __init_fptr init_p = (__init_fptr)__init_array_start[i];
+20019072:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+    if (init_p != NULL)
+20019076:	b103      	cbz	r3, 2001907a <_entry+0x30>
+      init_p();
+20019078:	4798      	blx	r3
+  for (; bss_p != bss_e;)
+    *(bss_p++) = 0;
+
+  // Call constructors if any.  
+  const size_t count = __init_array_end - __init_array_start;
+  for (size_t i = 0; i<count; ++i) {
+2001907a:	3501      	adds	r5, #1
+2001907c:	e7f7      	b.n	2001906e <_entry+0x24>
+    if (init_p != NULL)
+      init_p();
+  }
+  
+  // Call user initialization
+  _hook_init(platform, api);
+2001907e:	4641      	mov	r1, r8
+20019080:	4638      	mov	r0, r7
+20019082:	f000 f80b 	bl	2001909c <_hook_init>
+20019086:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+2001908a:	bf00      	nop
+2001908c:	200190cf 	.word	0x200190cf
+20019090:	200190d3 	.word	0x200190d3
+20019094:	20019040 	.word	0x20019040
+20019098:	20019040 	.word	0x20019040
+
+2001909c <_hook_init>:
+#include "fx_api.h"
+
+float prevSample = 0;
+
+void MODFX_INIT(uint32_t platform, uint32_t api)
+{
+2001909c:	4770      	bx	lr
+
+2001909e <_hook_process>:
+}
+
+void MODFX_PROCESS(const float *xn, float *yn,
+                     const float *sub_xn, float *sub_yn,
+                     uint32_t frames)
+{
+2001909e:	b510      	push	{r4, lr}
+200190a0:	9b02      	ldr	r3, [sp, #8]
+  for (int i = 0; i < frames * 2; i++)
+  {
+    const float curSample = *xn++;
+    *yn++ = curSample + (-1 * prevSample);
+200190a2:	4c09      	ldr	r4, [pc, #36]	; (200190c8 <_hook_process+0x2a>)
+200190a4:	005a      	lsls	r2, r3, #1
+
+void MODFX_PROCESS(const float *xn, float *yn,
+                     const float *sub_xn, float *sub_yn,
+                     uint32_t frames)
+{
+  for (int i = 0; i < frames * 2; i++)
+200190a6:	2300      	movs	r3, #0
+200190a8:	4293      	cmp	r3, r2
+200190aa:	d00b      	beq.n	200190c4 <_hook_process+0x26>
+  {
+    const float curSample = *xn++;
+200190ac:	ecb0 7a01 	vldmia	r0!, {s14}
+    *yn++ = curSample + (-1 * prevSample);
+200190b0:	edd4 7a00 	vldr	s15, [r4]
+200190b4:	ee77 7a67 	vsub.f32	s15, s14, s15
+
+void MODFX_PROCESS(const float *xn, float *yn,
+                     const float *sub_xn, float *sub_yn,
+                     uint32_t frames)
+{
+  for (int i = 0; i < frames * 2; i++)
+200190b8:	3301      	adds	r3, #1
+  {
+    const float curSample = *xn++;
+    *yn++ = curSample + (-1 * prevSample);
+200190ba:	ece1 7a01 	vstmia	r1!, {s15}
+    prevSample = curSample;
+200190be:	ed84 7a00 	vstr	s14, [r4]
+
+void MODFX_PROCESS(const float *xn, float *yn,
+                     const float *sub_xn, float *sub_yn,
+                     uint32_t frames)
+{
+  for (int i = 0; i < frames * 2; i++)
+200190c2:	e7f1      	b.n	200190a8 <_hook_process+0xa>
+200190c4:	bd10      	pop	{r4, pc}
+200190c6:	bf00      	nop
+200190c8:	200190d0 	.word	0x200190d0
+
+200190cc <_hook_param>:
+    prevSample = curSample;
+  }
+}
+
+void MODFX_PARAM(uint8_t index, int32_t value)
+{
+200190cc:	4770      	bx	lr
+200190ce:	bf00      	nop
