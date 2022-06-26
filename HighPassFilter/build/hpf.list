@@ -1,185 +1,214 @@
 
-build/hpf.elf:     file format elf32-littlearm
+build/HPF.elf:     file format elf32-littlearm
 
 
 Disassembly of section .text:
 
-20019040 <_text_start>:
-  (void)api;
-}
+20017840 <_text_start>:
 
 __attribute__((weak))
-void _hook_process(float *xn, uint32_t frames)
+void _hook_process(const float *main_xn, float *main_yn,
+                   const float *sub_xn, float *sub_yn,
+                   uint32_t frames)
 {
-20019040:	4770      	bx	lr
+20017840:	4770      	bx	lr
 
-20019042 <_hook_resume>:
+20017842 <_hook_resume>:
 
 }
 
 __attribute__((weak))
 void _hook_resume(void)
 {
-20019042:	4770      	bx	lr
+20017842:	4770      	bx	lr
 
 }
 
 __attribute__((weak))
 void _hook_param(uint8_t index, int32_t value)
 {
-20019044:	4770      	bx	lr
+20017844:	4770      	bx	lr
 
-20019046 <_hook_suspend>:
-20019046:	4770      	bx	lr
+20017846 <_hook_suspend>:
+20017846:	4770      	bx	lr
   _hook_init(platform, api);
 }
 
 __attribute__((weak))
 void _hook_init(uint32_t platform, uint32_t api)
 {
-20019048:	4770      	bx	lr
+20017848:	4770      	bx	lr
 
-2001904a <_entry>:
+2001784a <_entry>:
  * @{
  */
 
 __attribute__((used))
 void _entry(uint32_t platform, uint32_t api)
 {
-2001904a:	4b10      	ldr	r3, [pc, #64]	; (2001908c <_entry+0x42>)
-2001904c:	4a10      	ldr	r2, [pc, #64]	; (20019090 <_entry+0x46>)
-2001904e:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
-20019052:	4688      	mov	r8, r1
-20019054:	4607      	mov	r7, r0
+2001784a:	4b10      	ldr	r3, [pc, #64]	; (2001788c <_entry+0x42>)
+2001784c:	4a10      	ldr	r2, [pc, #64]	; (20017890 <_entry+0x46>)
+2001784e:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+20017852:	4688      	mov	r8, r1
+20017854:	4607      	mov	r7, r0
   // Ensure zero-clear BSS segment
   uint8_t * __restrict bss_p = (uint8_t *)&_bss_start;
   const uint8_t * const bss_e = (uint8_t *)&_bss_end;
 
   for (; bss_p != bss_e;)
     *(bss_p++) = 0;
-20019056:	2100      	movs	r1, #0
+20017856:	2100      	movs	r1, #0
 {
   // Ensure zero-clear BSS segment
   uint8_t * __restrict bss_p = (uint8_t *)&_bss_start;
   const uint8_t * const bss_e = (uint8_t *)&_bss_end;
 
   for (; bss_p != bss_e;)
-20019058:	4293      	cmp	r3, r2
-2001905a:	d002      	beq.n	20019062 <_entry+0x18>
+20017858:	4293      	cmp	r3, r2
+2001785a:	d002      	beq.n	20017862 <_entry+0x18>
     *(bss_p++) = 0;
-2001905c:	f803 1f01 	strb.w	r1, [r3, #1]!
-20019060:	e7fa      	b.n	20019058 <_entry+0xe>
-20019062:	4b0c      	ldr	r3, [pc, #48]	; (20019094 <_entry+0x4a>)
-20019064:	4c0c      	ldr	r4, [pc, #48]	; (20019098 <_entry+0x4e>)
-20019066:	1ae4      	subs	r4, r4, r3
-20019068:	10a4      	asrs	r4, r4, #2
+2001785c:	f803 1f01 	strb.w	r1, [r3, #1]!
+20017860:	e7fa      	b.n	20017858 <_entry+0xe>
+20017862:	4b0c      	ldr	r3, [pc, #48]	; (20017894 <_entry+0x4a>)
+20017864:	4c0c      	ldr	r4, [pc, #48]	; (20017898 <_entry+0x4e>)
+20017866:	1ae4      	subs	r4, r4, r3
+20017868:	10a4      	asrs	r4, r4, #2
 
   // Call constructors if any.  
   const size_t count = __init_array_end - __init_array_start;
   for (size_t i = 0; i<count; ++i) {
-2001906a:	2500      	movs	r5, #0
-2001906c:	461e      	mov	r6, r3
-2001906e:	42a5      	cmp	r5, r4
-20019070:	d005      	beq.n	2001907e <_entry+0x34>
+2001786a:	2500      	movs	r5, #0
+2001786c:	461e      	mov	r6, r3
+2001786e:	42a5      	cmp	r5, r4
+20017870:	d005      	beq.n	2001787e <_entry+0x34>
     __init_fptr init_p = (__init_fptr)__init_array_start[i];
-20019072:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+20017872:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
     if (init_p != NULL)
-20019076:	b103      	cbz	r3, 2001907a <_entry+0x30>
+20017876:	b103      	cbz	r3, 2001787a <_entry+0x30>
       init_p();
-20019078:	4798      	blx	r3
+20017878:	4798      	blx	r3
   for (; bss_p != bss_e;)
     *(bss_p++) = 0;
 
   // Call constructors if any.  
   const size_t count = __init_array_end - __init_array_start;
   for (size_t i = 0; i<count; ++i) {
-2001907a:	3501      	adds	r5, #1
-2001907c:	e7f7      	b.n	2001906e <_entry+0x24>
+2001787a:	3501      	adds	r5, #1
+2001787c:	e7f7      	b.n	2001786e <_entry+0x24>
     if (init_p != NULL)
       init_p();
   }
   
   // Call user initialization
   _hook_init(platform, api);
-2001907e:	4641      	mov	r1, r8
-20019080:	4638      	mov	r0, r7
-20019082:	f000 f80b 	bl	2001909c <_hook_init>
-20019086:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
-2001908a:	bf00      	nop
-2001908c:	200190cf 	.word	0x200190cf
-20019090:	200190d3 	.word	0x200190d3
-20019094:	20019040 	.word	0x20019040
-20019098:	20019040 	.word	0x20019040
+2001787e:	4641      	mov	r1, r8
+20017880:	4638      	mov	r0, r7
+20017882:	f000 f80b 	bl	2001789c <_hook_init>
+20017886:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+2001788a:	bf00      	nop
+2001788c:	200178f7 	.word	0x200178f7
+20017890:	20017907 	.word	0x20017907
+20017894:	20017840 	.word	0x20017840
+20017898:	20017840 	.word	0x20017840
 
-2001909c <_hook_init>:
-#include "fx_api.h"
-
-float prevSample = 0;
+2001789c <_hook_init>:
+float curSampleR = 0.f;
+float prevSampleL = 0.f;
+float prevSampleR = 0.f;
 
 void MODFX_INIT(uint32_t platform, uint32_t api)
 {
-2001909c:	4770      	bx	lr
+2001789c:	4770      	bx	lr
 
-2001909e <_hook_process>:
+2001789e <_hook_process>:
 }
 
 void MODFX_PROCESS(const float *xn, float *yn,
                      const float *sub_xn, float *sub_yn,
                      uint32_t frames)
 {
-2001909e:	b510      	push	{r4, lr}
-200190a0:	9b02      	ldr	r3, [sp, #8]
-  for (int i = 0; i < frames * 2; i++)
+2001789e:	b530      	push	{r4, r5, lr}
+200178a0:	9d03      	ldr	r5, [sp, #12]
+ for (int i = 0; i < frames; i++)
   {
-    const float curSample = *xn++;
-    *yn++ = curSample + (-1 * prevSample);
-200190a2:	4c09      	ldr	r4, [pc, #36]	; (200190c8 <_hook_process+0x2a>)
-200190a4:	005a      	lsls	r2, r3, #1
+    curSampleL = *xn++;
+200178a2:	4b12      	ldr	r3, [pc, #72]	; (200178ec <_hook_process+0x4e>)
 
 void MODFX_PROCESS(const float *xn, float *yn,
                      const float *sub_xn, float *sub_yn,
                      uint32_t frames)
 {
-  for (int i = 0; i < frames * 2; i++)
-200190a6:	2300      	movs	r3, #0
-200190a8:	4293      	cmp	r3, r2
-200190aa:	d00b      	beq.n	200190c4 <_hook_process+0x26>
+ for (int i = 0; i < frames; i++)
+200178a4:	2200      	movs	r2, #0
+200178a6:	42aa      	cmp	r2, r5
+200178a8:	f100 0008 	add.w	r0, r0, #8
+200178ac:	f101 0108 	add.w	r1, r1, #8
+200178b0:	d01a      	beq.n	200178e8 <_hook_process+0x4a>
   {
-    const float curSample = *xn++;
-200190ac:	ecb0 7a01 	vldmia	r0!, {s14}
-    *yn++ = curSample + (-1 * prevSample);
-200190b0:	edd4 7a00 	vldr	s15, [r4]
-200190b4:	ee77 7a67 	vsub.f32	s15, s14, s15
+    curSampleL = *xn++;
+200178b2:	ed50 7a02 	vldr	s15, [r0, #-8]
+    curSampleR = *xn++;
+    *yn++ = curSampleL + (-1.f * prevSampleL);
+200178b6:	ed93 7a02 	vldr	s14, [r3, #8]
+                     const float *sub_xn, float *sub_yn,
+                     uint32_t frames)
+{
+ for (int i = 0; i < frames; i++)
+  {
+    curSampleL = *xn++;
+200178ba:	edc3 7a00 	vstr	s15, [r3]
+    curSampleR = *xn++;
+    *yn++ = curSampleL + (-1.f * prevSampleL);
+200178be:	ee77 7ac7 	vsub.f32	s15, s15, s14
+                     uint32_t frames)
+{
+ for (int i = 0; i < frames; i++)
+  {
+    curSampleL = *xn++;
+    curSampleR = *xn++;
+200178c2:	f850 4c04 	ldr.w	r4, [r0, #-4]
+200178c6:	605c      	str	r4, [r3, #4]
+    *yn++ = curSampleL + (-1.f * prevSampleL);
+200178c8:	ed41 7a02 	vstr	s15, [r1, #-8]
+    *yn++ = curSampleR + (-1.f * prevSampleR);
+200178cc:	ed93 7a01 	vldr	s14, [r3, #4]
+200178d0:	edd3 7a03 	vldr	s15, [r3, #12]
+200178d4:	ee77 7a67 	vsub.f32	s15, s14, s15
 
 void MODFX_PROCESS(const float *xn, float *yn,
                      const float *sub_xn, float *sub_yn,
                      uint32_t frames)
 {
-  for (int i = 0; i < frames * 2; i++)
-200190b8:	3301      	adds	r3, #1
+ for (int i = 0; i < frames; i++)
+200178d8:	3201      	adds	r2, #1
   {
-    const float curSample = *xn++;
-    *yn++ = curSample + (-1 * prevSample);
-200190ba:	ece1 7a01 	vstmia	r1!, {s15}
-    prevSample = curSample;
-200190be:	ed84 7a00 	vstr	s14, [r4]
+    curSampleL = *xn++;
+    curSampleR = *xn++;
+    *yn++ = curSampleL + (-1.f * prevSampleL);
+    *yn++ = curSampleR + (-1.f * prevSampleR);
+200178da:	ed41 7a01 	vstr	s15, [r1, #-4]
+    prevSampleL = curSampleL;
+200178de:	681c      	ldr	r4, [r3, #0]
+200178e0:	609c      	str	r4, [r3, #8]
+    prevSampleR = curSampleR;
+200178e2:	ed83 7a03 	vstr	s14, [r3, #12]
 
 void MODFX_PROCESS(const float *xn, float *yn,
                      const float *sub_xn, float *sub_yn,
                      uint32_t frames)
 {
-  for (int i = 0; i < frames * 2; i++)
-200190c2:	e7f1      	b.n	200190a8 <_hook_process+0xa>
-200190c4:	bd10      	pop	{r4, pc}
-200190c6:	bf00      	nop
-200190c8:	200190d0 	.word	0x200190d0
+ for (int i = 0; i < frames; i++)
+200178e6:	e7de      	b.n	200178a6 <_hook_process+0x8>
+200178e8:	bd30      	pop	{r4, r5, pc}
+200178ea:	bf00      	nop
+200178ec:	200178f8 	.word	0x200178f8
 
-200190cc <_hook_param>:
-    prevSample = curSample;
+200178f0 <_hook_param>:
+    prevSampleR = curSampleR;
   }
 }
 
 void MODFX_PARAM(uint8_t index, int32_t value)
 {
-200190cc:	4770      	bx	lr
-200190ce:	bf00      	nop
+200178f0:	4770      	bx	lr
+200178f2:	bf00      	nop

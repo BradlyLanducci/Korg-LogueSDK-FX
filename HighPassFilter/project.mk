@@ -2,7 +2,7 @@
 # Project Customization
 # #############################################################################
 
-PROJECT = multifx
+PROJECT = HPF
 
 UCSRC =
 
