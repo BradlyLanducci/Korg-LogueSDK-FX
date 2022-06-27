@@ -1,0 +1,1 @@
+Multi FX modulator effect for Korg Minilogue-XD.
