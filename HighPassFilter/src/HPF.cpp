@@ -2,6 +2,8 @@
 #include "fx_api.h"
 #include "biquad.hpp"
 
+float curSampleL, curSampleR;
+
 static dsp::BiQuad filter_l, filter_r;
 float resonance = 1.4041f;
 float cutoff = 0.49f;

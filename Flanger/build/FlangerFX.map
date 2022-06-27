@@ -1,0 +1,230 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+SRAM             0x20019000         0x00003000         xr
+SDRAM            0xc0420000         0x00260000         rw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD ./build/obj/_unit.o
+LOAD ./build/obj/flanger.o
+
+.hooks          0x20019000       0x40
+                0x20019000                . = ALIGN (0x4)
+                0x20019000                _hooks_start = .
+ *(.hooks)
+ .hooks         0x20019000       0x40 ./build/obj/_unit.o
+                0x20019040                . = ALIGN (0x4)
+                0x20019040                _hooks_end = .
+
+.init_array     0x20019040        0x4
+                0x20019040                . = ALIGN (0x4)
+                0x20019040                PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*))
+ *(.init_array*)
+ .init_array    0x20019040        0x4 ./build/obj/flanger.o
+                0x20019044                . = ALIGN (0x4)
+                0x20019044                PROVIDE (__init_array_end, .)
+
+.text           0x20019048      0x214
+                0x20019048                . = ALIGN (0x4)
+                0x20019048                _text_start = .
+ *(.text)
+ .text          0x20019048       0x5c ./build/obj/_unit.o
+                0x2001904a                _hook_resume
+                0x2001904e                _hook_suspend
+                0x20019052                _entry
+ .text          0x200190a4      0x190 ./build/obj/flanger.o
+                0x200190a4                _hook_init
+                0x2001912c                _hook_process
+                0x200191e0                _hook_param
+ *(.text.*)
+ .text.startup  0x20019234       0x20 ./build/obj/flanger.o
+ .text.startup.__stub
+                0x20019254        0x8 linker stubs
+ *(.glue_7)
+ .glue_7        0x2001925c        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x2001925c        0x0 linker stubs
+ *(.gcc*)
+                0x2001925c                . = ALIGN (0x4)
+                0x2001925c                _text_end = .
+
+.vfp11_veneer   0x2001925c        0x0
+ .vfp11_veneer  0x2001925c        0x0 linker stubs
+
+.v4_bx          0x2001925c        0x0
+ .v4_bx         0x2001925c        0x0 linker stubs
+
+.iplt           0x2001925c        0x0
+ .iplt          0x2001925c        0x0 ./build/obj/_unit.o
+
+.rel.dyn        0x2001925c        0x0
+ .rel.iplt      0x2001925c        0x0 ./build/obj/_unit.o
+
+.rodata         0x2001925c        0x0
+                0x2001925c                . = ALIGN (0x4)
+                0x2001925c                _rodata_start = .
+ *(.rodata)
+ *(.rodata.*)
+                0x2001925c                . = ALIGN (0x4)
+                0x2001925c                _rodata_end = .
+
+.data           0x20019260        0x8
+                0x20019260                . = ALIGN (0x8)
+                0x20019260                _data_start = .
+ *(.data)
+ .data          0x20019260        0x0 ./build/obj/_unit.o
+ .data          0x20019260        0x4 ./build/obj/flanger.o
+                0x20019260                lfo_speed
+ *(.data.*)
+                0x20019268                . = ALIGN (0x8)
+ *fill*         0x20019264        0x4 
+                0x20019268                _data_end = .
+
+.igot.plt       0x20019268        0x0
+ .igot.plt      0x20019268        0x0 ./build/obj/_unit.o
+
+.bss            0x20019268       0x34
+                0x20019268                . = ALIGN (0x4)
+                0x20019268                _bss_start = .
+ *(.bss)
+ .bss           0x20019268        0x0 ./build/obj/_unit.o
+ .bss           0x20019268       0x34 ./build/obj/flanger.o
+                0x20019284                bpm
+                0x20019288                s_len
+                0x20019294                wetXNL
+                0x20019298                wetXNR
+ *(.bss.*)
+ *(COMMON)
+                0x2001929c                . = ALIGN (0x4)
+                0x2001929c                _bss_end = .
+
+.ARM.extab      0x2001929c        0x0
+                0x2001929c                . = ALIGN (0x4)
+                0x2001929c                __extab_start = .
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+                0x2001929c                . = ALIGN (0x4)
+                0x2001929c                __extab_end = .
+
+.ARM.exidx      0x2001929c        0x0
+                0x2001929c                __exidx_start = .
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+                0x2001929c                __exidx_end = .
+
+.eh_frame_hdr   0x2001929c        0x0
+                0x2001929c                . = ALIGN (0x4)
+                0x2001929c                _eh_frame_hdr_start = .
+ *(.eh_frame_hdr)
+                0x2001929c                . = ALIGN (0x4)
+                0x2001929c                _eh_frame_hdr_end = .
+
+.eh_frame       0x2001929c        0x0
+                0x2001929c                . = ALIGN (0x4)
+                0x2001929c                _eh_frame_start = .
+ *(.eh_frame)
+                0x2001929c                . = ALIGN (0x4)
+                0x2001929c                _eh_frame_end = .
+
+.sdram          0xc0420000    0xcd140
+                0xc0420000                . = ALIGN (0x4)
+                0xc0420000                _usr_sdram_start = .
+ *(.sdram*)
+ .sdram         0xc0420000    0xcd140 ./build/obj/flanger.o
+                0xc04ed140                . = ALIGN (0x4)
+                0xc04ed140                _usr_sdram_end = .
+LOAD ./ld/main_api.syms
+                0x0807b000                k_fx_api_version = 0x807b000
+                0x0807b004                k_fx_api_platform = 0x807b004
+                0x0807b100                sqrtm2log_lut_f = 0x807b100
+                0x0807b504                tanpi_lut_f = 0x807b504
+                0x0807b908                log_lut_f = 0x807b908
+                0x0807bd0c                bitres_lut_f = 0x807bd0c
+                0x0807bf10                wt_sine_lut_f = 0x807bf10
+                0x0807c114                schetzen_lut_f = 0x807c114
+                0x0807c318                cubicsat_lut_f = 0x807c318
+                0x0807c51c                pow2_lut_f = 0x807c51c
+                0x0807c920                _fx_mcu_hash = 0x807c920
+                0x0807c92c                _fx_rand = 0x807c92c
+                0x0807c964                _fx_white = 0x807c964
+                0x0807ca88                _fx_get_bpm = 0x807ca88
+                0x0807ca8c                _fx_get_bpmf = 0x807ca8c
+LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libm.a
+START GROUP
+LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a
+LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg.a
+LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a
+END GROUP
+OUTPUT(build/FlangerFX.elf elf32-littlearm)
+
+.debug_info     0x00000000     0x11b1
+ .debug_info    0x00000000      0x51f ./build/obj/_unit.o
+ .debug_info    0x0000051f      0xc92 ./build/obj/flanger.o
+
+.debug_abbrev   0x00000000      0x5ba
+ .debug_abbrev  0x00000000      0x1f4 ./build/obj/_unit.o
+ .debug_abbrev  0x000001f4      0x3c6 ./build/obj/flanger.o
+
+.debug_loc      0x00000000      0x42a
+ .debug_loc     0x00000000       0xb9 ./build/obj/_unit.o
+ .debug_loc     0x000000b9      0x371 ./build/obj/flanger.o
+
+.debug_aranges  0x00000000       0x48
+ .debug_aranges
+                0x00000000       0x20 ./build/obj/_unit.o
+ .debug_aranges
+                0x00000020       0x28 ./build/obj/flanger.o
+
+.debug_line     0x00000000      0x602
+ .debug_line    0x00000000      0x233 ./build/obj/_unit.o
+ .debug_line    0x00000233      0x3cf ./build/obj/flanger.o
+
+.debug_str      0x00000000      0xd02
+ .debug_str     0x00000000      0x543 ./build/obj/_unit.o
+                                0x5b6 (size before relaxing)
+ .debug_str     0x00000543      0x7bf ./build/obj/flanger.o
+                                0x9e4 (size before relaxing)
+
+.comment        0x00000000       0x6e
+ .comment       0x00000000       0x6e ./build/obj/_unit.o
+                                 0x6f (size before relaxing)
+ .comment       0x0000006e       0x6f ./build/obj/flanger.o
+
+.ARM.attributes
+                0x00000000       0x39
+ .ARM.attributes
+                0x00000000       0x39 ./build/obj/_unit.o
+ .ARM.attributes
+                0x00000039       0x39 ./build/obj/flanger.o
+
+.debug_frame    0x00000000      0x100
+ .debug_frame   0x00000000       0x88 ./build/obj/_unit.o
+ .debug_frame   0x00000088       0x78 ./build/obj/flanger.o
+
+.debug_ranges   0x00000000      0x128
+ .debug_ranges  0x00000000      0x128 ./build/obj/flanger.o
+
+Cross Reference Table
+
+Symbol                                            File
+__init_array_end                                  ./build/obj/_unit.o
+__init_array_start                                ./build/obj/_unit.o
+_bss_end                                          ./build/obj/_unit.o
+_bss_start                                        ./build/obj/_unit.o
+_entry                                            ./build/obj/_unit.o
+_fx_get_bpm                                       ./build/obj/flanger.o
+_hook_init                                        ./build/obj/flanger.o
+                                                  ./build/obj/_unit.o
+_hook_param                                       ./build/obj/flanger.o
+                                                  ./build/obj/_unit.o
+_hook_process                                     ./build/obj/flanger.o
+                                                  ./build/obj/_unit.o
+_hook_resume                                      ./build/obj/_unit.o
+_hook_suspend                                     ./build/obj/_unit.o
+bpm                                               ./build/obj/flanger.o
+lfo_speed                                         ./build/obj/flanger.o
+s_len                                             ./build/obj/flanger.o
+wetXNL                                            ./build/obj/flanger.o
+wetXNR                                            ./build/obj/flanger.o

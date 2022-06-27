@@ -28,7 +28,7 @@ LOAD ./build/obj/HPF.o
                 0x20017844                . = ALIGN (0x4)
                 0x20017844                PROVIDE (__init_array_end, .)
 
-.text           0x20017844      0x32c
+.text           0x20017844      0x314
                 0x20017844                . = ALIGN (0x4)
                 0x20017844                _text_start = .
  *(.text)
@@ -36,96 +36,94 @@ LOAD ./build/obj/HPF.o
                 0x20017846                _hook_resume
                 0x2001784a                _hook_suspend
                 0x2001784e                _entry
- .text          0x200178a0      0x2a8 ./build/obj/HPF.o
+ .text          0x200178a0      0x290 ./build/obj/HPF.o
                 0x200178a0                _hook_init
-                0x20017960                absolute(float)
-                0x20017970                _hook_process
-                0x20017a18                _hook_param
+                0x20017958                absolute(float)
+                0x20017968                _hook_process
+                0x20017a10                _hook_param
  *(.text.*)
- .text.startup  0x20017b48       0x28 ./build/obj/HPF.o
+ .text.startup  0x20017b30       0x28 ./build/obj/HPF.o
  *(.glue_7)
- .glue_7        0x20017b70        0x0 linker stubs
+ .glue_7        0x20017b58        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x20017b70        0x0 linker stubs
+ .glue_7t       0x20017b58        0x0 linker stubs
  *(.gcc*)
-                0x20017b70                . = ALIGN (0x4)
-                0x20017b70                _text_end = .
+                0x20017b58                . = ALIGN (0x4)
+                0x20017b58                _text_end = .
 
-.vfp11_veneer   0x20017b70        0x0
- .vfp11_veneer  0x20017b70        0x0 linker stubs
+.vfp11_veneer   0x20017b58        0x0
+ .vfp11_veneer  0x20017b58        0x0 linker stubs
 
-.v4_bx          0x20017b70        0x0
- .v4_bx         0x20017b70        0x0 linker stubs
+.v4_bx          0x20017b58        0x0
+ .v4_bx         0x20017b58        0x0 linker stubs
 
-.iplt           0x20017b70        0x0
- .iplt          0x20017b70        0x0 ./build/obj/_unit.o
+.iplt           0x20017b58        0x0
+ .iplt          0x20017b58        0x0 ./build/obj/_unit.o
 
-.rel.dyn        0x20017b70        0x0
- .rel.iplt      0x20017b70        0x0 ./build/obj/_unit.o
+.rel.dyn        0x20017b58        0x0
+ .rel.iplt      0x20017b58        0x0 ./build/obj/_unit.o
 
-.rodata         0x20017b70        0x0
-                0x20017b70                . = ALIGN (0x4)
-                0x20017b70                _rodata_start = .
+.rodata         0x20017b58        0x0
+                0x20017b58                . = ALIGN (0x4)
+                0x20017b58                _rodata_start = .
  *(.rodata)
  *(.rodata.*)
-                0x20017b70                . = ALIGN (0x4)
-                0x20017b70                _rodata_end = .
+                0x20017b58                . = ALIGN (0x4)
+                0x20017b58                _rodata_end = .
 
-.data           0x20017b70        0x8
-                0x20017b70                . = ALIGN (0x8)
-                0x20017b70                _data_start = .
+.data           0x20017b58        0x8
+                0x20017b58                . = ALIGN (0x8)
+                0x20017b58                _data_start = .
  *(.data)
- .data          0x20017b70        0x0 ./build/obj/_unit.o
- .data          0x20017b70        0x8 ./build/obj/HPF.o
-                0x20017b70                cutoff
-                0x20017b74                resonance
+ .data          0x20017b58        0x0 ./build/obj/_unit.o
+ .data          0x20017b58        0x8 ./build/obj/HPF.o
+                0x20017b58                cutoff
+                0x20017b5c                resonance
  *(.data.*)
-                0x20017b78                . = ALIGN (0x8)
-                0x20017b78                _data_end = .
+                0x20017b60                . = ALIGN (0x8)
+                0x20017b60                _data_end = .
 
-.igot.plt       0x20017b78        0x0
- .igot.plt      0x20017b78        0x0 ./build/obj/_unit.o
+.igot.plt       0x20017b60        0x0
+ .igot.plt      0x20017b60        0x0 ./build/obj/_unit.o
 
-.bss            0x20017b78       0x48
-                0x20017b78                . = ALIGN (0x4)
-                0x20017b78                _bss_start = .
+.bss            0x20017b60       0x40
+                0x20017b60                . = ALIGN (0x4)
+                0x20017b60                _bss_start = .
  *(.bss)
- .bss           0x20017b78        0x0 ./build/obj/_unit.o
- .bss           0x20017b78       0x48 ./build/obj/HPF.o
-                0x20017bb0                curSampleL
-                0x20017bb4                curSampleR
-                0x20017bb8                prevSampleR
-                0x20017bbc                prevSampleL
+ .bss           0x20017b60        0x0 ./build/obj/_unit.o
+ .bss           0x20017b60       0x40 ./build/obj/HPF.o
+                0x20017b98                curSampleL
+                0x20017b9c                curSampleR
  *(.bss.*)
  *(COMMON)
-                0x20017bc0                . = ALIGN (0x4)
-                0x20017bc0                _bss_end = .
+                0x20017ba0                . = ALIGN (0x4)
+                0x20017ba0                _bss_end = .
 
-.ARM.extab      0x20017bc0        0x0
-                0x20017bc0                . = ALIGN (0x4)
-                0x20017bc0                __extab_start = .
+.ARM.extab      0x20017ba0        0x0
+                0x20017ba0                . = ALIGN (0x4)
+                0x20017ba0                __extab_start = .
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x20017bc0                . = ALIGN (0x4)
-                0x20017bc0                __extab_end = .
+                0x20017ba0                . = ALIGN (0x4)
+                0x20017ba0                __extab_end = .
 
-.ARM.exidx      0x20017bc0        0x0
-                0x20017bc0                __exidx_start = .
+.ARM.exidx      0x20017ba0        0x0
+                0x20017ba0                __exidx_start = .
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x20017bc0                __exidx_end = .
+                0x20017ba0                __exidx_end = .
 
-.eh_frame_hdr   0x20017bc0        0x0
-                0x20017bc0                . = ALIGN (0x4)
-                0x20017bc0                _eh_frame_hdr_start = .
+.eh_frame_hdr   0x20017ba0        0x0
+                0x20017ba0                . = ALIGN (0x4)
+                0x20017ba0                _eh_frame_hdr_start = .
  *(.eh_frame_hdr)
-                0x20017bc0                . = ALIGN (0x4)
-                0x20017bc0                _eh_frame_hdr_end = .
+                0x20017ba0                . = ALIGN (0x4)
+                0x20017ba0                _eh_frame_hdr_end = .
 
-.eh_frame       0x20017bc0        0x0
-                0x20017bc0                . = ALIGN (0x4)
-                0x20017bc0                _eh_frame_start = .
+.eh_frame       0x20017ba0        0x0
+                0x20017ba0                . = ALIGN (0x4)
+                0x20017ba0                _eh_frame_start = .
  *(.eh_frame)
-                0x20017bc0                . = ALIGN (0x4)
-                0x20017bc0                _eh_frame_end = .
+                0x20017ba0                . = ALIGN (0x4)
+                0x20017ba0                _eh_frame_end = .
 
 .sdram          0xc0400000        0x0
                 0xc0400000                . = ALIGN (0x4)
@@ -157,17 +155,17 @@ LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc
 END GROUP
 OUTPUT(build/HPF.elf elf32-littlearm)
 
-.debug_info     0x00000000     0x11ca
+.debug_info     0x00000000     0x11ac
  .debug_info    0x00000000      0x55d ./build/obj/_unit.o
- .debug_info    0x0000055d      0xc6d ./build/obj/HPF.o
+ .debug_info    0x0000055d      0xc4f ./build/obj/HPF.o
 
 .debug_abbrev   0x00000000      0x58d
  .debug_abbrev  0x00000000      0x1f4 ./build/obj/_unit.o
  .debug_abbrev  0x000001f4      0x399 ./build/obj/HPF.o
 
-.debug_loc      0x00000000      0x6be
+.debug_loc      0x00000000      0x6c8
  .debug_loc     0x00000000       0xb9 ./build/obj/_unit.o
- .debug_loc     0x000000b9      0x605 ./build/obj/HPF.o
+ .debug_loc     0x000000b9      0x60f ./build/obj/HPF.o
 
 .debug_aranges  0x00000000       0x48
  .debug_aranges
@@ -175,15 +173,15 @@ OUTPUT(build/HPF.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/HPF.o
 
-.debug_line     0x00000000      0x60a
+.debug_line     0x00000000      0x60d
  .debug_line    0x00000000      0x22c ./build/obj/_unit.o
- .debug_line    0x0000022c      0x3de ./build/obj/HPF.o
+ .debug_line    0x0000022c      0x3e1 ./build/obj/HPF.o
 
-.debug_str      0x00000000      0xb82
+.debug_str      0x00000000      0xb6a
  .debug_str     0x00000000      0x565 ./build/obj/_unit.o
                                 0x5d8 (size before relaxing)
- .debug_str     0x00000565      0x61d ./build/obj/HPF.o
-                                0x84e (size before relaxing)
+ .debug_str     0x00000565      0x605 ./build/obj/HPF.o
+                                0x836 (size before relaxing)
 
 .comment        0x00000000       0x6e
  .comment       0x00000000       0x6e ./build/obj/_unit.o
@@ -201,8 +199,8 @@ OUTPUT(build/HPF.elf elf32-littlearm)
  .debug_frame   0x00000000       0x88 ./build/obj/_unit.o
  .debug_frame   0x00000088       0x84 ./build/obj/HPF.o
 
-.debug_ranges   0x00000000      0x250
- .debug_ranges  0x00000000      0x250 ./build/obj/HPF.o
+.debug_ranges   0x00000000      0x238
+ .debug_ranges  0x00000000      0x238 ./build/obj/HPF.o
 
 Cross Reference Table
 
@@ -224,7 +222,5 @@ absolute(float)                                   ./build/obj/HPF.o
 curSampleL                                        ./build/obj/HPF.o
 curSampleR                                        ./build/obj/HPF.o
 cutoff                                            ./build/obj/HPF.o
-prevSampleL                                       ./build/obj/HPF.o
-prevSampleR                                       ./build/obj/HPF.o
 resonance                                         ./build/obj/HPF.o
 tanpi_lut_f                                       ./build/obj/HPF.o

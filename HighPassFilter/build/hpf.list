@@ -106,8 +106,8 @@ void _entry(uint32_t platform, uint32_t api)
 20017886:	f000 f80b 	bl	200178a0 <_hook_init>
 2001788a:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
 2001788e:	bf00      	nop
-20017890:	20017b77 	.word	0x20017b77
-20017894:	20017bbf 	.word	0x20017bbf
+20017890:	20017b5f 	.word	0x20017b5f
+20017894:	20017b9f 	.word	0x20017b9f
 20017898:	20017840 	.word	0x20017840
 2001789c:	20017844 	.word	0x20017844
 
@@ -120,550 +120,534 @@ void MODFX_INIT(uint32_t platform, uint32_t api)
 {
 200178a0:	b530      	push	{r4, r5, lr}
   filter_l.flush();
-  filter_l.mCoeffs.setSOHP(fx_tanpif(cutoff), resonance);
-200178a2:	4c2b      	ldr	r4, [pc, #172]	; (20017950 <_hook_init+0xb0>)
+  filter_l.mCoeffs.setSOLP(fx_tanpif(cutoff), resonance);
+200178a2:	4c29      	ldr	r4, [pc, #164]	; (20017948 <_hook_init+0xa8>)
    * @param   x  Value in [0.0001, 0.49].
    * @return     Result of tan(pi*x).
    * @note Not checking input, caller responsible for bounding x.
    */
   __fast_inline float fx_tanpif(float x) {
     const float idxf = x * k_tanpi_range_recip * k_tanpi_size;
-200178a4:	ed9f 7a2b 	vldr	s14, [pc, #172]	; 20017954 <_hook_init+0xb4>
+200178a4:	ed9f 7a29 	vldr	s14, [pc, #164]	; 2001794c <_hook_init+0xac>
 200178a8:	edd4 7a00 	vldr	s15, [r4]
     const uint32_t idx = (uint32_t)idxf;
     const float y0 = tanpi_lut_f[idx];
-200178ac:	492a      	ldr	r1, [pc, #168]	; (20017958 <_hook_init+0xb8>)
+200178ac:	4928      	ldr	r1, [pc, #160]	; (20017950 <_hook_init+0xb0>)
+200178ae:	ed94 6a01 	vldr	s12, [r4, #4]
     /**
      * Flush internal delays
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     void flush(void) {
       mZ1 = mZ2 = 0;
-200178ae:	4b2b      	ldr	r3, [pc, #172]	; (2001795c <_hook_init+0xbc>)
+200178b2:	4b28      	ldr	r3, [pc, #160]	; (20017954 <_hook_init+0xb4>)
    * @param   x  Value in [0.0001, 0.49].
    * @return     Result of tan(pi*x).
    * @note Not checking input, caller responsible for bounding x.
    */
   __fast_inline float fx_tanpif(float x) {
     const float idxf = x * k_tanpi_range_recip * k_tanpi_size;
-200178b0:	ee27 7a87 	vmul.f32	s14, s15, s14
+200178b4:	ee67 7a87 	vmul.f32	s15, s15, s14
       inline __attribute__((optimize("Ofast"),always_inline))
-      void setSOHP(const float k, const float q) {
+      void setSOLP(const float k, const float q) {
         // k = tan(pi*wc)
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-200178b4:	eeb7 5a00 	vmov.f32	s10, #112	; 0x3f800000  1.0
+200178b8:	eeb7 5a00 	vmov.f32	s10, #112	; 0x3f800000  1.0
     const uint32_t idx = (uint32_t)idxf;
-200178b8:	eefc 7ac7 	vcvt.u32.f32	s15, s14
+200178bc:	eebc 7ae7 	vcvt.u32.f32	s14, s15
     /**
      * Flush internal delays
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     void flush(void) {
       mZ1 = mZ2 = 0;
-200178bc:	2200      	movs	r2, #0
-200178be:	ee17 0a90 	vmov	r0, s15
+200178c0:	2200      	movs	r2, #0
+200178c2:	ee17 0a10 	vmov	r0, s14
 
 /** Linear interpolation
  */
 static inline __attribute__((optimize("Ofast"), always_inline))
 float linintf(const float fr, const float x0, const float x1) {
   return x0 + fr * (x1 - x0);
-200178c2:	ee06 0a90 	vmov	s13, r0
-200178c6:	eef8 6a66 	vcvt.f32.u32	s13, s13
+200178c6:	ee06 0a90 	vmov	s13, r0
+200178ca:	eef8 6a66 	vcvt.f32.u32	s13, s13
     const float y0 = tanpi_lut_f[idx];
-200178ca:	eb01 0580 	add.w	r5, r1, r0, lsl #2
-200178ce:	edd5 7a00 	vldr	s15, [r5]
-200178d2:	619a      	str	r2, [r3, #24]
-200178d4:	ee37 7a66 	vsub.f32	s14, s14, s13
-200178d8:	edd5 6a01 	vldr	s13, [r5, #4]
-200178dc:	615a      	str	r2, [r3, #20]
-200178de:	ee76 6ae7 	vsub.f32	s13, s13, s15
+200178ce:	eb01 0580 	add.w	r5, r1, r0, lsl #2
+200178d2:	ed95 7a00 	vldr	s14, [r5]
+200178d6:	619a      	str	r2, [r3, #24]
+200178d8:	ee77 7ae6 	vsub.f32	s15, s15, s13
+200178dc:	edd5 6a01 	vldr	s13, [r5, #4]
+200178e0:	615a      	str	r2, [r3, #20]
+200178e2:	ee76 6ac7 	vsub.f32	s13, s13, s14
   filter_r.flush();
   filter_r.mCoeffs = filter_l.mCoeffs;
-200178e2:	f103 051c 	add.w	r5, r3, #28
-200178e6:	eee7 7a26 	vfma.f32	s15, s14, s13
-200178ea:	635a      	str	r2, [r3, #52]	; 0x34
-200178ec:	631a      	str	r2, [r3, #48]	; 0x30
-float cutoff = 0.49f;
-
-void MODFX_INIT(uint32_t platform, uint32_t api)
-{
-  filter_l.flush();
-  filter_l.mCoeffs.setSOHP(fx_tanpif(cutoff), resonance);
-200178ee:	edd4 6a01 	vldr	s13, [r4, #4]
+200178e6:	461c      	mov	r4, r3
+200178e8:	eea7 7aa6 	vfma.f32	s14, s15, s13
+200178ec:	f103 051c 	add.w	r5, r3, #28
+200178f0:	635a      	str	r2, [r3, #52]	; 0x34
+200178f2:	631a      	str	r2, [r3, #48]	; 0x30
        */
       inline __attribute__((optimize("Ofast"),always_inline))
-      void setSOHP(const float k, const float q) {
+      void setSOLP(const float k, const float q) {
         // k = tan(pi*wc)
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
-200178f2:	ee66 5aa7 	vmul.f32	s11, s13, s15
+200178f4:	ee66 6a07 	vmul.f32	s13, s12, s14
+200178f8:	ee66 7a87 	vmul.f32	s15, s13, s14
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-200178f6:	eeb0 7a67 	vmov.f32	s14, s15
-200178fa:	eea5 7aa7 	vfma.f32	s14, s11, s15
-  filter_r.flush();
-  filter_r.mCoeffs = filter_l.mCoeffs;
-200178fe:	461c      	mov	r4, r3
-20017900:	ee37 7a26 	vadd.f32	s14, s14, s13
-20017904:	ee85 6a07 	vdiv.f32	s12, s10, s14
-        ff0 = ff2 = q * qk2_k_q_r;
-        ff1 = -2.f * ff0;
-20017908:	eeb8 5a00 	vmov.f32	s10, #128	; 0xc0000000 -2.0
-      void setSOHP(const float k, const float q) {
+200178fc:	ee77 6a87 	vadd.f32	s13, s15, s14
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+        ff1 = 2.f * ff0;
+        fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
+        fb2 = (qk2 - k + q) * qk2_k_q_r;
+20017900:	ee37 7ac7 	vsub.f32	s14, s15, s14
+      inline __attribute__((optimize("Ofast"),always_inline))
+      void setSOLP(const float k, const float q) {
         // k = tan(pi*wc)
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-        ff0 = ff2 = q * qk2_k_q_r;
-2001790c:	ee26 7a86 	vmul.f32	s14, s13, s12
-20017910:	ed83 7a02 	vstr	s14, [r3, #8]
-20017914:	ed83 7a00 	vstr	s14, [r3]
-        ff1 = -2.f * ff0;
-20017918:	ee27 7a05 	vmul.f32	s14, s14, s10
-2001791c:	ed83 7a01 	vstr	s14, [r3, #4]
+20017904:	ee76 6a86 	vadd.f32	s13, s13, s12
+20017908:	eec5 5a26 	vdiv.f32	s11, s10, s13
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+2001790c:	ee67 6aa5 	vmul.f32	s13, s15, s11
+20017910:	edc3 6a02 	vstr	s13, [r3, #8]
+20017914:	edc3 6a00 	vstr	s13, [r3]
+        ff1 = 2.f * ff0;
+20017918:	ee76 6aa6 	vadd.f32	s13, s13, s13
+2001791c:	edc3 6a01 	vstr	s13, [r3, #4]
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017920:	eeb0 7a66 	vmov.f32	s14, s13
-20017924:	ee95 7aa7 	vfnms.f32	s14, s11, s15
+20017920:	ee77 6ac6 	vsub.f32	s13, s15, s12
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017928:	eed5 7aa7 	vfnms.f32	s15, s11, s15
+20017924:	ee77 7a06 	vadd.f32	s15, s14, s12
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-        ff0 = ff2 = q * qk2_k_q_r;
-        ff1 = -2.f * ff0;
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+        ff1 = 2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-2001792c:	ee27 7a06 	vmul.f32	s14, s14, s12
+20017928:	ee66 6aa5 	vmul.f32	s13, s13, s11
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017930:	ee77 7aa6 	vadd.f32	s15, s15, s13
+2001792c:	ee67 7aa5 	vmul.f32	s15, s15, s11
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-        ff0 = ff2 = q * qk2_k_q_r;
-        ff1 = -2.f * ff0;
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+        ff1 = 2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017934:	ee37 7a07 	vadd.f32	s14, s14, s14
+20017930:	ee76 6aa6 	vadd.f32	s13, s13, s13
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017938:	ee67 7a86 	vmul.f32	s15, s15, s12
+20017934:	edc3 7a04 	vstr	s15, [r3, #16]
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-        ff0 = ff2 = q * qk2_k_q_r;
-        ff1 = -2.f * ff0;
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+        ff1 = 2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-2001793c:	ed83 7a03 	vstr	s14, [r3, #12]
-        fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017940:	edc3 7a04 	vstr	s15, [r3, #16]
-20017944:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
-20017946:	c50f      	stmia	r5!, {r0, r1, r2, r3}
-20017948:	6823      	ldr	r3, [r4, #0]
-2001794a:	602b      	str	r3, [r5, #0]
-2001794c:	bd30      	pop	{r4, r5, pc}
-2001794e:	bf00      	nop
-20017950:	20017b70 	.word	0x20017b70
-20017954:	44029cbc 	.word	0x44029cbc
-20017958:	0807b504 	.word	0x0807b504
-2001795c:	20017b78 	.word	0x20017b78
+20017938:	edc3 6a03 	vstr	s13, [r3, #12]
+2001793c:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+2001793e:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+20017940:	6823      	ldr	r3, [r4, #0]
+20017942:	602b      	str	r3, [r5, #0]
+20017944:	bd30      	pop	{r4, r5, pc}
+20017946:	bf00      	nop
+20017948:	20017b58 	.word	0x20017b58
+2001794c:	44029cbc 	.word	0x44029cbc
+20017950:	0807b504 	.word	0x0807b504
+20017954:	20017b60 	.word	0x20017b60
 
-20017960 <_Z8absolutef>:
+20017958 <_Z8absolutef>:
 }
 
 float absolute(float valf)
 {
   if (valf < 0)
-20017960:	eeb5 0ac0 	vcmpe.f32	s0, #0.0
-20017964:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+20017958:	eeb5 0ac0 	vcmpe.f32	s0, #0.0
+2001795c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
     return -valf;
-20017968:	bf48      	it	mi
-2001796a:	eeb1 0a40 	vnegmi.f32	s0, s0
+20017960:	bf48      	it	mi
+20017962:	eeb1 0a40 	vnegmi.f32	s0, s0
   return valf;
 }
-2001796e:	4770      	bx	lr
+20017966:	4770      	bx	lr
 
-20017970 <_hook_process>:
+20017968 <_hook_process>:
 
 void MODFX_PROCESS(const float *xn, float *yn,
                      const float *sub_xn, float *sub_yn,
                      uint32_t frames)
 {
-20017970:	b530      	push	{r4, r5, lr}
-20017972:	9d03      	ldr	r5, [sp, #12]
+20017968:	b530      	push	{r4, r5, lr}
+2001796a:	9d03      	ldr	r5, [sp, #12]
      *
      * @return Output sample
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     float process_so(const float xn) {
       float acc = mCoeffs.ff0 * xn + mZ1;
-20017974:	4b27      	ldr	r3, [pc, #156]	; (20017a14 <_hook_process+0xa4>)
+2001796c:	4b27      	ldr	r3, [pc, #156]	; (20017a0c <_hook_process+0xa4>)
  for (int i = 0; i < frames; i++)
-20017976:	2200      	movs	r2, #0
-20017978:	42aa      	cmp	r2, r5
-2001797a:	f100 0008 	add.w	r0, r0, #8
-2001797e:	f101 0108 	add.w	r1, r1, #8
-20017982:	d046      	beq.n	20017a12 <_hook_process+0xa2>
+2001796e:	2200      	movs	r2, #0
+20017970:	42aa      	cmp	r2, r5
+20017972:	f100 0008 	add.w	r0, r0, #8
+20017976:	f101 0108 	add.w	r1, r1, #8
+2001797a:	d046      	beq.n	20017a0a <_hook_process+0xa2>
   {
     curSampleL = *xn++;
-20017984:	ed50 6a02 	vldr	s13, [r0, #-8]
-20017988:	ed93 7a00 	vldr	s14, [r3]
-2001798c:	edd3 7a05 	vldr	s15, [r3, #20]
+2001797c:	ed50 6a02 	vldr	s13, [r0, #-8]
+20017980:	ed93 7a00 	vldr	s14, [r3]
+20017984:	edd3 7a05 	vldr	s15, [r3, #20]
       mZ1 = mCoeffs.ff1 * xn + mZ2;
       mZ2 = mCoeffs.ff2 * xn;
       mZ1 -= mCoeffs.fb1 * acc;
-20017990:	ed93 5a01 	vldr	s10, [r3, #4]
+20017988:	ed93 5a01 	vldr	s10, [r3, #4]
     curSampleR = *xn++;
-20017994:	ed10 6a01 	vldr	s12, [r0, #-4]
+2001798c:	ed10 6a01 	vldr	s12, [r0, #-4]
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     float process_so(const float xn) {
       float acc = mCoeffs.ff0 * xn + mZ1;
       mZ1 = mCoeffs.ff1 * xn + mZ2;
       mZ2 = mCoeffs.ff2 * xn;
-20017998:	edd3 5a02 	vldr	s11, [r3, #8]
+20017990:	edd3 5a02 	vldr	s11, [r3, #8]
      *
      * @return Output sample
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     float process_so(const float xn) {
       float acc = mCoeffs.ff0 * xn + mZ1;
-2001799c:	eee6 7a87 	vfma.f32	s15, s13, s14
+20017994:	eee6 7a87 	vfma.f32	s15, s13, s14
 
 void MODFX_PROCESS(const float *xn, float *yn,
                      const float *sub_xn, float *sub_yn,
                      uint32_t frames)
 {
  for (int i = 0; i < frames; i++)
-200179a0:	3201      	adds	r2, #1
+20017998:	3201      	adds	r2, #1
       mZ1 = mCoeffs.ff1 * xn + mZ2;
       mZ2 = mCoeffs.ff2 * xn;
       mZ1 -= mCoeffs.fb1 * acc;
-200179a2:	ed93 7a06 	vldr	s14, [r3, #24]
+2001799a:	ed93 7a06 	vldr	s14, [r3, #24]
   {
     curSampleL = *xn++;
     curSampleR = *xn++;
 
     curSampleL = filter_l.process_so(curSampleL);
-200179a6:	edc3 7a0e 	vstr	s15, [r3, #56]	; 0x38
-200179aa:	eea6 7a85 	vfma.f32	s14, s13, s10
-200179ae:	ed93 5a03 	vldr	s10, [r3, #12]
-200179b2:	eea7 7ac5 	vfms.f32	s14, s15, s10
-200179b6:	ed93 5a08 	vldr	s10, [r3, #32]
-200179ba:	ed83 7a05 	vstr	s14, [r3, #20]
+2001799e:	edc3 7a0e 	vstr	s15, [r3, #56]	; 0x38
+200179a2:	eea6 7a85 	vfma.f32	s14, s13, s10
+200179a6:	ed93 5a03 	vldr	s10, [r3, #12]
+200179aa:	eea7 7ac5 	vfms.f32	s14, s15, s10
+200179ae:	ed93 5a08 	vldr	s10, [r3, #32]
+200179b2:	ed83 7a05 	vstr	s14, [r3, #20]
       mZ2 -= mCoeffs.fb2 * acc;
-200179be:	ed93 7a04 	vldr	s14, [r3, #16]
-200179c2:	ee27 7a67 	vnmul.f32	s14, s14, s15
-200179c6:	eea6 7aa5 	vfma.f32	s14, s13, s11
+200179b6:	ed93 7a04 	vldr	s14, [r3, #16]
+200179ba:	ee27 7a67 	vnmul.f32	s14, s14, s15
+200179be:	eea6 7aa5 	vfma.f32	s14, s13, s11
      *
      * @return Output sample
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     float process_so(const float xn) {
       float acc = mCoeffs.ff0 * xn + mZ1;
-200179ca:	edd3 6a07 	vldr	s13, [r3, #28]
+200179c2:	edd3 6a07 	vldr	s13, [r3, #28]
       mZ1 = mCoeffs.ff1 * xn + mZ2;
       mZ2 = mCoeffs.ff2 * xn;
       mZ1 -= mCoeffs.fb1 * acc;
       mZ2 -= mCoeffs.fb2 * acc;
-200179ce:	ed83 7a06 	vstr	s14, [r3, #24]
+200179c6:	ed83 7a06 	vstr	s14, [r3, #24]
      *
      * @return Output sample
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     float process_so(const float xn) {
       float acc = mCoeffs.ff0 * xn + mZ1;
-200179d2:	ed93 7a0c 	vldr	s14, [r3, #48]	; 0x30
+200179ca:	ed93 7a0c 	vldr	s14, [r3, #48]	; 0x30
       mZ1 = mCoeffs.ff1 * xn + mZ2;
       mZ2 = mCoeffs.ff2 * xn;
-200179d6:	edd3 5a09 	vldr	s11, [r3, #36]	; 0x24
+200179ce:	edd3 5a09 	vldr	s11, [r3, #36]	; 0x24
      *
      * @return Output sample
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     float process_so(const float xn) {
       float acc = mCoeffs.ff0 * xn + mZ1;
-200179da:	eea6 7a26 	vfma.f32	s14, s12, s13
+200179d2:	eea6 7a26 	vfma.f32	s14, s12, s13
       mZ1 = mCoeffs.ff1 * xn + mZ2;
       mZ2 = mCoeffs.ff2 * xn;
       mZ1 -= mCoeffs.fb1 * acc;
-200179de:	edd3 6a0d 	vldr	s13, [r3, #52]	; 0x34
+200179d6:	edd3 6a0d 	vldr	s13, [r3, #52]	; 0x34
     curSampleR = filter_r.process_so(curSampleR);
-200179e2:	ed83 7a0f 	vstr	s14, [r3, #60]	; 0x3c
-200179e6:	eee6 6a05 	vfma.f32	s13, s12, s10
-200179ea:	ed93 5a0a 	vldr	s10, [r3, #40]	; 0x28
-200179ee:	eee7 6a45 	vfms.f32	s13, s14, s10
-200179f2:	edc3 6a0c 	vstr	s13, [r3, #48]	; 0x30
+200179da:	ed83 7a0f 	vstr	s14, [r3, #60]	; 0x3c
+200179de:	eee6 6a05 	vfma.f32	s13, s12, s10
+200179e2:	ed93 5a0a 	vldr	s10, [r3, #40]	; 0x28
+200179e6:	eee7 6a45 	vfms.f32	s13, s14, s10
+200179ea:	edc3 6a0c 	vstr	s13, [r3, #48]	; 0x30
       mZ2 -= mCoeffs.fb2 * acc;
-200179f6:	edd3 6a0b 	vldr	s13, [r3, #44]	; 0x2c
-200179fa:	ee66 6ac7 	vnmul.f32	s13, s13, s14
-200179fe:	eee6 6a25 	vfma.f32	s13, s12, s11
-20017a02:	edc3 6a0d 	vstr	s13, [r3, #52]	; 0x34
+200179ee:	edd3 6a0b 	vldr	s13, [r3, #44]	; 0x2c
+200179f2:	ee66 6ac7 	vnmul.f32	s13, s13, s14
+200179f6:	eee6 6a25 	vfma.f32	s13, s12, s11
+200179fa:	edc3 6a0d 	vstr	s13, [r3, #52]	; 0x34
 
     *yn++ = curSampleL;
-20017a06:	ed41 7a02 	vstr	s15, [r1, #-8]
+200179fe:	ed41 7a02 	vstr	s15, [r1, #-8]
     *yn++ = curSampleR;
-20017a0a:	6bdc      	ldr	r4, [r3, #60]	; 0x3c
-20017a0c:	f841 4c04 	str.w	r4, [r1, #-4]
+20017a02:	6bdc      	ldr	r4, [r3, #60]	; 0x3c
+20017a04:	f841 4c04 	str.w	r4, [r1, #-4]
 
 void MODFX_PROCESS(const float *xn, float *yn,
                      const float *sub_xn, float *sub_yn,
                      uint32_t frames)
 {
  for (int i = 0; i < frames; i++)
-20017a10:	e7b2      	b.n	20017978 <_hook_process+0x8>
-20017a12:	bd30      	pop	{r4, r5, pc}
-20017a14:	20017b78 	.word	0x20017b78
+20017a08:	e7b2      	b.n	20017970 <_hook_process+0x8>
+20017a0a:	bd30      	pop	{r4, r5, pc}
+20017a0c:	20017b60 	.word	0x20017b60
 
-20017a18 <_hook_param>:
-
+20017a10 <_hook_param>:
+    *yn++ = curSampleR;
   }
 }
 
 void MODFX_PARAM(uint8_t index, int32_t value)
 {
-20017a18:	b530      	push	{r4, r5, lr}
-20017a1a:	ee07 1a90 	vmov	s15, r1
+20017a10:	b530      	push	{r4, r5, lr}
+20017a12:	ee07 1a90 	vmov	s15, r1
   const float valf = q31_to_f32(value);
   float invertedValf;
   float range = 0;
   switch (index) 
-20017a1e:	2800      	cmp	r0, #0
-20017a20:	f040 8082 	bne.w	20017b28 <_hook_param+0x110>
+20017a16:	2800      	cmp	r0, #0
+20017a18:	d17b      	bne.n	20017b12 <_hook_param+0x102>
   {
   case 0:
     invertedValf = absolute(1-valf);
-20017a24:	eef7 6a00 	vmov.f32	s13, #112	; 0x3f800000  1.0
-20017a28:	eef8 7ae7 	vcvt.f32.s32	s15, s15
-20017a2c:	ed9f 7a3f 	vldr	s14, [pc, #252]	; 20017b2c <_hook_param+0x114>
+20017a1a:	eeb7 6a00 	vmov.f32	s12, #112	; 0x3f800000  1.0
+20017a1e:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+20017a22:	ed9f 7a3c 	vldr	s14, [pc, #240]	; 20017b14 <_hook_param+0x104>
     range = clipminmaxf(0.001f, invertedValf, 1.f);
     cutoff = (1 / range) * 0.00046875;
-20017a30:	4c3f      	ldr	r4, [pc, #252]	; (20017b30 <_hook_param+0x118>)
-20017a32:	4940      	ldr	r1, [pc, #256]	; (20017b34 <_hook_param+0x11c>)
+20017a26:	4c3c      	ldr	r4, [pc, #240]	; (20017b18 <_hook_param+0x108>)
+20017a28:	493c      	ldr	r1, [pc, #240]	; (20017b1c <_hook_param+0x10c>)
+    filter_l.flush();
+    filter_l.mCoeffs.setSOLP(fx_tanpif(cutoff), resonance);
+20017a2a:	edd4 5a01 	vldr	s11, [r4, #4]
     /**
      * Flush internal delays
      */
     inline __attribute__((optimize("Ofast"),always_inline))
     void flush(void) {
       mZ1 = mZ2 = 0;
-20017a34:	4b40      	ldr	r3, [pc, #256]	; (20017b38 <_hook_param+0x120>)
+20017a2e:	4b3c      	ldr	r3, [pc, #240]	; (20017b20 <_hook_param+0x110>)
   float invertedValf;
   float range = 0;
   switch (index) 
   {
   case 0:
     invertedValf = absolute(1-valf);
-20017a36:	eeb0 6a66 	vmov.f32	s12, s13
-20017a3a:	eea7 6ac7 	vfms.f32	s12, s15, s14
+20017a30:	eef0 6a46 	vmov.f32	s13, s12
+20017a34:	eee7 6ac7 	vfms.f32	s13, s15, s14
 
 /** FSEL construct
  */
 static inline __attribute__((optimize("Ofast"),always_inline))
 float fsel(const float a, const float b, const float c) {
   return (a >= 0) ? b : c;
-20017a3e:	2200      	movs	r2, #0
-20017a40:	619a      	str	r2, [r3, #24]
-20017a42:	ed9f 7a3e 	vldr	s14, [pc, #248]	; 20017b3c <_hook_param+0x124>
-20017a46:	615a      	str	r2, [r3, #20]
+20017a38:	2200      	movs	r2, #0
+20017a3a:	619a      	str	r2, [r3, #24]
+20017a3c:	ed9f 7a39 	vldr	s14, [pc, #228]	; 20017b24 <_hook_param+0x114>
+20017a40:	615a      	str	r2, [r3, #20]
   filter_r.mCoeffs = filter_l.mCoeffs;
 }
 
 float absolute(float valf)
 {
   if (valf < 0)
-20017a48:	eeb5 6ac0 	vcmpe.f32	s12, #0.0
-20017a4c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+20017a42:	eef5 6ac0 	vcmpe.f32	s13, #0.0
+20017a46:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
   float invertedValf;
   float range = 0;
   switch (index) 
   {
   case 0:
     invertedValf = absolute(1-valf);
-20017a50:	eef0 7a46 	vmov.f32	s15, s12
+20017a4a:	eef0 7a66 	vmov.f32	s15, s13
 }
 
 float absolute(float valf)
 {
   if (valf < 0)
     return -valf;
-20017a54:	bf48      	it	mi
-20017a56:	eef1 7a46 	vnegmi.f32	s15, s12
-20017a5a:	ee37 6ac7 	vsub.f32	s12, s15, s14
-20017a5e:	635a      	str	r2, [r3, #52]	; 0x34
-20017a60:	eeb5 6ac0 	vcmpe.f32	s12, #0.0
-20017a64:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
-20017a68:	bfb8      	it	lt
-20017a6a:	eef0 7a47 	vmovlt.f32	s15, s14
-20017a6e:	ee37 7ae6 	vsub.f32	s14, s15, s13
-20017a72:	631a      	str	r2, [r3, #48]	; 0x30
-20017a74:	eeb5 7a40 	vcmp.f32	s14, #0.0
-20017a78:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
-20017a7c:	eeb7 7a00 	vmov.f32	s14, #112	; 0x3f800000  1.0
-20017a80:	bfa8      	it	ge
-20017a82:	eef0 7a47 	vmovge.f32	s15, s14
+20017a4e:	bf48      	it	mi
+20017a50:	eef1 7a66 	vnegmi.f32	s15, s13
+20017a54:	ee77 6ac7 	vsub.f32	s13, s15, s14
+20017a58:	635a      	str	r2, [r3, #52]	; 0x34
+20017a5a:	eef5 6ac0 	vcmpe.f32	s13, #0.0
+20017a5e:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+20017a62:	bfb8      	it	lt
+20017a64:	eef0 7a47 	vmovlt.f32	s15, s14
+20017a68:	ee37 7ac6 	vsub.f32	s14, s15, s12
   switch (index) 
   {
   case 0:
     invertedValf = absolute(1-valf);
     range = clipminmaxf(0.001f, invertedValf, 1.f);
     cutoff = (1 / range) * 0.00046875;
-20017a86:	ee86 7aa7 	vdiv.f32	s14, s13, s15
-20017a8a:	eddf 7a2d 	vldr	s15, [pc, #180]	; 20017b40 <_hook_param+0x128>
-20017a8e:	ee67 7a27 	vmul.f32	s15, s14, s15
+20017a6c:	eddf 6a2e 	vldr	s13, [pc, #184]	; 20017b28 <_hook_param+0x118>
+20017a70:	631a      	str	r2, [r3, #48]	; 0x30
+20017a72:	eeb5 7a40 	vcmp.f32	s14, #0.0
+20017a76:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+20017a7a:	eeb7 7a00 	vmov.f32	s14, #112	; 0x3f800000  1.0
+20017a7e:	bfa8      	it	ge
+20017a80:	eef0 7a47 	vmovge.f32	s15, s14
+20017a84:	ee86 7a27 	vdiv.f32	s14, s12, s15
+20017a88:	ee67 7a26 	vmul.f32	s15, s14, s13
    * @param   x  Value in [0.0001, 0.49].
    * @return     Result of tan(pi*x).
    * @note Not checking input, caller responsible for bounding x.
    */
   __fast_inline float fx_tanpif(float x) {
     const float idxf = x * k_tanpi_range_recip * k_tanpi_size;
-20017a92:	ed9f 7a2c 	vldr	s14, [pc, #176]	; 20017b44 <_hook_param+0x12c>
-20017a96:	edc4 7a00 	vstr	s15, [r4]
-20017a9a:	ee27 7a87 	vmul.f32	s14, s15, s14
+20017a8c:	eddf 6a27 	vldr	s13, [pc, #156]	; 20017b2c <_hook_param+0x11c>
+20017a90:	edc4 7a00 	vstr	s15, [r4]
+20017a94:	ee67 6aa6 	vmul.f32	s13, s15, s13
+    filter_l.flush();
+    filter_l.mCoeffs.setSOLP(fx_tanpif(cutoff), resonance);
+    filter_r.flush();
+    filter_r.mCoeffs = filter_l.mCoeffs;
+20017a98:	461c      	mov	r4, r3
     const uint32_t idx = (uint32_t)idxf;
-20017a9e:	eefc 7ac7 	vcvt.u32.f32	s15, s14
-20017aa2:	ee17 0a90 	vmov	r0, s15
+20017a9a:	eefc 7ae6 	vcvt.u32.f32	s15, s13
+20017a9e:	ee17 0a90 	vmov	r0, s15
 
 /** Linear interpolation
  */
 static inline __attribute__((optimize("Ofast"), always_inline))
 float linintf(const float fr, const float x0, const float x1) {
   return x0 + fr * (x1 - x0);
-20017aa6:	ee06 0a10 	vmov	s12, r0
-20017aaa:	eeb8 6a46 	vcvt.f32.u32	s12, s12
+20017aa2:	eef8 7a67 	vcvt.f32.u32	s15, s15
     const float y0 = tanpi_lut_f[idx];
-20017aae:	eb01 0580 	add.w	r5, r1, r0, lsl #2
-20017ab2:	edd5 7a00 	vldr	s15, [r5]
-20017ab6:	ee37 7a46 	vsub.f32	s14, s14, s12
-20017aba:	ed95 6a01 	vldr	s12, [r5, #4]
-20017abe:	ee36 6a67 	vsub.f32	s12, s12, s15
-    filter_l.flush();
-    filter_l.mCoeffs.setSOHP(fx_tanpif(cutoff), resonance);
-    filter_r.flush();
-    filter_r.mCoeffs = filter_l.mCoeffs;
-20017ac2:	f103 051c 	add.w	r5, r3, #28
-20017ac6:	eee7 7a06 	vfma.f32	s15, s14, s12
-  case 0:
-    invertedValf = absolute(1-valf);
-    range = clipminmaxf(0.001f, invertedValf, 1.f);
-    cutoff = (1 / range) * 0.00046875;
-    filter_l.flush();
-    filter_l.mCoeffs.setSOHP(fx_tanpif(cutoff), resonance);
-20017aca:	ed94 6a01 	vldr	s12, [r4, #4]
+20017aa6:	eb01 0580 	add.w	r5, r1, r0, lsl #2
+20017aaa:	ed95 7a00 	vldr	s14, [r5]
+20017aae:	ee76 6ae7 	vsub.f32	s13, s13, s15
+20017ab2:	edd5 7a01 	vldr	s15, [r5, #4]
+20017ab6:	ee77 7ac7 	vsub.f32	s15, s15, s14
+20017aba:	f103 051c 	add.w	r5, r3, #28
+20017abe:	eea6 7aa7 	vfma.f32	s14, s13, s15
        */
       inline __attribute__((optimize("Ofast"),always_inline))
-      void setSOHP(const float k, const float q) {
+      void setSOLP(const float k, const float q) {
         // k = tan(pi*wc)
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
-20017ace:	ee26 5a27 	vmul.f32	s10, s12, s15
+20017ac2:	ee65 6a87 	vmul.f32	s13, s11, s14
+20017ac6:	ee66 7a87 	vmul.f32	s15, s13, s14
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-20017ad2:	eeb0 7a67 	vmov.f32	s14, s15
-20017ad6:	eea5 7a27 	vfma.f32	s14, s10, s15
-    filter_r.flush();
-    filter_r.mCoeffs = filter_l.mCoeffs;
-20017ada:	461c      	mov	r4, r3
-20017adc:	ee37 7a06 	vadd.f32	s14, s14, s12
-20017ae0:	eec6 5a87 	vdiv.f32	s11, s13, s14
-        ff0 = ff2 = q * qk2_k_q_r;
-        ff1 = -2.f * ff0;
-20017ae4:	eef8 6a00 	vmov.f32	s13, #128	; 0xc0000000 -2.0
-      void setSOHP(const float k, const float q) {
+20017aca:	ee77 6a87 	vadd.f32	s13, s15, s14
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+        ff1 = 2.f * ff0;
+        fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
+        fb2 = (qk2 - k + q) * qk2_k_q_r;
+20017ace:	ee37 7ac7 	vsub.f32	s14, s15, s14
+      inline __attribute__((optimize("Ofast"),always_inline))
+      void setSOLP(const float k, const float q) {
         // k = tan(pi*wc)
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-        ff0 = ff2 = q * qk2_k_q_r;
-20017ae8:	ee26 7a25 	vmul.f32	s14, s12, s11
-20017aec:	ed83 7a02 	vstr	s14, [r3, #8]
-20017af0:	ed83 7a00 	vstr	s14, [r3]
-        ff1 = -2.f * ff0;
-20017af4:	ee27 7a26 	vmul.f32	s14, s14, s13
-20017af8:	ed83 7a01 	vstr	s14, [r3, #4]
+20017ad2:	ee76 6aa5 	vadd.f32	s13, s13, s11
+20017ad6:	ee86 5a26 	vdiv.f32	s10, s12, s13
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+20017ada:	ee67 6a85 	vmul.f32	s13, s15, s10
+20017ade:	edc3 6a02 	vstr	s13, [r3, #8]
+20017ae2:	edc3 6a00 	vstr	s13, [r3]
+        ff1 = 2.f * ff0;
+20017ae6:	ee76 6aa6 	vadd.f32	s13, s13, s13
+20017aea:	edc3 6a01 	vstr	s13, [r3, #4]
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017afc:	eeb0 7a46 	vmov.f32	s14, s12
-20017b00:	ee95 7a27 	vfnms.f32	s14, s10, s15
+20017aee:	ee77 6ae5 	vsub.f32	s13, s15, s11
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017b04:	eed5 7a27 	vfnms.f32	s15, s10, s15
+20017af2:	ee77 7a25 	vadd.f32	s15, s14, s11
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-        ff0 = ff2 = q * qk2_k_q_r;
-        ff1 = -2.f * ff0;
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+        ff1 = 2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017b08:	ee27 7a25 	vmul.f32	s14, s14, s11
+20017af6:	ee66 6a85 	vmul.f32	s13, s13, s10
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017b0c:	ee77 7a86 	vadd.f32	s15, s15, s12
+20017afa:	ee67 7a85 	vmul.f32	s15, s15, s10
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-        ff0 = ff2 = q * qk2_k_q_r;
-        ff1 = -2.f * ff0;
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+        ff1 = 2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017b10:	ee37 7a07 	vadd.f32	s14, s14, s14
+20017afe:	ee76 6aa6 	vadd.f32	s13, s13, s13
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017b14:	ee67 7aa5 	vmul.f32	s15, s15, s11
+20017b02:	edc3 7a04 	vstr	s15, [r3, #16]
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-        ff0 = ff2 = q * qk2_k_q_r;
-        ff1 = -2.f * ff0;
+        ff0 = ff2 = qk2 * qk2_k_q_r;
+        ff1 = 2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017b18:	ed83 7a03 	vstr	s14, [r3, #12]
-        fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017b1c:	edc3 7a04 	vstr	s15, [r3, #16]
-20017b20:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
-20017b22:	c50f      	stmia	r5!, {r0, r1, r2, r3}
-20017b24:	6823      	ldr	r3, [r4, #0]
-20017b26:	602b      	str	r3, [r5, #0]
-20017b28:	bd30      	pop	{r4, r5, pc}
-20017b2a:	bf00      	nop
-20017b2c:	30000000 	.word	0x30000000
-20017b30:	20017b70 	.word	0x20017b70
-20017b34:	0807b504 	.word	0x0807b504
-20017b38:	20017b78 	.word	0x20017b78
-20017b3c:	3a83126f 	.word	0x3a83126f
-20017b40:	39f5c28f 	.word	0x39f5c28f
-20017b44:	44029cbc 	.word	0x44029cbc
+20017b06:	edc3 6a03 	vstr	s13, [r3, #12]
+20017b0a:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+20017b0c:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+20017b0e:	6823      	ldr	r3, [r4, #0]
+20017b10:	602b      	str	r3, [r5, #0]
+20017b12:	bd30      	pop	{r4, r5, pc}
+20017b14:	30000000 	.word	0x30000000
+20017b18:	20017b58 	.word	0x20017b58
+20017b1c:	0807b504 	.word	0x0807b504
+20017b20:	20017b60 	.word	0x20017b60
+20017b24:	3a83126f 	.word	0x3a83126f
+20017b28:	39f5c28f 	.word	0x39f5c28f
+20017b2c:	44029cbc 	.word	0x44029cbc
 
-20017b48 <_GLOBAL__sub_I_curSampleL>:
+20017b30 <_GLOBAL__sub_I_curSampleL>:
       /**
        * Default constructor
        */
       Coeffs() :
         ff0(0), ff1(0), ff2(0),
         fb1(0), fb2(0)
-20017b48:	4b08      	ldr	r3, [pc, #32]	; (20017b6c <_GLOBAL__sub_I_curSampleL+0x24>)
-20017b4a:	2200      	movs	r2, #0
-20017b4c:	601a      	str	r2, [r3, #0]
-20017b4e:	605a      	str	r2, [r3, #4]
-20017b50:	609a      	str	r2, [r3, #8]
-20017b52:	60da      	str	r2, [r3, #12]
-20017b54:	611a      	str	r2, [r3, #16]
+20017b30:	4b08      	ldr	r3, [pc, #32]	; (20017b54 <_GLOBAL__sub_I_curSampleL+0x24>)
+20017b32:	2200      	movs	r2, #0
+20017b34:	601a      	str	r2, [r3, #0]
+20017b36:	605a      	str	r2, [r3, #4]
+20017b38:	609a      	str	r2, [r3, #8]
+20017b3a:	60da      	str	r2, [r3, #12]
+20017b3c:	611a      	str	r2, [r3, #16]
     /*=====================================================================*/
 
     /**
      * Default constructor
      */
     BiQuad(void) : mZ1(0), mZ2(0)
-20017b56:	615a      	str	r2, [r3, #20]
-20017b58:	619a      	str	r2, [r3, #24]
+20017b3e:	615a      	str	r2, [r3, #20]
+20017b40:	619a      	str	r2, [r3, #24]
       /**
        * Default constructor
        */
       Coeffs() :
         ff0(0), ff1(0), ff2(0),
         fb1(0), fb2(0)
-20017b5a:	61da      	str	r2, [r3, #28]
-20017b5c:	621a      	str	r2, [r3, #32]
-20017b5e:	625a      	str	r2, [r3, #36]	; 0x24
-20017b60:	629a      	str	r2, [r3, #40]	; 0x28
-20017b62:	62da      	str	r2, [r3, #44]	; 0x2c
+20017b42:	61da      	str	r2, [r3, #28]
+20017b44:	621a      	str	r2, [r3, #32]
+20017b46:	625a      	str	r2, [r3, #36]	; 0x24
+20017b48:	629a      	str	r2, [r3, #40]	; 0x28
+20017b4a:	62da      	str	r2, [r3, #44]	; 0x2c
     /*=====================================================================*/
 
     /**
      * Default constructor
      */
     BiQuad(void) : mZ1(0), mZ2(0)
-20017b64:	631a      	str	r2, [r3, #48]	; 0x30
-20017b66:	635a      	str	r2, [r3, #52]	; 0x34
-20017b68:	4770      	bx	lr
-20017b6a:	bf00      	nop
-20017b6c:	20017b78 	.word	0x20017b78
+20017b4c:	631a      	str	r2, [r3, #48]	; 0x30
+20017b4e:	635a      	str	r2, [r3, #52]	; 0x34
+20017b50:	4770      	bx	lr
+20017b52:	bf00      	nop
+20017b54:	20017b60 	.word	0x20017b60

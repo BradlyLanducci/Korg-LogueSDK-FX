@@ -839,4 +839,3 @@ float cosintf(const float fr, const float x0, const float x1) {
 #endif // __float_math_h
 
 /** @} @} */
-
