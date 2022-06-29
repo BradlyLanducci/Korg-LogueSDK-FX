@@ -46,8 +46,8 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
     const float delSample2 = gain * s_delay.read1(s_len / 2);
     wetXNL = wet * delSample1;
     wetXNR = wet * delSample2;
-    *x = (*x) + wetXNL;
-    *(x+1) = (*(x+1)) + wetXNR;
+    *x = (*x) + fastertanhf(waveshape(wetXNL));
+    *(x+1) = (*(x+1)) + fastertanhf(waveshape(wetXNR));
     valf.a = (*x);
     valf.b = (*x + 1);    
     s_delay.write(valf);

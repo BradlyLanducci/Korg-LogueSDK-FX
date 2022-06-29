@@ -1,5 +1,6 @@
 #include "userdelfx.h"
 #include "delayline.hpp"
+#include <cmath>
 
 // Calculated for the minimum bpm of Minilogue-XD //
 #define BUF_SIZE 210000
@@ -41,7 +42,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
   {
     const float delSample = gain * s_delay.read(s_len);
     wetXN = wet * delSample;
-    xn[i] = xn[i] + waveshape(wetXN);
+    xn[i] = xn[i] + fastertanhf(waveshape(wetXN));
     s_delay.write(xn[i]);
   }
 }
