@@ -1,3 +1,11 @@
+Archive member included to satisfy reference by file (symbol)
+
+c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+                              ./build/obj/pingpong.o (__aeabi_dadd)
+c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+                              ./build/obj/pingpong.o (__aeabi_dmul)
+c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_truncdfsf2.o)
+                              ./build/obj/pingpong.o (__aeabi_d2f)
 
 Memory Configuration
 
@@ -28,7 +36,7 @@ LOAD ./build/obj/pingpong.o
                 0x20019044                . = ALIGN (0x4)
                 0x20019044                PROVIDE (__init_array_end, .)
 
-.text           0x20019048      0x300
+.text           0x20019048      0xbb0
                 0x20019048                . = ALIGN (0x4)
                 0x20019048                _text_start = .
  *(.text)
@@ -36,95 +44,125 @@ LOAD ./build/obj/pingpong.o
                 0x2001904a                _hook_resume
                 0x2001904e                _hook_suspend
                 0x20019052                _entry
- .text          0x200190a4      0x288 ./build/obj/pingpong.o
+ .text          0x200190a4      0x304 ./build/obj/pingpong.o
                 0x200190a4                _hook_init
                 0x20019108                _hook_process
-                0x20019294                _hook_param
+                0x20019310                _hook_param
+ .text          0x200193a8      0x370 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+                0x200193a8                __aeabi_drsub
+                0x200193b0                __aeabi_dsub
+                0x200193b0                __subdf3
+                0x200193b4                __aeabi_dadd
+                0x200193b4                __adddf3
+                0x2001962c                __floatunsidf
+                0x2001962c                __aeabi_ui2d
+                0x2001964c                __floatsidf
+                0x2001964c                __aeabi_i2d
+                0x20019670                __aeabi_f2d
+                0x20019670                __extendsfdf2
+                0x200196ac                __floatundidf
+                0x200196ac                __aeabi_ul2d
+                0x200196bc                __floatdidf
+                0x200196bc                __aeabi_l2d
+ .text          0x20019718      0x424 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+                0x20019718                __aeabi_dmul
+                0x20019718                __muldf3
+                0x2001996c                __divdf3
+                0x2001996c                __aeabi_ddiv
+ .text          0x20019b3c       0xa0 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_truncdfsf2.o)
+                0x20019b3c                __truncdfsf2
+                0x20019b3c                __aeabi_d2f
  *(.text.*)
- .text.startup  0x2001932c       0x14 ./build/obj/pingpong.o
+ .text.startup  0x20019bdc       0x14 ./build/obj/pingpong.o
  .text.startup.__stub
-                0x20019340        0x8 linker stubs
+                0x20019bf0        0x8 linker stubs
  *(.glue_7)
- .glue_7        0x20019348        0x0 linker stubs
+ .glue_7        0x20019bf8        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x20019348        0x0 linker stubs
+ .glue_7t       0x20019bf8        0x0 linker stubs
  *(.gcc*)
-                0x20019348                . = ALIGN (0x4)
-                0x20019348                _text_end = .
+                0x20019bf8                . = ALIGN (0x4)
+                0x20019bf8                _text_end = .
 
-.vfp11_veneer   0x20019348        0x0
- .vfp11_veneer  0x20019348        0x0 linker stubs
+.vfp11_veneer   0x20019bf8        0x0
+ .vfp11_veneer  0x20019bf8        0x0 linker stubs
 
-.v4_bx          0x20019348        0x0
- .v4_bx         0x20019348        0x0 linker stubs
+.v4_bx          0x20019bf8        0x0
+ .v4_bx         0x20019bf8        0x0 linker stubs
 
-.iplt           0x20019348        0x0
- .iplt          0x20019348        0x0 ./build/obj/_unit.o
+.iplt           0x20019bf8        0x0
+ .iplt          0x20019bf8        0x0 ./build/obj/_unit.o
 
-.rel.dyn        0x20019348        0x0
- .rel.iplt      0x20019348        0x0 ./build/obj/_unit.o
+.rel.dyn        0x20019bf8        0x0
+ .rel.iplt      0x20019bf8        0x0 ./build/obj/_unit.o
 
-.rodata         0x20019348        0x0
-                0x20019348                . = ALIGN (0x4)
-                0x20019348                _rodata_start = .
+.rodata         0x20019bf8        0x0
+                0x20019bf8                . = ALIGN (0x4)
+                0x20019bf8                _rodata_start = .
  *(.rodata)
  *(.rodata.*)
-                0x20019348                . = ALIGN (0x4)
-                0x20019348                _rodata_end = .
+                0x20019bf8                . = ALIGN (0x4)
+                0x20019bf8                _rodata_end = .
 
-.data           0x20019348        0x0
-                0x20019348                . = ALIGN (0x8)
-                0x20019348                _data_start = .
+.data           0x20019bf8        0x0
+                0x20019bf8                . = ALIGN (0x8)
+                0x20019bf8                _data_start = .
  *(.data)
- .data          0x20019348        0x0 ./build/obj/_unit.o
- .data          0x20019348        0x0 ./build/obj/pingpong.o
+ .data          0x20019bf8        0x0 ./build/obj/_unit.o
+ .data          0x20019bf8        0x0 ./build/obj/pingpong.o
+ .data          0x20019bf8        0x0 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+ .data          0x20019bf8        0x0 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+ .data          0x20019bf8        0x0 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_truncdfsf2.o)
  *(.data.*)
-                0x20019348                . = ALIGN (0x8)
-                0x20019348                _data_end = .
+                0x20019bf8                . = ALIGN (0x8)
+                0x20019bf8                _data_end = .
 
-.igot.plt       0x20019348        0x0
- .igot.plt      0x20019348        0x0 ./build/obj/_unit.o
+.igot.plt       0x20019bf8        0x0
+ .igot.plt      0x20019bf8        0x0 ./build/obj/_unit.o
 
-.bss            0x20019348       0x30
-                0x20019348                . = ALIGN (0x4)
-                0x20019348                _bss_start = .
+.bss            0x20019bf8       0x30
+                0x20019bf8                . = ALIGN (0x4)
+                0x20019bf8                _bss_start = .
  *(.bss)
- .bss           0x20019348        0x0 ./build/obj/_unit.o
- .bss           0x20019348       0x30 ./build/obj/pingpong.o
-                0x20019360                bpm
-                0x20019364                s_len
-                0x20019370                wetXNL
-                0x20019374                wetXNR
+ .bss           0x20019bf8        0x0 ./build/obj/_unit.o
+ .bss           0x20019bf8       0x30 ./build/obj/pingpong.o
+                0x20019c10                bpm
+                0x20019c14                s_len
+                0x20019c20                wetXNL
+                0x20019c24                wetXNR
+ .bss           0x20019c28        0x0 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+ .bss           0x20019c28        0x0 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+ .bss           0x20019c28        0x0 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_truncdfsf2.o)
  *(.bss.*)
  *(COMMON)
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _bss_end = .
+                0x20019c28                . = ALIGN (0x4)
+                0x20019c28                _bss_end = .
 
-.ARM.extab      0x20019378        0x0
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                __extab_start = .
+.ARM.extab      0x20019c28        0x0
+                0x20019c28                . = ALIGN (0x4)
+                0x20019c28                __extab_start = .
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                __extab_end = .
+                0x20019c28                . = ALIGN (0x4)
+                0x20019c28                __extab_end = .
 
-.ARM.exidx      0x20019378        0x0
-                0x20019378                __exidx_start = .
+.ARM.exidx      0x20019c28        0x0
+                0x20019c28                __exidx_start = .
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x20019378                __exidx_end = .
+                0x20019c28                __exidx_end = .
 
-.eh_frame_hdr   0x20019378        0x0
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _eh_frame_hdr_start = .
+.eh_frame_hdr   0x20019c28        0x0
+                0x20019c28                . = ALIGN (0x4)
+                0x20019c28                _eh_frame_hdr_start = .
  *(.eh_frame_hdr)
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _eh_frame_hdr_end = .
+                0x20019c28                . = ALIGN (0x4)
+                0x20019c28                _eh_frame_hdr_end = .
 
-.eh_frame       0x20019378        0x0
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _eh_frame_start = .
+.eh_frame       0x20019c28        0x0
+                0x20019c28                . = ALIGN (0x4)
+                0x20019c28                _eh_frame_start = .
  *(.eh_frame)
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _eh_frame_end = .
+                0x20019c28                . = ALIGN (0x4)
+                0x20019c28                _eh_frame_end = .
 
 .sdram          0xc0420000   0x19a280
                 0xc0420000                . = ALIGN (0x4)
@@ -161,13 +199,13 @@ OUTPUT(build/PingPongDelay.elf elf32-littlearm)
  .debug_info    0x00000000      0x51f ./build/obj/_unit.o
  .debug_info    0x0000051f      0x900 ./build/obj/pingpong.o
 
-.debug_abbrev   0x00000000      0x510
+.debug_abbrev   0x00000000      0x537
  .debug_abbrev  0x00000000      0x1f4 ./build/obj/_unit.o
- .debug_abbrev  0x000001f4      0x31c ./build/obj/pingpong.o
+ .debug_abbrev  0x000001f4      0x343 ./build/obj/pingpong.o
 
-.debug_loc      0x00000000      0x478
+.debug_loc      0x00000000      0x44f
  .debug_loc     0x00000000       0xb9 ./build/obj/_unit.o
- .debug_loc     0x000000b9      0x3bf ./build/obj/pingpong.o
+ .debug_loc     0x000000b9      0x396 ./build/obj/pingpong.o
 
 .debug_aranges  0x00000000       0x48
  .debug_aranges
@@ -175,9 +213,9 @@ OUTPUT(build/PingPongDelay.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/pingpong.o
 
-.debug_line     0x00000000      0x5fa
+.debug_line     0x00000000      0x612
  .debug_line    0x00000000      0x233 ./build/obj/_unit.o
- .debug_line    0x00000233      0x3c7 ./build/obj/pingpong.o
+ .debug_line    0x00000233      0x3df ./build/obj/pingpong.o
 
 .debug_str      0x00000000      0xa75
  .debug_str     0x00000000      0x543 ./build/obj/_unit.o
@@ -196,19 +234,50 @@ OUTPUT(build/PingPongDelay.elf elf32-littlearm)
                 0x00000000       0x39 ./build/obj/_unit.o
  .ARM.attributes
                 0x00000039       0x39 ./build/obj/pingpong.o
+ .ARM.attributes
+                0x00000072       0x22 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+ .ARM.attributes
+                0x00000094       0x22 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+ .ARM.attributes
+                0x000000b6       0x22 c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_truncdfsf2.o)
 
-.debug_frame    0x00000000      0x11c
+.debug_frame    0x00000000      0x194
  .debug_frame   0x00000000       0x88 ./build/obj/_unit.o
- .debug_frame   0x00000088       0x94 ./build/obj/pingpong.o
+ .debug_frame   0x00000088      0x10c ./build/obj/pingpong.o
 
-.debug_ranges   0x00000000       0xc0
- .debug_ranges  0x00000000       0xc0 ./build/obj/pingpong.o
+.debug_ranges   0x00000000       0xe8
+ .debug_ranges  0x00000000       0xe8 ./build/obj/pingpong.o
 
 Cross Reference Table
 
 Symbol                                            File
+__adddf3                                          c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__aeabi_d2f                                       c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_truncdfsf2.o)
+                                                  ./build/obj/pingpong.o
+__aeabi_dadd                                      c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+                                                  ./build/obj/pingpong.o
+__aeabi_ddiv                                      c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+__aeabi_dmul                                      c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+                                                  ./build/obj/pingpong.o
+__aeabi_drsub                                     c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__aeabi_dsub                                      c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__aeabi_f2d                                       c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+                                                  ./build/obj/pingpong.o
+__aeabi_i2d                                       c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__aeabi_l2d                                       c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__aeabi_ui2d                                      c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__aeabi_ul2d                                      c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__divdf3                                          c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+__extendsfdf2                                     c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__floatdidf                                       c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__floatsidf                                       c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__floatundidf                                     c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__floatunsidf                                     c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
 __init_array_end                                  ./build/obj/_unit.o
 __init_array_start                                ./build/obj/_unit.o
+__muldf3                                          c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_muldivdf3.o)
+__subdf3                                          c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_addsubdf3.o)
+__truncdfsf2                                      c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc/gcc-arm-none-eabi-5_4-2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu\libgcc.a(_arm_truncdfsf2.o)
 _bss_end                                          ./build/obj/_unit.o
 _bss_start                                        ./build/obj/_unit.o
 _entry                                            ./build/obj/_unit.o

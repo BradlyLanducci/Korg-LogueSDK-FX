@@ -36,11 +36,6 @@ void DELFX_INIT(uint32_t platform, uint32_t api)
   s_lfo.setF0(lfo_speed, k_samplerate_recipf);
 }
 
-float __fast_inline waveshape(float in) 
-{
-    return 1.5f * in - 0.5f * in *in * in;
-}
-
 void DELFX_PROCESS(float *xn, uint32_t frames)
 {
   float * __restrict x = xn;
@@ -48,15 +43,20 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
 
   const float wet = s_mix;
   const float dry = 1.f - s_mix;
-  f32pair_t valf;
 
-  for (; x != x_e ; x++) 
+  for (; x != x_e ; x+=2) 
   {
-    const float delSampleL = gain * (s_delay.read(720) * s_lfo.sine_bi());
-    wetXNL = wet * delSampleL;
-    *x = (*x) + wetXNL;
-    s_delay.write(*x);
+    const float delSampleL = gain * (s_delay.read(240) * s_lfo.sine_bi());
     s_lfo.cycle();
+    const float delSampleR = gain * (s_delay.read(239) * s_lfo.sine_bi());
+    s_lfo.cycle();
+    wetXNL = wet * delSampleL;
+    wetXNR = wet * delSampleR;
+    // As of now I'm unsure why this is working properly, but my previous version wasn't..
+    *x += 0.f;
+    *(x + 1) += wetXNR;
+    s_delay.write(*x);
+    s_delay.write(*(x + 1));
   }
 }
 
@@ -70,7 +70,7 @@ void DELFX_PARAM(uint8_t index, int32_t value)
     gain = valf;
     break;
   case 1:
-    lfo_speed = valf * 10.f;
+    lfo_speed = valf * 2.f;
     s_lfo.setF0(lfo_speed, k_samplerate_recipf);
     break;
   case 3:

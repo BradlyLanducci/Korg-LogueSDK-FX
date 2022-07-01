@@ -7,6 +7,9 @@ float curSampleL, curSampleR;
 static dsp::BiQuad filter_l, filter_r;
 float resonance = 1.4041f;
 float cutoff = 0.49f;
+float z = 0.f;
+float a = 0.05f;
+float b = 1.f - a;
 
 void MODFX_INIT(uint32_t platform, uint32_t api)
 {
@@ -40,6 +43,12 @@ void MODFX_PROCESS(const float *xn, float *yn,
   }
 }
 
+float __fast_inline smooth(float in)
+{
+  z = (in * b) + (z * a);
+  return z;
+}
+
 void MODFX_PARAM(uint8_t index, int32_t value)
 {
   const float valf = q31_to_f32(value);
@@ -51,9 +60,8 @@ void MODFX_PARAM(uint8_t index, int32_t value)
     invertedValf = absolute(1-valf);
     range = clipminmaxf(0.001f, invertedValf, 1.f);
     cutoff = (1 / range) * 0.00046875;
-    filter_l.flush();
+    cutoff = smooth(cutoff);
     filter_l.mCoeffs.setSOHP(fx_tanpif(cutoff), resonance);
-    filter_r.flush();
     filter_r.mCoeffs = filter_l.mCoeffs;
     break;
   case 1:

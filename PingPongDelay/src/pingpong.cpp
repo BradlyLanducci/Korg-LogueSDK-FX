@@ -11,8 +11,8 @@ static __sdram f32pair_t s_delay_ram[BUF_SIZE];
 uint32_t s_len;
 static float s_mix;
 static float gain;
-float wetXNL;
-float wetXNR;
+float wetXNL, wetXNR;
+float autopanvalL, autopanvalR;
 int bpm;
 
 /*
@@ -46,8 +46,8 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
     const float delSample2 = gain * s_delay.read1(s_len / 2);
     wetXNL = wet * delSample1;
     wetXNR = wet * delSample2;
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
-    *(x+1) = (*(x+1)) + fastertanhf(waveshape(wetXNR));
+    *x = ((*x) + fastertanhf(waveshape(wetXNL)) * autopanvalL);
+    *(x+1) = (((*(x+1)) + fastertanhf(waveshape(wetXNR))) * autopanvalR);
     valf.a = (*x);
     valf.b = (*x + 1);    
     s_delay.write(valf);

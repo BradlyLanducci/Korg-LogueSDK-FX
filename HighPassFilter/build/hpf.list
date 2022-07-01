@@ -106,15 +106,15 @@ void _entry(uint32_t platform, uint32_t api)
 20017886:	f000 f80b 	bl	200178a0 <_hook_init>
 2001788a:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
 2001788e:	bf00      	nop
-20017890:	20017b77 	.word	0x20017b77
-20017894:	20017bb7 	.word	0x20017bb7
+20017890:	20017b67 	.word	0x20017b67
+20017894:	20017baf 	.word	0x20017baf
 20017898:	20017840 	.word	0x20017840
 2001789c:	20017844 	.word	0x20017844
 
 200178a0 <_hook_init>:
-static dsp::BiQuad filter_l, filter_r;
-float resonance = 1.4041f;
-float cutoff = 0.49f;
+float z = 0.f;
+float a = 0.05f;
+float b = 1.f - a;
 
 void MODFX_INIT(uint32_t platform, uint32_t api)
 {
@@ -186,7 +186,7 @@ float linintf(const float fr, const float x0, const float x1) {
 200178e6:	eee7 7a26 	vfma.f32	s15, s14, s13
 200178ea:	635a      	str	r2, [r3, #52]	; 0x34
 200178ec:	631a      	str	r2, [r3, #48]	; 0x30
-float cutoff = 0.49f;
+float b = 1.f - a;
 
 void MODFX_INIT(uint32_t platform, uint32_t api)
 {
@@ -261,10 +261,10 @@ void MODFX_INIT(uint32_t platform, uint32_t api)
 2001794a:	602b      	str	r3, [r5, #0]
 2001794c:	bd30      	pop	{r4, r5, pc}
 2001794e:	bf00      	nop
-20017950:	20017b70 	.word	0x20017b70
+20017950:	20017b58 	.word	0x20017b58
 20017954:	44029cbc 	.word	0x44029cbc
 20017958:	0807b504 	.word	0x0807b504
-2001795c:	20017b78 	.word	0x20017b78
+2001795c:	20017b68 	.word	0x20017b68
 
 20017960 <_Z8absolutef>:
 }
@@ -411,11 +411,11 @@ void MODFX_PROCESS(const float *xn, float *yn,
  for (int i = 0; i < frames; i++)
 20017a10:	e7b2      	b.n	20017978 <_hook_process+0x8>
 20017a12:	bd30      	pop	{r4, r5, pc}
-20017a14:	20017b78 	.word	0x20017b78
+20017a14:	20017b68 	.word	0x20017b68
 
 20017a18 <_hook_param>:
-    *yn++ = curSampleR;
-  }
+  z = (in * b) + (z * a);
+  return z;
 }
 
 void MODFX_PARAM(uint8_t index, int32_t value)
@@ -427,243 +427,239 @@ void MODFX_PARAM(uint8_t index, int32_t value)
   float range = 0;
   switch (index) 
 20017a1e:	2800      	cmp	r0, #0
-20017a20:	f040 8082 	bne.w	20017b28 <_hook_param+0x110>
+20017a20:	d16f      	bne.n	20017b02 <_hook_param+0xea>
   {
   case 0:
     invertedValf = absolute(1-valf);
-20017a24:	eef7 6a00 	vmov.f32	s13, #112	; 0x3f800000  1.0
-20017a28:	eef8 7ae7 	vcvt.f32.s32	s15, s15
-20017a2c:	ed9f 7a3f 	vldr	s14, [pc, #252]	; 20017b2c <_hook_param+0x114>
-    range = clipminmaxf(0.001f, invertedValf, 1.f);
-    cutoff = (1 / range) * 0.00046875;
-20017a30:	4c3f      	ldr	r4, [pc, #252]	; (20017b30 <_hook_param+0x118>)
-20017a32:	4940      	ldr	r1, [pc, #256]	; (20017b34 <_hook_param+0x11c>)
-    /**
-     * Flush internal delays
-     */
-    inline __attribute__((optimize("Ofast"),always_inline))
-    void flush(void) {
-      mZ1 = mZ2 = 0;
-20017a34:	4b40      	ldr	r3, [pc, #256]	; (20017b38 <_hook_param+0x120>)
+20017a22:	eeb7 7a00 	vmov.f32	s14, #112	; 0x3f800000  1.0
+20017a26:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+20017a2a:	eddf 6a36 	vldr	s13, [pc, #216]	; 20017b04 <_hook_param+0xec>
+  }
+}
+
+float __fast_inline smooth(float in)
+{
+  z = (in * b) + (z * a);
+20017a2e:	4b36      	ldr	r3, [pc, #216]	; (20017b08 <_hook_param+0xf0>)
+20017a30:	4a36      	ldr	r2, [pc, #216]	; (20017b0c <_hook_param+0xf4>)
   float invertedValf;
   float range = 0;
   switch (index) 
   {
   case 0:
     invertedValf = absolute(1-valf);
-20017a36:	eeb0 6a66 	vmov.f32	s12, s13
-20017a3a:	eea7 6ac7 	vfms.f32	s12, s15, s14
+20017a32:	eeb0 6a47 	vmov.f32	s12, s14
+20017a36:	eea7 6ae6 	vfms.f32	s12, s15, s13
+    cutoff = (1 / range) * 0.00046875;
+    cutoff = smooth(cutoff);
+    //filter_l.flush();
+    filter_l.mCoeffs.setSOHP(cutoff, resonance);
+    //filter_r.flush();
+    filter_r.mCoeffs = filter_l.mCoeffs;
+20017a3a:	461c      	mov	r4, r3
+20017a3c:	f103 051c 	add.w	r5, r3, #28
 
 /** FSEL construct
  */
 static inline __attribute__((optimize("Ofast"),always_inline))
 float fsel(const float a, const float b, const float c) {
   return (a >= 0) ? b : c;
-20017a3e:	2200      	movs	r2, #0
-20017a40:	619a      	str	r2, [r3, #24]
-20017a42:	ed9f 7a3e 	vldr	s14, [pc, #248]	; 20017b3c <_hook_param+0x124>
-20017a46:	615a      	str	r2, [r3, #20]
+20017a40:	eddf 6a33 	vldr	s13, [pc, #204]	; 20017b10 <_hook_param+0xf8>
   filter_r.mCoeffs = filter_l.mCoeffs;
 }
 
 float absolute(float valf)
 {
   if (valf < 0)
-20017a48:	eeb5 6ac0 	vcmpe.f32	s12, #0.0
-20017a4c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+20017a44:	eeb5 6ac0 	vcmpe.f32	s12, #0.0
+20017a48:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
   float invertedValf;
   float range = 0;
   switch (index) 
   {
   case 0:
     invertedValf = absolute(1-valf);
-20017a50:	eef0 7a46 	vmov.f32	s15, s12
+20017a4c:	eef0 7a46 	vmov.f32	s15, s12
 }
 
 float absolute(float valf)
 {
   if (valf < 0)
     return -valf;
-20017a54:	bf48      	it	mi
-20017a56:	eef1 7a46 	vnegmi.f32	s15, s12
-20017a5a:	ee37 6ac7 	vsub.f32	s12, s15, s14
-20017a5e:	635a      	str	r2, [r3, #52]	; 0x34
-20017a60:	eeb5 6ac0 	vcmpe.f32	s12, #0.0
-20017a64:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
-20017a68:	bfb8      	it	lt
-20017a6a:	eef0 7a47 	vmovlt.f32	s15, s14
-20017a6e:	ee37 7ae6 	vsub.f32	s14, s15, s13
-20017a72:	631a      	str	r2, [r3, #48]	; 0x30
-20017a74:	eeb5 7a40 	vcmp.f32	s14, #0.0
-20017a78:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
-20017a7c:	eeb7 7a00 	vmov.f32	s14, #112	; 0x3f800000  1.0
-20017a80:	bfa8      	it	ge
-20017a82:	eef0 7a47 	vmovge.f32	s15, s14
-  switch (index) 
-  {
-  case 0:
-    invertedValf = absolute(1-valf);
-    range = clipminmaxf(0.001f, invertedValf, 1.f);
-    cutoff = (1 / range) * 0.00046875;
-20017a86:	ee86 7aa7 	vdiv.f32	s14, s13, s15
-20017a8a:	eddf 7a2d 	vldr	s15, [pc, #180]	; 20017b40 <_hook_param+0x128>
-20017a8e:	ee67 7a27 	vmul.f32	s15, s14, s15
-   * @param   x  Value in [0.0001, 0.49].
-   * @return     Result of tan(pi*x).
-   * @note Not checking input, caller responsible for bounding x.
-   */
-  __fast_inline float fx_tanpif(float x) {
-    const float idxf = x * k_tanpi_range_recip * k_tanpi_size;
-20017a92:	ed9f 7a2c 	vldr	s14, [pc, #176]	; 20017b44 <_hook_param+0x12c>
-20017a96:	edc4 7a00 	vstr	s15, [r4]
-20017a9a:	ee27 7a87 	vmul.f32	s14, s15, s14
-    const uint32_t idx = (uint32_t)idxf;
-20017a9e:	eefc 7ac7 	vcvt.u32.f32	s15, s14
-20017aa2:	ee17 0a90 	vmov	r0, s15
+20017a50:	bf48      	it	mi
+20017a52:	eef1 7a46 	vnegmi.f32	s15, s12
+20017a56:	ee37 6ae6 	vsub.f32	s12, s15, s13
+20017a5a:	eeb5 6ac0 	vcmpe.f32	s12, #0.0
+20017a5e:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+20017a62:	bfb8      	it	lt
+20017a64:	eef0 7a66 	vmovlt.f32	s15, s13
+20017a68:	ee77 6ac7 	vsub.f32	s13, s15, s14
+  }
+}
 
-/** Linear interpolation
- */
-static inline __attribute__((optimize("Ofast"), always_inline))
-float linintf(const float fr, const float x0, const float x1) {
-  return x0 + fr * (x1 - x0);
-20017aa6:	ee06 0a10 	vmov	s12, r0
-20017aaa:	eeb8 6a46 	vcvt.f32.u32	s12, s12
-    const float y0 = tanpi_lut_f[idx];
-20017aae:	eb01 0580 	add.w	r5, r1, r0, lsl #2
-20017ab2:	edd5 7a00 	vldr	s15, [r5]
-20017ab6:	ee37 7a46 	vsub.f32	s14, s14, s12
-20017aba:	ed95 6a01 	vldr	s12, [r5, #4]
-20017abe:	ee36 6a67 	vsub.f32	s12, s12, s15
-    filter_l.flush();
-    filter_l.mCoeffs.setSOHP(fx_tanpif(cutoff), resonance);
-    filter_r.flush();
-    filter_r.mCoeffs = filter_l.mCoeffs;
-20017ac2:	f103 051c 	add.w	r5, r3, #28
-20017ac6:	eee7 7a06 	vfma.f32	s15, s14, s12
-  case 0:
+float __fast_inline smooth(float in)
+{
+  z = (in * b) + (z * a);
+20017a6c:	ed92 6a02 	vldr	s12, [r2, #8]
+20017a70:	eef5 6a40 	vcmp.f32	s13, #0.0
+20017a74:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+20017a78:	eef7 6a00 	vmov.f32	s13, #112	; 0x3f800000  1.0
+20017a7c:	bfa8      	it	ge
+20017a7e:	eef0 7a66 	vmovge.f32	s15, s13
+20017a82:	eec7 6a27 	vdiv.f32	s13, s14, s15
+20017a86:	eddf 7a23 	vldr	s15, [pc, #140]	; 20017b14 <_hook_param+0xfc>
+20017a8a:	ee66 6aa7 	vmul.f32	s13, s13, s15
+20017a8e:	edd3 7a10 	vldr	s15, [r3, #64]	; 0x40
+20017a92:	ee67 7a86 	vmul.f32	s15, s15, s12
+20017a96:	ed93 6a11 	vldr	s12, [r3, #68]	; 0x44
+20017a9a:	eee6 7a86 	vfma.f32	s15, s13, s12
     invertedValf = absolute(1-valf);
     range = clipminmaxf(0.001f, invertedValf, 1.f);
     cutoff = (1 / range) * 0.00046875;
-    filter_l.flush();
-    filter_l.mCoeffs.setSOHP(fx_tanpif(cutoff), resonance);
-20017aca:	ed94 6a01 	vldr	s12, [r4, #4]
+    cutoff = smooth(cutoff);
+    //filter_l.flush();
+    filter_l.mCoeffs.setSOHP(cutoff, resonance);
+20017a9e:	edd2 6a01 	vldr	s13, [r2, #4]
+  }
+}
+
+float __fast_inline smooth(float in)
+{
+  z = (in * b) + (z * a);
+20017aa2:	edc3 7a10 	vstr	s15, [r3, #64]	; 0x40
        */
       inline __attribute__((optimize("Ofast"),always_inline))
       void setSOHP(const float k, const float q) {
         // k = tan(pi*wc)
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
-20017ace:	ee26 5a27 	vmul.f32	s10, s12, s15
+20017aa6:	ee66 5aa7 	vmul.f32	s11, s13, s15
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
-20017ad2:	eeb0 7a67 	vmov.f32	s14, s15
-20017ad6:	eea5 7a27 	vfma.f32	s14, s10, s15
-    filter_r.flush();
-    filter_r.mCoeffs = filter_l.mCoeffs;
-20017ada:	461c      	mov	r4, r3
-20017adc:	ee37 7a06 	vadd.f32	s14, s14, s12
-20017ae0:	eec6 5a87 	vdiv.f32	s11, s13, s14
+20017aaa:	eeb0 5a67 	vmov.f32	s10, s15
+20017aae:	eea5 5aa7 	vfma.f32	s10, s11, s15
+  {
+  case 0:
+    invertedValf = absolute(1-valf);
+    range = clipminmaxf(0.001f, invertedValf, 1.f);
+    cutoff = (1 / range) * 0.00046875;
+    cutoff = smooth(cutoff);
+20017ab2:	edc2 7a00 	vstr	s15, [r2]
+20017ab6:	ee35 5a26 	vadd.f32	s10, s10, s13
+20017aba:	ee87 6a05 	vdiv.f32	s12, s14, s10
         ff0 = ff2 = q * qk2_k_q_r;
         ff1 = -2.f * ff0;
-20017ae4:	eef8 6a00 	vmov.f32	s13, #128	; 0xc0000000 -2.0
+20017abe:	eeb8 5a00 	vmov.f32	s10, #128	; 0xc0000000 -2.0
       void setSOHP(const float k, const float q) {
         // k = tan(pi*wc)
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
         ff0 = ff2 = q * qk2_k_q_r;
-20017ae8:	ee26 7a25 	vmul.f32	s14, s12, s11
-20017aec:	ed83 7a02 	vstr	s14, [r3, #8]
-20017af0:	ed83 7a00 	vstr	s14, [r3]
+20017ac2:	ee26 7a86 	vmul.f32	s14, s13, s12
+20017ac6:	ed83 7a02 	vstr	s14, [r3, #8]
+20017aca:	ed83 7a00 	vstr	s14, [r3]
         ff1 = -2.f * ff0;
-20017af4:	ee27 7a26 	vmul.f32	s14, s14, s13
-20017af8:	ed83 7a01 	vstr	s14, [r3, #4]
+20017ace:	ee27 7a05 	vmul.f32	s14, s14, s10
+20017ad2:	ed83 7a01 	vstr	s14, [r3, #4]
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017afc:	eeb0 7a46 	vmov.f32	s14, s12
-20017b00:	ee95 7a27 	vfnms.f32	s14, s10, s15
+20017ad6:	eeb0 7a66 	vmov.f32	s14, s13
+20017ada:	ee95 7aa7 	vfnms.f32	s14, s11, s15
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017b04:	eed5 7a27 	vfnms.f32	s15, s10, s15
+20017ade:	eed5 7aa7 	vfnms.f32	s15, s11, s15
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
         ff0 = ff2 = q * qk2_k_q_r;
         ff1 = -2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017b08:	ee27 7a25 	vmul.f32	s14, s14, s11
+20017ae2:	ee27 7a06 	vmul.f32	s14, s14, s12
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017b0c:	ee77 7a86 	vadd.f32	s15, s15, s12
+20017ae6:	ee77 7aa6 	vadd.f32	s15, s15, s13
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
         ff0 = ff2 = q * qk2_k_q_r;
         ff1 = -2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017b10:	ee37 7a07 	vadd.f32	s14, s14, s14
+20017aea:	ee37 7a07 	vadd.f32	s14, s14, s14
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017b14:	ee67 7aa5 	vmul.f32	s15, s15, s11
+20017aee:	ee67 7a86 	vmul.f32	s15, s15, s12
         // flat response at q = sqrt(2)
         const float qk2 = q * k * k;
         const float qk2_k_q_r = 1.f / (qk2 + k + q);
         ff0 = ff2 = q * qk2_k_q_r;
         ff1 = -2.f * ff0;
         fb1 = 2.f * (qk2 - q) * qk2_k_q_r;
-20017b18:	ed83 7a03 	vstr	s14, [r3, #12]
+20017af2:	ed83 7a03 	vstr	s14, [r3, #12]
         fb2 = (qk2 - k + q) * qk2_k_q_r;
-20017b1c:	edc3 7a04 	vstr	s15, [r3, #16]
-20017b20:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
-20017b22:	c50f      	stmia	r5!, {r0, r1, r2, r3}
-20017b24:	6823      	ldr	r3, [r4, #0]
-20017b26:	602b      	str	r3, [r5, #0]
-20017b28:	bd30      	pop	{r4, r5, pc}
-20017b2a:	bf00      	nop
-20017b2c:	30000000 	.word	0x30000000
-20017b30:	20017b70 	.word	0x20017b70
-20017b34:	0807b504 	.word	0x0807b504
-20017b38:	20017b78 	.word	0x20017b78
-20017b3c:	3a83126f 	.word	0x3a83126f
-20017b40:	39f5c28f 	.word	0x39f5c28f
-20017b44:	44029cbc 	.word	0x44029cbc
+20017af6:	edc3 7a04 	vstr	s15, [r3, #16]
+    //filter_l.flush();
+    filter_l.mCoeffs.setSOHP(cutoff, resonance);
+    //filter_r.flush();
+    filter_r.mCoeffs = filter_l.mCoeffs;
+20017afa:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+20017afc:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+20017afe:	6823      	ldr	r3, [r4, #0]
+20017b00:	602b      	str	r3, [r5, #0]
+20017b02:	bd30      	pop	{r4, r5, pc}
+20017b04:	30000000 	.word	0x30000000
+20017b08:	20017b68 	.word	0x20017b68
+20017b0c:	20017b58 	.word	0x20017b58
+20017b10:	3a83126f 	.word	0x3a83126f
+20017b14:	39f5c28f 	.word	0x39f5c28f
 
-20017b48 <_GLOBAL__sub_I_curSampleL>:
+20017b18 <_GLOBAL__sub_I_curSampleL>:
       /**
        * Default constructor
        */
       Coeffs() :
         ff0(0), ff1(0), ff2(0),
         fb1(0), fb2(0)
-20017b48:	4b08      	ldr	r3, [pc, #32]	; (20017b6c <_GLOBAL__sub_I_curSampleL+0x24>)
-20017b4a:	2200      	movs	r2, #0
-20017b4c:	601a      	str	r2, [r3, #0]
-20017b4e:	605a      	str	r2, [r3, #4]
-20017b50:	609a      	str	r2, [r3, #8]
-20017b52:	60da      	str	r2, [r3, #12]
-20017b54:	611a      	str	r2, [r3, #16]
+20017b18:	4b0c      	ldr	r3, [pc, #48]	; (20017b4c <_GLOBAL__sub_I_curSampleL+0x34>)
+20017b1a:	2200      	movs	r2, #0
+20017b1c:	601a      	str	r2, [r3, #0]
+20017b1e:	605a      	str	r2, [r3, #4]
+20017b20:	609a      	str	r2, [r3, #8]
+20017b22:	60da      	str	r2, [r3, #12]
+20017b24:	611a      	str	r2, [r3, #16]
     /*=====================================================================*/
 
     /**
      * Default constructor
      */
     BiQuad(void) : mZ1(0), mZ2(0)
-20017b56:	615a      	str	r2, [r3, #20]
-20017b58:	619a      	str	r2, [r3, #24]
+20017b26:	615a      	str	r2, [r3, #20]
+20017b28:	619a      	str	r2, [r3, #24]
       /**
        * Default constructor
        */
       Coeffs() :
         ff0(0), ff1(0), ff2(0),
         fb1(0), fb2(0)
-20017b5a:	61da      	str	r2, [r3, #28]
-20017b5c:	621a      	str	r2, [r3, #32]
-20017b5e:	625a      	str	r2, [r3, #36]	; 0x24
-20017b60:	629a      	str	r2, [r3, #40]	; 0x28
-20017b62:	62da      	str	r2, [r3, #44]	; 0x2c
+20017b2a:	61da      	str	r2, [r3, #28]
+20017b2c:	621a      	str	r2, [r3, #32]
+20017b2e:	625a      	str	r2, [r3, #36]	; 0x24
+20017b30:	629a      	str	r2, [r3, #40]	; 0x28
+20017b32:	62da      	str	r2, [r3, #44]	; 0x2c
     /*=====================================================================*/
 
     /**
      * Default constructor
      */
     BiQuad(void) : mZ1(0), mZ2(0)
-20017b64:	631a      	str	r2, [r3, #48]	; 0x30
-20017b66:	635a      	str	r2, [r3, #52]	; 0x34
-20017b68:	4770      	bx	lr
-20017b6a:	bf00      	nop
-20017b6c:	20017b78 	.word	0x20017b78
+20017b34:	631a      	str	r2, [r3, #48]	; 0x30
+20017b36:	635a      	str	r2, [r3, #52]	; 0x34
+static dsp::BiQuad filter_l, filter_r;
+float resonance = 1.4041f;
+float cutoff = 0.49f;
+float z = 0.f;
+float a = 0.05f;
+float b = 1.f - a;
+20017b38:	4a05      	ldr	r2, [pc, #20]	; (20017b50 <_GLOBAL__sub_I_curSampleL+0x38>)
+20017b3a:	ed92 7a02 	vldr	s14, [r2, #8]
+20017b3e:	eef7 7a00 	vmov.f32	s15, #112	; 0x3f800000  1.0
+20017b42:	ee77 7ac7 	vsub.f32	s15, s15, s14
+20017b46:	edc3 7a11 	vstr	s15, [r3, #68]	; 0x44
+20017b4a:	4770      	bx	lr
+20017b4c:	20017b68 	.word	0x20017b68
+20017b50:	20017b58 	.word	0x20017b58
