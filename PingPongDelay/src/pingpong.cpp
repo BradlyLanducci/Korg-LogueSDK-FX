@@ -42,8 +42,8 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
 
   for (; x != x_e ; x+=2) 
   {
-    const float delSample1 = gain * s_delay.read0(s_len);
-    const float delSample2 = gain * s_delay.read1(s_len / 2);
+    const float delSample1 = gain * s_delay.read0(64000);
+    const float delSample2 = gain * s_delay.read1(64000);
     wetXNL = wet * delSample1;
     wetXNR = wet * delSample2;
     *x = ((*x) + fastertanhf(waveshape(wetXNL)) * autopanvalL);
@@ -64,7 +64,7 @@ void DELFX_PARAM(uint8_t index, int32_t value)
     gain = valf;
     break;
   case 1:
-    bpm = _fx_get_bpm() / 10;
+    bpm = _fx_get_bpmf();
     // Calculate note intervals
     if (valf < 0.25) 
     {

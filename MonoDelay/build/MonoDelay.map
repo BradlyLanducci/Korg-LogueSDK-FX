@@ -28,7 +28,7 @@ LOAD ./build/obj/monodelay.o
                 0x20019044                . = ALIGN (0x4)
                 0x20019044                PROVIDE (__init_array_end, .)
 
-.text           0x20019048      0x270
+.text           0x20019048      0x358
                 0x20019048                . = ALIGN (0x4)
                 0x20019048                _text_start = .
  *(.text)
@@ -36,102 +36,107 @@ LOAD ./build/obj/monodelay.o
                 0x2001904a                _hook_resume
                 0x2001904e                _hook_suspend
                 0x20019052                _entry
- .text          0x200190a4      0x1f4 ./build/obj/monodelay.o
-                0x200190a4                _hook_init
-                0x20019108                _hook_process
-                0x20019200                _hook_param
+ .text          0x200190a4      0x2dc ./build/obj/monodelay.o
+                0x200190a4                calculate_len(float)
+                0x20019130                _hook_init
+                0x20019180                _hook_process
+                0x20019350                _hook_param
  *(.text.*)
- .text.startup  0x20019298       0x18 ./build/obj/monodelay.o
+ .text.startup  0x20019380       0x18 ./build/obj/monodelay.o
  .text.startup.__stub
-                0x200192b0        0x8 linker stubs
+                0x20019398        0x8 linker stubs
  *(.glue_7)
- .glue_7        0x200192b8        0x0 linker stubs
+ .glue_7        0x200193a0        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x200192b8        0x0 linker stubs
+ .glue_7t       0x200193a0        0x0 linker stubs
  *(.gcc*)
-                0x200192b8                . = ALIGN (0x4)
-                0x200192b8                _text_end = .
+                0x200193a0                . = ALIGN (0x4)
+                0x200193a0                _text_end = .
 
-.vfp11_veneer   0x200192b8        0x0
- .vfp11_veneer  0x200192b8        0x0 linker stubs
+.vfp11_veneer   0x200193a0        0x0
+ .vfp11_veneer  0x200193a0        0x0 linker stubs
 
-.v4_bx          0x200192b8        0x0
- .v4_bx         0x200192b8        0x0 linker stubs
+.v4_bx          0x200193a0        0x0
+ .v4_bx         0x200193a0        0x0 linker stubs
 
-.iplt           0x200192b8        0x0
- .iplt          0x200192b8        0x0 ./build/obj/_unit.o
+.iplt           0x200193a0        0x0
+ .iplt          0x200193a0        0x0 ./build/obj/_unit.o
 
-.rel.dyn        0x200192b8        0x0
- .rel.iplt      0x200192b8        0x0 ./build/obj/_unit.o
+.rel.dyn        0x200193a0        0x0
+ .rel.iplt      0x200193a0        0x0 ./build/obj/_unit.o
 
-.rodata         0x200192b8        0x0
-                0x200192b8                . = ALIGN (0x4)
-                0x200192b8                _rodata_start = .
+.rodata         0x200193a0        0x0
+                0x200193a0                . = ALIGN (0x4)
+                0x200193a0                _rodata_start = .
  *(.rodata)
  *(.rodata.*)
-                0x200192b8                . = ALIGN (0x4)
-                0x200192b8                _rodata_end = .
+                0x200193a0                . = ALIGN (0x4)
+                0x200193a0                _rodata_end = .
 
-.data           0x200192b8        0x0
-                0x200192b8                . = ALIGN (0x8)
-                0x200192b8                _data_start = .
+.data           0x200193a0        0x0
+                0x200193a0                . = ALIGN (0x8)
+                0x200193a0                _data_start = .
  *(.data)
- .data          0x200192b8        0x0 ./build/obj/_unit.o
- .data          0x200192b8        0x0 ./build/obj/monodelay.o
+ .data          0x200193a0        0x0 ./build/obj/_unit.o
+ .data          0x200193a0        0x0 ./build/obj/monodelay.o
  *(.data.*)
-                0x200192b8                . = ALIGN (0x8)
-                0x200192b8                _data_end = .
+                0x200193a0                . = ALIGN (0x8)
+                0x200193a0                _data_end = .
 
-.igot.plt       0x200192b8        0x0
- .igot.plt      0x200192b8        0x0 ./build/obj/_unit.o
+.igot.plt       0x200193a0        0x0
+ .igot.plt      0x200193a0        0x0 ./build/obj/_unit.o
 
-.bss            0x200192b8       0x28
-                0x200192b8                . = ALIGN (0x4)
-                0x200192b8                _bss_start = .
+.bss            0x200193a0       0x30
+                0x200193a0                . = ALIGN (0x4)
+                0x200193a0                _bss_start = .
  *(.bss)
- .bss           0x200192b8        0x0 ./build/obj/_unit.o
- .bss           0x200192b8       0x28 ./build/obj/monodelay.o
-                0x200192cc                bpm
-                0x200192d0                s_len
-                0x200192dc                wetXN
+ .bss           0x200193a0        0x0 ./build/obj/_unit.o
+ .bss           0x200193a0       0x30 ./build/obj/monodelay.o
+                0x200193a0                s_len
+                0x200193b8                s_mix
+                0x200193bc                gain
+                0x200193c0                bpm_valf
+                0x200193c4                wetXNL
+                0x200193c8                wetXNR
+                0x200193cc                wetXN
  *(.bss.*)
  *(COMMON)
-                0x200192e0                . = ALIGN (0x4)
-                0x200192e0                _bss_end = .
+                0x200193d0                . = ALIGN (0x4)
+                0x200193d0                _bss_end = .
 
-.ARM.extab      0x200192e0        0x0
-                0x200192e0                . = ALIGN (0x4)
-                0x200192e0                __extab_start = .
+.ARM.extab      0x200193d0        0x0
+                0x200193d0                . = ALIGN (0x4)
+                0x200193d0                __extab_start = .
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x200192e0                . = ALIGN (0x4)
-                0x200192e0                __extab_end = .
+                0x200193d0                . = ALIGN (0x4)
+                0x200193d0                __extab_end = .
 
-.ARM.exidx      0x200192e0        0x0
-                0x200192e0                __exidx_start = .
+.ARM.exidx      0x200193d0        0x0
+                0x200193d0                __exidx_start = .
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x200192e0                __exidx_end = .
+                0x200193d0                __exidx_end = .
 
-.eh_frame_hdr   0x200192e0        0x0
-                0x200192e0                . = ALIGN (0x4)
-                0x200192e0                _eh_frame_hdr_start = .
+.eh_frame_hdr   0x200193d0        0x0
+                0x200193d0                . = ALIGN (0x4)
+                0x200193d0                _eh_frame_hdr_start = .
  *(.eh_frame_hdr)
-                0x200192e0                . = ALIGN (0x4)
-                0x200192e0                _eh_frame_hdr_end = .
+                0x200193d0                . = ALIGN (0x4)
+                0x200193d0                _eh_frame_hdr_end = .
 
-.eh_frame       0x200192e0        0x0
-                0x200192e0                . = ALIGN (0x4)
-                0x200192e0                _eh_frame_start = .
+.eh_frame       0x200193d0        0x0
+                0x200193d0                . = ALIGN (0x4)
+                0x200193d0                _eh_frame_start = .
  *(.eh_frame)
-                0x200192e0                . = ALIGN (0x4)
-                0x200192e0                _eh_frame_end = .
+                0x200193d0                . = ALIGN (0x4)
+                0x200193d0                _eh_frame_end = .
 
-.sdram          0xc0420000    0xcd140
+.sdram          0xc0420000   0x1d4c00
                 0xc0420000                . = ALIGN (0x4)
                 0xc0420000                _usr_sdram_start = .
  *(.sdram*)
- .sdram         0xc0420000    0xcd140 ./build/obj/monodelay.o
-                0xc04ed140                . = ALIGN (0x4)
-                0xc04ed140                _usr_sdram_end = .
+ .sdram         0xc0420000   0x1d4c00 ./build/obj/monodelay.o
+                0xc05f4c00                . = ALIGN (0x4)
+                0xc05f4c00                _usr_sdram_end = .
 LOAD ./ld/main_api.syms
                 0x0807b000                k_fx_api_version = 0x807b000
                 0x0807b004                k_fx_api_platform = 0x807b004
@@ -156,17 +161,17 @@ LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc
 END GROUP
 OUTPUT(build/MonoDelay.elf elf32-littlearm)
 
-.debug_info     0x00000000      0xd47
+.debug_info     0x00000000     0x1002
  .debug_info    0x00000000      0x51f ./build/obj/_unit.o
- .debug_info    0x0000051f      0x828 ./build/obj/monodelay.o
+ .debug_info    0x0000051f      0xae3 ./build/obj/monodelay.o
 
-.debug_abbrev   0x00000000      0x52b
+.debug_abbrev   0x00000000      0x596
  .debug_abbrev  0x00000000      0x1f4 ./build/obj/_unit.o
- .debug_abbrev  0x000001f4      0x337 ./build/obj/monodelay.o
+ .debug_abbrev  0x000001f4      0x3a2 ./build/obj/monodelay.o
 
-.debug_loc      0x00000000      0x34b
+.debug_loc      0x00000000      0x596
  .debug_loc     0x00000000       0xb9 ./build/obj/_unit.o
- .debug_loc     0x000000b9      0x292 ./build/obj/monodelay.o
+ .debug_loc     0x000000b9      0x4dd ./build/obj/monodelay.o
 
 .debug_aranges  0x00000000       0x48
  .debug_aranges
@@ -174,15 +179,15 @@ OUTPUT(build/MonoDelay.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/monodelay.o
 
-.debug_line     0x00000000      0x83e
+.debug_line     0x00000000      0x8e4
  .debug_line    0x00000000      0x233 ./build/obj/_unit.o
- .debug_line    0x00000233      0x60b ./build/obj/monodelay.o
+ .debug_line    0x00000233      0x6b1 ./build/obj/monodelay.o
 
-.debug_str      0x00000000      0x977
- .debug_str     0x00000000      0x53d ./build/obj/_unit.o
+.debug_str      0x00000000      0xac4
+ .debug_str     0x00000000      0x533 ./build/obj/_unit.o
                                 0x5b6 (size before relaxing)
- .debug_str     0x0000053d      0x43a ./build/obj/monodelay.o
-                                0x64b (size before relaxing)
+ .debug_str     0x00000533      0x591 ./build/obj/monodelay.o
+                                0x7bd (size before relaxing)
 
 .comment        0x00000000       0x6e
  .comment       0x00000000       0x6e ./build/obj/_unit.o
@@ -196,12 +201,12 @@ OUTPUT(build/MonoDelay.elf elf32-littlearm)
  .ARM.attributes
                 0x00000039       0x39 ./build/obj/monodelay.o
 
-.debug_frame    0x00000000      0x118
+.debug_frame    0x00000000      0x134
  .debug_frame   0x00000000       0x88 ./build/obj/_unit.o
- .debug_frame   0x00000088       0x90 ./build/obj/monodelay.o
+ .debug_frame   0x00000088       0xac ./build/obj/monodelay.o
 
-.debug_ranges   0x00000000       0xf0
- .debug_ranges  0x00000000       0xf0 ./build/obj/monodelay.o
+.debug_ranges   0x00000000      0x150
+ .debug_ranges  0x00000000      0x150 ./build/obj/monodelay.o
 
 Cross Reference Table
 
@@ -211,7 +216,7 @@ __init_array_start                                ./build/obj/_unit.o
 _bss_end                                          ./build/obj/_unit.o
 _bss_start                                        ./build/obj/_unit.o
 _entry                                            ./build/obj/_unit.o
-_fx_get_bpm                                       ./build/obj/monodelay.o
+_fx_get_bpmf                                      ./build/obj/monodelay.o
 _hook_init                                        ./build/obj/monodelay.o
                                                   ./build/obj/_unit.o
 _hook_param                                       ./build/obj/monodelay.o
@@ -220,6 +225,11 @@ _hook_process                                     ./build/obj/monodelay.o
                                                   ./build/obj/_unit.o
 _hook_resume                                      ./build/obj/_unit.o
 _hook_suspend                                     ./build/obj/_unit.o
-bpm                                               ./build/obj/monodelay.o
+bpm_valf                                          ./build/obj/monodelay.o
+calculate_len(float)                              ./build/obj/monodelay.o
+gain                                              ./build/obj/monodelay.o
 s_len                                             ./build/obj/monodelay.o
+s_mix                                             ./build/obj/monodelay.o
 wetXN                                             ./build/obj/monodelay.o
+wetXNL                                            ./build/obj/monodelay.o
+wetXNR                                            ./build/obj/monodelay.o
