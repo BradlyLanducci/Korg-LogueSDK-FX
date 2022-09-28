@@ -1,10 +1,10 @@
 
-build/delfx_test.elf:     file format elf32-littlearm
+build/mydelfx.elf:     file format elf32-littlearm
 
 
 Disassembly of section .text:
 
-20019040 <_hook_process>:
+20019040 <_text_start>:
   (void)api;
 }
 
@@ -22,8 +22,6 @@ void _hook_resume(void)
 {
 20019042:	4770      	bx	lr
 
-20019044 <_hook_param>:
-
 }
 
 __attribute__((weak))
@@ -33,8 +31,6 @@ void _hook_param(uint8_t index, int32_t value)
 
 20019046 <_hook_suspend>:
 20019046:	4770      	bx	lr
-
-20019048 <_hook_init>:
   _hook_init(platform, api);
 }
 
@@ -107,10 +103,34 @@ void _entry(uint32_t platform, uint32_t api)
   _hook_init(platform, api);
 2001907e:	4641      	mov	r1, r8
 20019080:	4638      	mov	r0, r7
-20019082:	f7ff ffe1 	bl	20019048 <_hook_init>
+20019082:	f000 f80b 	bl	2001909c <_hook_init>
 20019086:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
 2001908a:	bf00      	nop
-2001908c:	2001909f 	.word	0x2001909f
-20019090:	2001909f 	.word	0x2001909f
+2001908c:	200190a7 	.word	0x200190a7
+20019090:	200190a7 	.word	0x200190a7
 20019094:	20019040 	.word	0x20019040
 20019098:	20019040 	.word	0x20019040
+
+2001909c <_hook_init>:
+#include "userdelfx.h"
+
+void DELFX_INIT(uint32_t platform, uint32_t api)
+{
+2001909c:	4770      	bx	lr
+
+2001909e <_hook_process>:
+    
+}
+
+void DELFX_PROCESS(float *xn, uint32_t frames)
+{
+2001909e:	4770      	bx	lr
+
+200190a0 <_hook_param>:
+
+}
+
+void DELFX_PARAM(uint8_t index, int32_t value)
+{
+200190a0:	4770      	bx	lr
+	...

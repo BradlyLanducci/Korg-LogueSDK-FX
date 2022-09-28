@@ -179,14 +179,14 @@ OUTPUT(build/MonoDelay.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/monodelay.o
 
-.debug_line     0x00000000      0x8e4
- .debug_line    0x00000000      0x233 ./build/obj/_unit.o
- .debug_line    0x00000233      0x6b1 ./build/obj/monodelay.o
+.debug_line     0x00000000      0x902
+ .debug_line    0x00000000      0x251 ./build/obj/_unit.o
+ .debug_line    0x00000251      0x6b1 ./build/obj/monodelay.o
 
-.debug_str      0x00000000      0xac4
- .debug_str     0x00000000      0x533 ./build/obj/_unit.o
-                                0x5b6 (size before relaxing)
- .debug_str     0x00000533      0x591 ./build/obj/monodelay.o
+.debug_str      0x00000000      0xa70
+ .debug_str     0x00000000      0x541 ./build/obj/_unit.o
+                                0x5c4 (size before relaxing)
+ .debug_str     0x00000541      0x52f ./build/obj/monodelay.o
                                 0x7bd (size before relaxing)
 
 .comment        0x00000000       0x6e
