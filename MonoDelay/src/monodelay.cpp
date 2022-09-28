@@ -1,3 +1,5 @@
+// Created by Bradly Landucci
+
 #include "userdelfx.h"
 #include "delayline.hpp"
 #include "osc_api.h"
@@ -13,7 +15,6 @@ static __sdram float s_delay_ram[BUF_SIZE];
 float s_len;
 float s_mix;
 float gain;
-float wetXN;
 float wetXNL, wetXNR;
 float bpm_valf;
 
