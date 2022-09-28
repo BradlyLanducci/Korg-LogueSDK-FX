@@ -56,7 +56,7 @@ void DELFX_INIT(uint32_t platform, uint32_t api)
   s_delay.clear();
   s_mix = .5f;
   gain = .5f;
-  bpm_valf = 0.5f;
+  bpm_valf = .5f;
   calculate_len(bpm_valf);
 }
 
