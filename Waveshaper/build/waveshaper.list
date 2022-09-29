@@ -44,13 +44,13 @@ Disassembly of section .text:
 20017882:	f000 f80b 	bl	2001789c <_hook_init>
 20017886:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
 2001788a:	bf00      	nop
-2001788c:	20017927 	.word	0x20017927
-20017890:	20017927 	.word	0x20017927
+2001788c:	2001798f 	.word	0x2001798f
+20017890:	20017993 	.word	0x20017993
 20017894:	20017840 	.word	0x20017840
 20017898:	20017840 	.word	0x20017840
 
 2001789c <_hook_init>:
-    return 1.5f * in - 0.5f * in *in * in;
+    return 2.0f * in;
 }
 
 // Initializing Platform //
@@ -59,109 +59,207 @@ void MODFX_INIT(uint32_t platform, uint32_t api)
 2001789c:	4770      	bx	lr
 
 2001789e <_hook_process>:
+// Main DSP Process Block //
+// Sub values to be ignored, only used for prologue
+void MODFX_PROCESS(const float *xn, float *yn,
+                   const float *sub_xn, float *sub_yn,
+                   uint32_t frames)
+{
+2001789e:	b510      	push	{r4, lr}
+200178a0:	9b02      	ldr	r3, [sp, #8]
+  // Effect processing loop //
+  // For double frames (AKA samples cause each frame = sample pair)
+  for (int i=0;i<frames*2;i++)
   {
     float xn_cur = *xn++;
+    const float dry = 1.f - distAmt;
+200178a2:	4c2e      	ldr	r4, [pc, #184]	; (2001795c <_hook_process+0xbe>)
+    const float drive = 100.f;
 
-    // Waveshaping algorithm // 
-    // DRY + WET
-    wet_signal = (wet * ((xn_cur * ((distamt * 10.0f) + 1.f)) - xn_cur));
-2001789e:	4b15      	ldr	r3, [pc, #84]	; (200178f4 <_hook_process+0x56>)
-200178a0:	ed93 4a00 	vldr	s8, [r3]
-200178a4:	edd3 5a01 	vldr	s11, [r3, #4]
-200178a8:	9b00      	ldr	r3, [sp, #0]
-    base_main = xn_cur + wet_signal;
-200178aa:	eef2 4a04 	vmov.f32	s9, #36	; 0x41200000  10.0
-200178ae:	005a      	lsls	r2, r3, #1
-200178b0:	eeb7 5a00 	vmov.f32	s10, #112	; 0x3f800000  1.0
-  float base_main;
-  float wet_signal;
+    *yn++ = (dry * xn_cur) + (distAmt * waveshape(drive * xn_cur));
+200178a4:	eddf 3a2e 	vldr	s7, [pc, #184]	; 20017960 <_hook_process+0xc2>
+float __fast_inline waveshape(float in) 
+{
+  float threshold1 = 1.0f/3.0f;
+  float threshold2 = 2.0f/3.0f;
 
-  // Effect processing loop //
-  // For double frames (AKA samples cause each frame = sample pair)
-  for (int i=0;i<frames*2;i++)
-200178b4:	2300      	movs	r3, #0
-
-    // Waveshaping algorithm // 
-    // DRY + WET
-    wet_signal = (wet * ((xn_cur * ((distamt * 10.0f) + 1.f)) - xn_cur));
-    base_main = xn_cur + wet_signal;
-    *yn++ = waveshape(base_main);
-200178b6:	eeb6 6a00 	vmov.f32	s12, #96	; 0x3f000000  0.5
-200178ba:	eef7 6a08 	vmov.f32	s13, #120	; 0x3fc00000  1.5
-  float base_main;
-  float wet_signal;
-
-  // Effect processing loop //
-  // For double frames (AKA samples cause each frame = sample pair)
-  for (int i=0;i<frames*2;i++)
-200178be:	4293      	cmp	r3, r2
-200178c0:	d017      	beq.n	200178f2 <_hook_process+0x54>
+  if(in > threshold2)
+200178a8:	ed9f 3a2e 	vldr	s6, [pc, #184]	; 20017964 <_hook_process+0xc6>
+    return 1.0f;
+  else if(in > threshold1)
+200178ac:	eddf 5a2e 	vldr	s11, [pc, #184]	; 20017968 <_hook_process+0xca>
+    return (3.0f - (2.0f - 3.0f*in) * (2.0f - 3.0f*in))/3.0f;
+  else if(in < -threshold2)
+200178b0:	eddf 2a2e 	vldr	s5, [pc, #184]	; 2001796c <_hook_process+0xce>
+    return -1.0f;
+  else if(in < -threshold1)
+200178b4:	ed9f 2a2e 	vldr	s4, [pc, #184]	; 20017970 <_hook_process+0xd2>
+200178b8:	005a      	lsls	r2, r3, #1
+  {
     float xn_cur = *xn++;
+    const float dry = 1.f - distAmt;
+    const float drive = 100.f;
 
-    // Waveshaping algorithm // 
-    // DRY + WET
-    wet_signal = (wet * ((xn_cur * ((distamt * 10.0f) + 1.f)) - xn_cur));
-    base_main = xn_cur + wet_signal;
-200178c2:	eeb0 7a45 	vmov.f32	s14, s10
-200178c6:	eea4 7a24 	vfma.f32	s14, s8, s9
-  float base_main;
-  float wet_signal;
-
+    *yn++ = (dry * xn_cur) + (distAmt * waveshape(drive * xn_cur));
+200178ba:	eeb7 4a00 	vmov.f32	s8, #112	; 0x3f800000  1.0
+                   const float *sub_xn, float *sub_yn,
+                   uint32_t frames)
+{
   // Effect processing loop //
   // For double frames (AKA samples cause each frame = sample pair)
   for (int i=0;i<frames*2;i++)
-200178ca:	3301      	adds	r3, #1
+200178be:	2300      	movs	r3, #0
+  else if(in > threshold1)
+    return (3.0f - (2.0f - 3.0f*in) * (2.0f - 3.0f*in))/3.0f;
+  else if(in < -threshold2)
+    return -1.0f;
+  else if(in < -threshold1)
+    return -(3.0f - (2.0f + 3.0f*in) * (2.0f + 3.0f*in))/3.0f;
+200178c0:	eef0 6a08 	vmov.f32	s13, #8	; 0x40400000  3.0
+                   const float *sub_xn, float *sub_yn,
+                   uint32_t frames)
+{
+  // Effect processing loop //
+  // For double frames (AKA samples cause each frame = sample pair)
+  for (int i=0;i<frames*2;i++)
+200178c4:	4293      	cmp	r3, r2
+200178c6:	d047      	beq.n	20017958 <_hook_process+0xba>
+  {
+    float xn_cur = *xn++;
+    const float dry = 1.f - distAmt;
+200178c8:	edd4 4a00 	vldr	s9, [r4]
+{
+  // Effect processing loop //
+  // For double frames (AKA samples cause each frame = sample pair)
+  for (int i=0;i<frames*2;i++)
   {
     float xn_cur = *xn++;
 200178cc:	ecf0 7a01 	vldmia	r0!, {s15}
+    const float dry = 1.f - distAmt;
+    const float drive = 100.f;
 
-    // Waveshaping algorithm // 
-    // DRY + WET
-    wet_signal = (wet * ((xn_cur * ((distamt * 10.0f) + 1.f)) - xn_cur));
-    base_main = xn_cur + wet_signal;
-200178d0:	eef0 3a67 	vmov.f32	s7, s15
-200178d4:	eed7 3a87 	vfnms.f32	s7, s15, s14
-200178d8:	eee3 7aa5 	vfma.f32	s15, s7, s11
-    *yn++ = waveshape(base_main);
-200178dc:	ee27 7aa7 	vmul.f32	s14, s15, s15
-200178e0:	ee27 7a27 	vmul.f32	s14, s14, s15
-200178e4:	ee26 7a47 	vnmul.f32	s14, s12, s14
-200178e8:	eea7 7aa6 	vfma.f32	s14, s15, s13
-200178ec:	eca1 7a01 	vstmia	r1!, {s14}
-  float base_main;
-  float wet_signal;
+    *yn++ = (dry * xn_cur) + (distAmt * waveshape(drive * xn_cur));
+200178d0:	ee34 7a64 	vsub.f32	s14, s8, s9
+200178d4:	ee27 7a27 	vmul.f32	s14, s14, s15
+200178d8:	ee67 7aa3 	vmul.f32	s15, s15, s7
+float __fast_inline waveshape(float in) 
+{
+  float threshold1 = 1.0f/3.0f;
+  float threshold2 = 2.0f/3.0f;
 
+  if(in > threshold2)
+200178dc:	eef4 7ac3 	vcmpe.f32	s15, s6
+200178e0:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+200178e4:	dc2d      	bgt.n	20017942 <_hook_process+0xa4>
+    return 1.0f;
+  else if(in > threshold1)
+200178e6:	eef4 7ae5 	vcmpe.f32	s15, s11
+200178ea:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+200178ee:	dd10      	ble.n	20017912 <_hook_process+0x74>
+    return (3.0f - (2.0f - 3.0f*in) * (2.0f - 3.0f*in))/3.0f;
+200178f0:	eeb8 6a00 	vmov.f32	s12, #128	; 0xc0000000 -2.0
+200178f4:	eea7 6aa6 	vfma.f32	s12, s15, s13
+200178f8:	eeb0 5a00 	vmov.f32	s10, #0	; 0x40000000  2.0
+200178fc:	eea7 5ae6 	vfms.f32	s10, s15, s13
+20017900:	eef0 7a46 	vmov.f32	s15, s12
+20017904:	eeb0 6a66 	vmov.f32	s12, s13
+20017908:	eea5 6a27 	vfma.f32	s12, s10, s15
+2001790c:	ee66 7a25 	vmul.f32	s15, s12, s11
+20017910:	e01c      	b.n	2001794c <_hook_process+0xae>
+  else if(in < -threshold2)
+20017912:	eef4 7ae2 	vcmpe.f32	s15, s5
+20017916:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+2001791a:	d415      	bmi.n	20017948 <_hook_process+0xaa>
+    return -1.0f;
+  else if(in < -threshold1)
+2001791c:	eef4 7ac2 	vcmpe.f32	s15, s4
+20017920:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+    return -(3.0f - (2.0f + 3.0f*in) * (2.0f + 3.0f*in))/3.0f;
+20017924:	bf41      	itttt	mi
+20017926:	eeb0 6a00 	vmovmi.f32	s12, #0	; 0x40000000  2.0
+2001792a:	eea7 6aa6 	vfmami.f32	s12, s15, s13
+2001792e:	eef8 7a08 	vmovmi.f32	s15, #136	; 0xc0400000 -3.0
+20017932:	eee6 7a06 	vfmami.f32	s15, s12, s12
+  else
+    return 2.0f * in;
+20017936:	bf54      	ite	pl
+20017938:	ee77 7aa7 	vaddpl.f32	s15, s15, s15
+  else if(in > threshold1)
+    return (3.0f - (2.0f - 3.0f*in) * (2.0f - 3.0f*in))/3.0f;
+  else if(in < -threshold2)
+    return -1.0f;
+  else if(in < -threshold1)
+    return -(3.0f - (2.0f + 3.0f*in) * (2.0f + 3.0f*in))/3.0f;
+2001793c:	ee67 7aa5 	vmulmi.f32	s15, s15, s11
+20017940:	e004      	b.n	2001794c <_hook_process+0xae>
+{
+  float threshold1 = 1.0f/3.0f;
+  float threshold2 = 2.0f/3.0f;
+
+  if(in > threshold2)
+    return 1.0f;
+20017942:	eef7 7a00 	vmov.f32	s15, #112	; 0x3f800000  1.0
+20017946:	e001      	b.n	2001794c <_hook_process+0xae>
+  else if(in > threshold1)
+    return (3.0f - (2.0f - 3.0f*in) * (2.0f - 3.0f*in))/3.0f;
+  else if(in < -threshold2)
+    return -1.0f;
+20017948:	eeff 7a00 	vmov.f32	s15, #240	; 0xbf800000 -1.0
+  {
+    float xn_cur = *xn++;
+    const float dry = 1.f - distAmt;
+    const float drive = 100.f;
+
+    *yn++ = (dry * xn_cur) + (distAmt * waveshape(drive * xn_cur));
+2001794c:	eea4 7aa7 	vfma.f32	s14, s9, s15
+                   const float *sub_xn, float *sub_yn,
+                   uint32_t frames)
+{
   // Effect processing loop //
   // For double frames (AKA samples cause each frame = sample pair)
   for (int i=0;i<frames*2;i++)
-200178f0:	e7e5      	b.n	200178be <_hook_process+0x20>
-200178f2:	4770      	bx	lr
-200178f4:	20017920 	.word	0x20017920
+20017950:	3301      	adds	r3, #1
+  {
+    float xn_cur = *xn++;
+    const float dry = 1.f - distAmt;
+    const float drive = 100.f;
 
-200178f8 <_hook_param>:
+    *yn++ = (dry * xn_cur) + (distAmt * waveshape(drive * xn_cur));
+20017952:	eca1 7a01 	vstmia	r1!, {s14}
+                   const float *sub_xn, float *sub_yn,
+                   uint32_t frames)
+{
+  // Effect processing loop //
+  // For double frames (AKA samples cause each frame = sample pair)
+  for (int i=0;i<frames*2;i++)
+20017956:	e7b5      	b.n	200178c4 <_hook_process+0x26>
+20017958:	bd10      	pop	{r4, pc}
+2001795a:	bf00      	nop
+2001795c:	20017990 	.word	0x20017990
+20017960:	42c80000 	.word	0x42c80000
+20017964:	3f2aaaab 	.word	0x3f2aaaab
+20017968:	3eaaaaab 	.word	0x3eaaaaab
+2001796c:	bf2aaaab 	.word	0xbf2aaaab
+20017970:	beaaaaab 	.word	0xbeaaaaab
+
+20017974 <_hook_param>:
+  }
+}
 
 // Param Controls //
 void MODFX_PARAM(uint8_t index, int32_t value)
 {
+20017974:	ee07 1a90 	vmov	s15, r1
   //Convert fixed-point q31 format to float
   const float valf = q31_to_f32(value);
-200178f8:	ee07 1a90 	vmov	s15, r1
-200178fc:	eefa 7ae0 	vcvt.f32.s32	s15, s15, #31
   switch (index)
-20017900:	b110      	cbz	r0, 20017908 <_hook_param+0x10>
-20017902:	2801      	cmp	r0, #1
-20017904:	d004      	beq.n	20017910 <_hook_param+0x18>
-20017906:	4770      	bx	lr
+20017978:	b920      	cbnz	r0, 20017984 <_hook_param+0x10>
   {
     case 0:
-      distamt = valf;
-20017908:	4b03      	ldr	r3, [pc, #12]	; (20017918 <_hook_param+0x20>)
-2001790a:	edc3 7a00 	vstr	s15, [r3]
-      break;
-2001790e:	4770      	bx	lr
-    case 1:
-      wet = valf;
-20017910:	4b01      	ldr	r3, [pc, #4]	; (20017918 <_hook_param+0x20>)
-20017912:	edc3 7a01 	vstr	s15, [r3, #4]
-20017916:	4770      	bx	lr
-20017918:	20017920 	.word	0x20017920
+      distAmt = valf;
+2001797a:	eefa 7ae0 	vcvt.f32.s32	s15, s15, #31
+2001797e:	4b02      	ldr	r3, [pc, #8]	; (20017988 <_hook_param+0x14>)
+20017980:	edc3 7a00 	vstr	s15, [r3]
+20017984:	4770      	bx	lr
+20017986:	bf00      	nop
+20017988:	20017990 	.word	0x20017990

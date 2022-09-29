@@ -321,7 +321,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
 200191ec:	f8d5 c018 	ldr.w	ip, [r5, #24]
 200191f0:	f8d5 8024 	ldr.w	r8, [r5, #36]	; 0x24
 200191f4:	6aa9      	ldr	r1, [r5, #40]	; 0x28
-    // dl_2.write(tanh(feedback * delSampleL));
+    wetXNR = wet * delSampleR;
 
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
@@ -360,7 +360,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
     float readFrac(const float pos) {
       const uint32_t base = (uint32_t)pos;
 20019230:	eefc 7ac7 	vcvt.u32.f32	s15, s14
-    // dl_2.write(tanh(feedback * delSampleL));
+    wetXNR = wet * delSampleR;
 
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
@@ -479,7 +479,6 @@ float __fast_inline waveshape(float in)
 200192be:	edc3 6a0f 	vstr	s13, [r3, #60]	; 0x3c
 200192c2:	ed55 6a01 	vldr	s13, [r5, #-4]
 200192c6:	ee77 7aa6 	vadd.f32	s15, s15, s13
-    // dl_2.write(tanh(feedback * delSampleL));
 
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
@@ -514,7 +513,7 @@ float __fast_inline waveshape(float in)
     return 1.5f * in - 0.5f * in *in * in;
 200192ec:	ee67 7a67 	vnmul.f32	s15, s14, s15
 200192f0:	eee6 7a82 	vfma.f32	s15, s13, s4
-    // dl_2.write(tanh(feedback * delSampleL));
+    wetXNR = wet * delSampleR;
 
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
