@@ -28,7 +28,7 @@ LOAD ./build/obj/pingpong.o
                 0x20019044                . = ALIGN (0x4)
                 0x20019044                PROVIDE (__init_array_end, .)
 
-.text           0x20019048      0x2f8
+.text           0x20019048      0x3d8
                 0x20019048                . = ALIGN (0x4)
                 0x20019048                _text_start = .
  *(.text)
@@ -36,105 +36,106 @@ LOAD ./build/obj/pingpong.o
                 0x2001904a                _hook_resume
                 0x2001904e                _hook_suspend
                 0x20019052                _entry
- .text          0x200190a4      0x280 ./build/obj/pingpong.o
-                0x200190a4                _hook_init
-                0x20019108                _hook_process
-                0x2001928c                _hook_param
+ .text          0x200190a4      0x354 ./build/obj/pingpong.o
+                0x200190a4                calculate_len(float)
+                0x20019130                _hook_init
+                0x200191c0                _hook_process
+                0x200193c8                _hook_param
  *(.text.*)
- .text.startup  0x20019324       0x14 ./build/obj/pingpong.o
+ .text.startup  0x200193f8       0x20 ./build/obj/pingpong.o
  .text.startup.__stub
-                0x20019338        0x8 linker stubs
+                0x20019418        0x8 linker stubs
  *(.glue_7)
- .glue_7        0x20019340        0x0 linker stubs
+ .glue_7        0x20019420        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x20019340        0x0 linker stubs
+ .glue_7t       0x20019420        0x0 linker stubs
  *(.gcc*)
-                0x20019340                . = ALIGN (0x4)
-                0x20019340                _text_end = .
+                0x20019420                . = ALIGN (0x4)
+                0x20019420                _text_end = .
 
-.vfp11_veneer   0x20019340        0x0
- .vfp11_veneer  0x20019340        0x0 linker stubs
+.vfp11_veneer   0x20019420        0x0
+ .vfp11_veneer  0x20019420        0x0 linker stubs
 
-.v4_bx          0x20019340        0x0
- .v4_bx         0x20019340        0x0 linker stubs
+.v4_bx          0x20019420        0x0
+ .v4_bx         0x20019420        0x0 linker stubs
 
-.iplt           0x20019340        0x0
- .iplt          0x20019340        0x0 ./build/obj/_unit.o
+.iplt           0x20019420        0x0
+ .iplt          0x20019420        0x0 ./build/obj/_unit.o
 
-.rel.dyn        0x20019340        0x0
- .rel.iplt      0x20019340        0x0 ./build/obj/_unit.o
+.rel.dyn        0x20019420        0x0
+ .rel.iplt      0x20019420        0x0 ./build/obj/_unit.o
 
-.rodata         0x20019340        0x0
-                0x20019340                . = ALIGN (0x4)
-                0x20019340                _rodata_start = .
+.rodata         0x20019420        0x0
+                0x20019420                . = ALIGN (0x4)
+                0x20019420                _rodata_start = .
  *(.rodata)
  *(.rodata.*)
-                0x20019340                . = ALIGN (0x4)
-                0x20019340                _rodata_end = .
+                0x20019420                . = ALIGN (0x4)
+                0x20019420                _rodata_end = .
 
-.data           0x20019340        0x0
-                0x20019340                . = ALIGN (0x8)
-                0x20019340                _data_start = .
+.data           0x20019420        0x0
+                0x20019420                . = ALIGN (0x8)
+                0x20019420                _data_start = .
  *(.data)
- .data          0x20019340        0x0 ./build/obj/_unit.o
- .data          0x20019340        0x0 ./build/obj/pingpong.o
+ .data          0x20019420        0x0 ./build/obj/_unit.o
+ .data          0x20019420        0x0 ./build/obj/pingpong.o
  *(.data.*)
-                0x20019340                . = ALIGN (0x8)
-                0x20019340                _data_end = .
+                0x20019420                . = ALIGN (0x8)
+                0x20019420                _data_end = .
 
-.igot.plt       0x20019340        0x0
- .igot.plt      0x20019340        0x0 ./build/obj/_unit.o
+.igot.plt       0x20019420        0x0
+ .igot.plt      0x20019420        0x0 ./build/obj/_unit.o
 
-.bss            0x20019340       0x38
-                0x20019340                . = ALIGN (0x4)
-                0x20019340                _bss_start = .
+.bss            0x20019420       0x40
+                0x20019420                . = ALIGN (0x4)
+                0x20019420                _bss_start = .
  *(.bss)
- .bss           0x20019340        0x0 ./build/obj/_unit.o
- .bss           0x20019340       0x38 ./build/obj/pingpong.o
-                0x20019358                bpm
-                0x2001935c                s_len
-                0x20019368                wetXNL
-                0x2001936c                wetXNR
-                0x20019370                autopanvalL
-                0x20019374                autopanvalR
+ .bss           0x20019420        0x0 ./build/obj/_unit.o
+ .bss           0x20019420       0x40 ./build/obj/pingpong.o
+                0x20019420                s_len
+                0x2001944c                s_mix
+                0x20019450                gain
+                0x20019454                bpm_valf
+                0x20019458                wetXNL
+                0x2001945c                wetXNR
  *(.bss.*)
  *(COMMON)
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _bss_end = .
+                0x20019460                . = ALIGN (0x4)
+                0x20019460                _bss_end = .
 
-.ARM.extab      0x20019378        0x0
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                __extab_start = .
+.ARM.extab      0x20019460        0x0
+                0x20019460                . = ALIGN (0x4)
+                0x20019460                __extab_start = .
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                __extab_end = .
+                0x20019460                . = ALIGN (0x4)
+                0x20019460                __extab_end = .
 
-.ARM.exidx      0x20019378        0x0
-                0x20019378                __exidx_start = .
+.ARM.exidx      0x20019460        0x0
+                0x20019460                __exidx_start = .
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x20019378                __exidx_end = .
+                0x20019460                __exidx_end = .
 
-.eh_frame_hdr   0x20019378        0x0
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _eh_frame_hdr_start = .
+.eh_frame_hdr   0x20019460        0x0
+                0x20019460                . = ALIGN (0x4)
+                0x20019460                _eh_frame_hdr_start = .
  *(.eh_frame_hdr)
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _eh_frame_hdr_end = .
+                0x20019460                . = ALIGN (0x4)
+                0x20019460                _eh_frame_hdr_end = .
 
-.eh_frame       0x20019378        0x0
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _eh_frame_start = .
+.eh_frame       0x20019460        0x0
+                0x20019460                . = ALIGN (0x4)
+                0x20019460                _eh_frame_start = .
  *(.eh_frame)
-                0x20019378                . = ALIGN (0x4)
-                0x20019378                _eh_frame_end = .
+                0x20019460                . = ALIGN (0x4)
+                0x20019460                _eh_frame_end = .
 
-.sdram          0xc0420000   0x19a280
+.sdram          0xc0420000   0x177000
                 0xc0420000                . = ALIGN (0x4)
                 0xc0420000                _usr_sdram_start = .
  *(.sdram*)
- .sdram         0xc0420000   0x19a280 ./build/obj/pingpong.o
-                0xc05ba280                . = ALIGN (0x4)
-                0xc05ba280                _usr_sdram_end = .
+ .sdram         0xc0420000   0x177000 ./build/obj/pingpong.o
+                0xc0597000                . = ALIGN (0x4)
+                0xc0597000                _usr_sdram_end = .
 LOAD ./ld/main_api.syms
                 0x0807b000                k_fx_api_version = 0x807b000
                 0x0807b004                k_fx_api_platform = 0x807b004
@@ -159,17 +160,17 @@ LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc
 END GROUP
 OUTPUT(build/PingPongDelay.elf elf32-littlearm)
 
-.debug_info     0x00000000      0xe29
+.debug_info     0x00000000     0x1150
  .debug_info    0x00000000      0x51f ./build/obj/_unit.o
- .debug_info    0x0000051f      0x90a ./build/obj/pingpong.o
+ .debug_info    0x0000051f      0xc31 ./build/obj/pingpong.o
 
-.debug_abbrev   0x00000000      0x509
+.debug_abbrev   0x00000000      0x596
  .debug_abbrev  0x00000000      0x1f4 ./build/obj/_unit.o
- .debug_abbrev  0x000001f4      0x315 ./build/obj/pingpong.o
+ .debug_abbrev  0x000001f4      0x3a2 ./build/obj/pingpong.o
 
-.debug_loc      0x00000000      0x447
+.debug_loc      0x00000000      0x610
  .debug_loc     0x00000000       0xb9 ./build/obj/_unit.o
- .debug_loc     0x000000b9      0x38e ./build/obj/pingpong.o
+ .debug_loc     0x000000b9      0x557 ./build/obj/pingpong.o
 
 .debug_aranges  0x00000000       0x48
  .debug_aranges
@@ -177,15 +178,15 @@ OUTPUT(build/PingPongDelay.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/pingpong.o
 
-.debug_line     0x00000000      0x59f
+.debug_line     0x00000000      0x922
  .debug_line    0x00000000      0x233 ./build/obj/_unit.o
- .debug_line    0x00000233      0x36c ./build/obj/pingpong.o
+ .debug_line    0x00000233      0x6ef ./build/obj/pingpong.o
 
-.debug_str      0x00000000      0xa8d
- .debug_str     0x00000000      0x543 ./build/obj/_unit.o
+.debug_str      0x00000000      0xad9
+ .debug_str     0x00000000      0x533 ./build/obj/_unit.o
                                 0x5b6 (size before relaxing)
- .debug_str     0x00000543      0x54a ./build/obj/pingpong.o
-                                0x770 (size before relaxing)
+ .debug_str     0x00000533      0x5a6 ./build/obj/pingpong.o
+                                0x7d2 (size before relaxing)
 
 .comment        0x00000000       0x6e
  .comment       0x00000000       0x6e ./build/obj/_unit.o
@@ -199,12 +200,12 @@ OUTPUT(build/PingPongDelay.elf elf32-littlearm)
  .ARM.attributes
                 0x00000039       0x39 ./build/obj/pingpong.o
 
-.debug_frame    0x00000000      0x118
+.debug_frame    0x00000000      0x14c
  .debug_frame   0x00000000       0x88 ./build/obj/_unit.o
- .debug_frame   0x00000088       0x90 ./build/obj/pingpong.o
+ .debug_frame   0x00000088       0xc4 ./build/obj/pingpong.o
 
-.debug_ranges   0x00000000       0xe0
- .debug_ranges  0x00000000       0xe0 ./build/obj/pingpong.o
+.debug_ranges   0x00000000      0x1d0
+ .debug_ranges  0x00000000      0x1d0 ./build/obj/pingpong.o
 
 Cross Reference Table
 
@@ -214,7 +215,7 @@ __init_array_start                                ./build/obj/_unit.o
 _bss_end                                          ./build/obj/_unit.o
 _bss_start                                        ./build/obj/_unit.o
 _entry                                            ./build/obj/_unit.o
-_fx_get_bpm                                       ./build/obj/pingpong.o
+_fx_get_bpmf                                      ./build/obj/pingpong.o
 _hook_init                                        ./build/obj/pingpong.o
                                                   ./build/obj/_unit.o
 _hook_param                                       ./build/obj/pingpong.o
@@ -223,9 +224,10 @@ _hook_process                                     ./build/obj/pingpong.o
                                                   ./build/obj/_unit.o
 _hook_resume                                      ./build/obj/_unit.o
 _hook_suspend                                     ./build/obj/_unit.o
-autopanvalL                                       ./build/obj/pingpong.o
-autopanvalR                                       ./build/obj/pingpong.o
-bpm                                               ./build/obj/pingpong.o
+bpm_valf                                          ./build/obj/pingpong.o
+calculate_len(float)                              ./build/obj/pingpong.o
+gain                                              ./build/obj/pingpong.o
 s_len                                             ./build/obj/pingpong.o
+s_mix                                             ./build/obj/pingpong.o
 wetXNL                                            ./build/obj/pingpong.o
 wetXNR                                            ./build/obj/pingpong.o

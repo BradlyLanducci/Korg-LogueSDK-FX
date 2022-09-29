@@ -5,8 +5,8 @@
 #include "osc_api.h"
 #include <cmath>
 
-// Calculated for the minimum bpm of Minilogue-XD //
-#define BUF_SIZE 480000
+// Calculated for the min of 56 bpm //
+#define BUF_SIZE 192000
 
 // Initializing Variables // 
 static dsp::DelayLine s_delay;
