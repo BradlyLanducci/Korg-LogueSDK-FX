@@ -67,7 +67,6 @@ void MODFX_PARAM(uint8_t index, int32_t value)
   case 1:
     break;
   case 3:
-    // Mix Val
     break;
   default:
     break;
