@@ -176,14 +176,14 @@ OUTPUT(build/ChorusFX.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/chorus.o
 
-.debug_line     0x00000000      0x68b
- .debug_line    0x00000000      0x233 ./build/obj/_unit.o
- .debug_line    0x00000233      0x458 ./build/obj/chorus.o
+.debug_line     0x00000000      0x6a9
+ .debug_line    0x00000000      0x251 ./build/obj/_unit.o
+ .debug_line    0x00000251      0x458 ./build/obj/chorus.o
 
-.debug_str      0x00000000      0xf07
- .debug_str     0x00000000      0x539 ./build/obj/_unit.o
-                                0x5b6 (size before relaxing)
- .debug_str     0x00000539      0x9ce ./build/obj/chorus.o
+.debug_str      0x00000000      0xf12
+ .debug_str     0x00000000      0x544 ./build/obj/_unit.o
+                                0x5c1 (size before relaxing)
+ .debug_str     0x00000544      0x9ce ./build/obj/chorus.o
                                 0xc1f (size before relaxing)
 
 .comment        0x00000000       0x6e

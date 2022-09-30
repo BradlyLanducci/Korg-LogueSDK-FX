@@ -178,14 +178,14 @@ OUTPUT(build/PingPongDelay.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/pingpong.o
 
-.debug_line     0x00000000      0x91c
- .debug_line    0x00000000      0x233 ./build/obj/_unit.o
- .debug_line    0x00000233      0x6e9 ./build/obj/pingpong.o
+.debug_line     0x00000000      0x93a
+ .debug_line    0x00000000      0x251 ./build/obj/_unit.o
+ .debug_line    0x00000251      0x6e9 ./build/obj/pingpong.o
 
-.debug_str      0x00000000      0xad9
- .debug_str     0x00000000      0x533 ./build/obj/_unit.o
-                                0x5b6 (size before relaxing)
- .debug_str     0x00000533      0x5a6 ./build/obj/pingpong.o
+.debug_str      0x00000000      0xaeb
+ .debug_str     0x00000000      0x545 ./build/obj/_unit.o
+                                0x5c8 (size before relaxing)
+ .debug_str     0x00000545      0x5a6 ./build/obj/pingpong.o
                                 0x7d2 (size before relaxing)
 
 .comment        0x00000000       0x6e

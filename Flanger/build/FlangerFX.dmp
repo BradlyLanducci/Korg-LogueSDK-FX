@@ -42,17 +42,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  13 .debug_aranges 00000048  00000000  00000000  0000b0d5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   00000663  00000000  00000000  0000b11d  2**0
+ 14 .debug_line   00000681  00000000  00000000  0000b11d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    00000db5  00000000  00000000  0000b780  2**0
+ 15 .debug_str    00000dc1  00000000  00000000  0000b79e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .comment      0000006e  00000000  00000000  0000c535  2**0
+ 16 .comment      0000006e  00000000  00000000  0000c55f  2**0
                   CONTENTS, READONLY
- 17 .ARM.attributes 00000039  00000000  00000000  0000c5a3  2**0
+ 17 .ARM.attributes 00000039  00000000  00000000  0000c5cd  2**0
                   CONTENTS, READONLY
- 18 .debug_frame  0000010c  00000000  00000000  0000c5dc  2**2
+ 18 .debug_frame  0000010c  00000000  00000000  0000c608  2**2
                   CONTENTS, READONLY, DEBUGGING
- 19 .debug_ranges 000001a8  00000000  00000000  0000c6e8  2**0
+ 19 .debug_ranges 000001a8  00000000  00000000  0000c714  2**0
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 20019000 l    d  .hooks	00000000 .hooks

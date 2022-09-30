@@ -5,40 +5,102 @@ build/PingPongDelay.elf:     file format elf32-littlearm
 Disassembly of section .text:
 
 20019048 <_text_start>:
+  (void)api;
+}
+
+__attribute__((weak))
+void _hook_process(float *xn, uint32_t frames)
+{
 20019048:	4770      	bx	lr
 
 2001904a <_hook_resume>:
+
+}
+
+__attribute__((weak))
+void _hook_resume(void)
+{
 2001904a:	4770      	bx	lr
+
+}
+
+__attribute__((weak))
+void _hook_param(uint8_t index, int32_t value)
+{
 2001904c:	4770      	bx	lr
 
 2001904e <_hook_suspend>:
 2001904e:	4770      	bx	lr
+  _hook_init(platform, api);
+}
+
+__attribute__((weak))
+void _hook_init(uint32_t platform, uint32_t api)
+{
 20019050:	4770      	bx	lr
 
 20019052 <_entry>:
+ * @{
+ */
+
+__attribute__((used))
+void _entry(uint32_t platform, uint32_t api)
+{
 20019052:	4b10      	ldr	r3, [pc, #64]	; (20019094 <_entry+0x42>)
 20019054:	4a10      	ldr	r2, [pc, #64]	; (20019098 <_entry+0x46>)
 20019056:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
 2001905a:	4688      	mov	r8, r1
 2001905c:	4607      	mov	r7, r0
+  // Ensure zero-clear BSS segment
+  uint8_t * __restrict bss_p = (uint8_t *)&_bss_start;
+  const uint8_t * const bss_e = (uint8_t *)&_bss_end;
+
+  for (; bss_p != bss_e;)
+    *(bss_p++) = 0;
 2001905e:	2100      	movs	r1, #0
+{
+  // Ensure zero-clear BSS segment
+  uint8_t * __restrict bss_p = (uint8_t *)&_bss_start;
+  const uint8_t * const bss_e = (uint8_t *)&_bss_end;
+
+  for (; bss_p != bss_e;)
 20019060:	4293      	cmp	r3, r2
 20019062:	d002      	beq.n	2001906a <_entry+0x18>
+    *(bss_p++) = 0;
 20019064:	f803 1f01 	strb.w	r1, [r3, #1]!
 20019068:	e7fa      	b.n	20019060 <_entry+0xe>
 2001906a:	4b0c      	ldr	r3, [pc, #48]	; (2001909c <_entry+0x4a>)
 2001906c:	4c0c      	ldr	r4, [pc, #48]	; (200190a0 <_entry+0x4e>)
 2001906e:	1ae4      	subs	r4, r4, r3
 20019070:	10a4      	asrs	r4, r4, #2
+
+  // Call constructors if any.  
+  const size_t count = __init_array_end - __init_array_start;
+  for (size_t i = 0; i<count; ++i) {
 20019072:	2500      	movs	r5, #0
 20019074:	461e      	mov	r6, r3
 20019076:	42a5      	cmp	r5, r4
 20019078:	d005      	beq.n	20019086 <_entry+0x34>
+    __init_fptr init_p = (__init_fptr)__init_array_start[i];
 2001907a:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+    if (init_p != NULL)
 2001907e:	b103      	cbz	r3, 20019082 <_entry+0x30>
+      init_p();
 20019080:	4798      	blx	r3
+  for (; bss_p != bss_e;)
+    *(bss_p++) = 0;
+
+  // Call constructors if any.  
+  const size_t count = __init_array_end - __init_array_start;
+  for (size_t i = 0; i<count; ++i) {
 20019082:	3501      	adds	r5, #1
 20019084:	e7f7      	b.n	20019076 <_entry+0x24>
+    if (init_p != NULL)
+      init_p();
+  }
+  
+  // Call user initialization
+  _hook_init(platform, api);
 20019086:	4641      	mov	r1, r8
 20019088:	4638      	mov	r0, r7
 2001908a:	f000 f851 	bl	20019130 <_hook_init>

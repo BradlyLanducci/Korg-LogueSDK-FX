@@ -176,14 +176,14 @@ OUTPUT(build/FlangerFX.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/flanger.o
 
-.debug_line     0x00000000      0x663
- .debug_line    0x00000000      0x233 ./build/obj/_unit.o
- .debug_line    0x00000233      0x430 ./build/obj/flanger.o
+.debug_line     0x00000000      0x681
+ .debug_line    0x00000000      0x251 ./build/obj/_unit.o
+ .debug_line    0x00000251      0x430 ./build/obj/flanger.o
 
-.debug_str      0x00000000      0xdb5
- .debug_str     0x00000000      0x539 ./build/obj/_unit.o
-                                0x5b6 (size before relaxing)
- .debug_str     0x00000539      0x87c ./build/obj/flanger.o
+.debug_str      0x00000000      0xdc1
+ .debug_str     0x00000000      0x545 ./build/obj/_unit.o
+                                0x5c2 (size before relaxing)
+ .debug_str     0x00000545      0x87c ./build/obj/flanger.o
                                 0xab8 (size before relaxing)
 
 .comment        0x00000000       0x6e

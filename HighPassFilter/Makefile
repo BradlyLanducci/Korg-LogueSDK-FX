@@ -1,5 +1,5 @@
 # #############################################################################
-# Prologue Mod. FX Makefile
+# Prologue Delay FX Makefile
 # #############################################################################
 
 ifeq ($(OS),Windows_NT)
@@ -64,7 +64,7 @@ BIN  = $(CP) -O binary
 
 LDDIR = $(PROJECTDIR)/ld
 RULESPATH = $(LDDIR)
-LDSCRIPT = $(LDDIR)/usermodfx.ld
+LDSCRIPT = $(LDDIR)/userdelfx.ld
 DLIBS = -lm
 
 DADEFS = -DSTM32F446xE -DCORTEX_USE_FPU=TRUE -DARM_MATH_CM4
@@ -92,7 +92,7 @@ TOPT = -mthumb -mno-thumb-interwork -DTHUMB_NO_INTERWORKING -DTHUMB_PRESENT
 # #############################################################################
 
 PKGDIR = $(PROJECT)
-PKGARCH = $(PROJECT).mnlgxdunit
+PKGARCH = $(PROJECT).ntkdigunit
 MANIFEST = manifest.json
 PAYLOAD = payload.bin
 BUILDDIR = $(PROJECTDIR)/build
