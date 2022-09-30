@@ -107,7 +107,7 @@ void _entry(uint32_t platform, uint32_t api)
 2001908e:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
 20019092:	bf00      	nop
 20019094:	2001939f 	.word	0x2001939f
-20019098:	200193cf 	.word	0x200193cf
+20019098:	200193cb 	.word	0x200193cb
 2001909c:	20019040 	.word	0x20019040
 200190a0:	20019044 	.word	0x20019044
 
@@ -194,55 +194,54 @@ void calculate_len(float bpm_valf)
     inline __attribute__((optimize("Ofast"),always_inline))
     void setMemory(float *ram, size_t line_size) {
       mLine = ram;
-20019130:	4a11      	ldr	r2, [pc, #68]	; (20019178 <_hook_init+0x48>)
-20019132:	4b12      	ldr	r3, [pc, #72]	; (2001917c <_hook_init+0x4c>)
-20019134:	6053      	str	r3, [r2, #4]
+20019130:	4b11      	ldr	r3, [pc, #68]	; (20019178 <_hook_init+0x48>)
+20019132:	4912      	ldr	r1, [pc, #72]	; (2001917c <_hook_init+0x4c>)
+20019134:	6059      	str	r1, [r3, #4]
       mSize = nextpow2_u32(line_size); // must be power of 2
-20019136:	f44f 2100 	mov.w	r1, #524288	; 0x80000
-2001913a:	60d1      	str	r1, [r2, #12]
+20019136:	f44f 2280 	mov.w	r2, #262144	; 0x40000
+2001913a:	60da      	str	r2, [r3, #12]
       mMask = (mSize-1);
-2001913c:	3901      	subs	r1, #1
-2001913e:	6111      	str	r1, [r2, #16]
-20019140:	3310      	adds	r3, #16
+2001913c:	3a01      	subs	r2, #1
+2001913e:	611a      	str	r2, [r3, #16]
       mWriteIdx = 0;
-20019142:	2100      	movs	r1, #0
-20019144:	6151      	str	r1, [r2, #20]
-20019146:	f503 1000 	add.w	r0, r3, #2097152	; 0x200000
+20019140:	2200      	movs	r2, #0
+20019142:	615a      	str	r2, [r3, #20]
 void buf_clr_f32(float * __restrict__ ptr,
                  const uint32_t len)
 {
   const float *end = ptr + ((len>>2)<<2);
   for (; ptr != end; ) {
     REP4(*(ptr++) = 0);
-2001914a:	2100      	movs	r1, #0
-2001914c:	f843 1c10 	str.w	r1, [r3, #-16]
-20019150:	f843 1c0c 	str.w	r1, [r3, #-12]
-20019154:	f843 1c08 	str.w	r1, [r3, #-8]
-20019158:	f843 1c04 	str.w	r1, [r3, #-4]
-2001915c:	3310      	adds	r3, #16
+20019144:	2000      	movs	r0, #0
+20019146:	f101 0210 	add.w	r2, r1, #16
+2001914a:	f101 1110 	add.w	r1, r1, #1048592	; 0x100010
+2001914e:	f842 0c10 	str.w	r0, [r2, #-16]
+20019152:	f842 0c0c 	str.w	r0, [r2, #-12]
+20019156:	f842 0c08 	str.w	r0, [r2, #-8]
+2001915a:	f842 0c04 	str.w	r0, [r2, #-4]
+2001915e:	3210      	adds	r2, #16
 static inline __attribute__((optimize("Ofast"),always_inline))
 void buf_clr_f32(float * __restrict__ ptr,
                  const uint32_t len)
 {
   const float *end = ptr + ((len>>2)<<2);
   for (; ptr != end; ) {
-2001915e:	4298      	cmp	r0, r3
-20019160:	d1f4      	bne.n	2001914c <_hook_init+0x1c>
+20019160:	4291      	cmp	r1, r2
+20019162:	d1f4      	bne.n	2001914e <_hook_init+0x1e>
 */
 void DELFX_INIT(uint32_t platform, uint32_t api)
 {
   s_delay.setMemory(s_delay_ram, BUF_SIZE);  
   s_delay.clear();
   s_mix = .5f;
-20019162:	eeb6 0a00 	vmov.f32	s0, #96	; 0x3f000000  0.5
-20019166:	ed82 0a06 	vstr	s0, [r2, #24]
+20019164:	eeb6 0a00 	vmov.f32	s0, #96	; 0x3f000000  0.5
+20019168:	ed83 0a06 	vstr	s0, [r3, #24]
   gain = .5f;
-2001916a:	ed82 0a07 	vstr	s0, [r2, #28]
-  bpm_valf = 0.5f;
-2001916e:	ed82 0a08 	vstr	s0, [r2, #32]
+2001916c:	ed83 0a07 	vstr	s0, [r3, #28]
+  bpm_valf = .5f;
+20019170:	ed83 0a08 	vstr	s0, [r3, #32]
   calculate_len(bpm_valf);
-20019172:	f7ff bf97 	b.w	200190a4 <_Z13calculate_lenf>
-20019176:	bf00      	nop
+20019174:	f7ff bf96 	b.w	200190a4 <_Z13calculate_lenf>
 20019178:	200193a0 	.word	0x200193a0
 2001917c:	c0420000 	.word	0xc0420000
 
@@ -256,7 +255,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
   const float * x_e = x + 2*frames;
   const float wet = s_mix;
 20019184:	4c69      	ldr	r4, [pc, #420]	; (2001932c <_hook_process+0x1ac>)
-  bpm_valf = 0.5f;
+  bpm_valf = .5f;
   calculate_len(bpm_valf);
 }
 
@@ -280,7 +279,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
 20019190:	edd4 8a06 	vldr	s17, [r4, #24]
   const float feedback = gain;
 20019194:	ed94 8a07 	vldr	s16, [r4, #28]
-  bpm_valf = 0.5f;
+  bpm_valf = .5f;
   calculate_len(bpm_valf);
 }
 

@@ -28,7 +28,7 @@ LOAD ./build/obj/flanger.o
                 0x20019044                . = ALIGN (0x4)
                 0x20019044                PROVIDE (__init_array_end, .)
 
-.text           0x20019044      0x230
+.text           0x20019044      0x334
                 0x20019044                . = ALIGN (0x4)
                 0x20019044                _text_start = .
  *(.text)
@@ -36,96 +36,96 @@ LOAD ./build/obj/flanger.o
                 0x20019046                _hook_resume
                 0x2001904a                _hook_suspend
                 0x2001904e                _entry
- .text          0x200190a0      0x1b4 ./build/obj/flanger.o
+ .text          0x200190a0      0x2b8 ./build/obj/flanger.o
                 0x200190a0                _hook_init
                 0x20019108                _hook_process
-                0x20019204                _hook_param
+                0x20019308                _hook_param
  *(.text.*)
- .text.startup  0x20019254       0x20 ./build/obj/flanger.o
+ .text.startup  0x20019358       0x20 ./build/obj/flanger.o
  *(.glue_7)
- .glue_7        0x20019274        0x0 linker stubs
+ .glue_7        0x20019378        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x20019274        0x0 linker stubs
+ .glue_7t       0x20019378        0x0 linker stubs
  *(.gcc*)
-                0x20019274                . = ALIGN (0x4)
-                0x20019274                _text_end = .
+                0x20019378                . = ALIGN (0x4)
+                0x20019378                _text_end = .
 
-.vfp11_veneer   0x20019274        0x0
- .vfp11_veneer  0x20019274        0x0 linker stubs
+.vfp11_veneer   0x20019378        0x0
+ .vfp11_veneer  0x20019378        0x0 linker stubs
 
-.v4_bx          0x20019274        0x0
- .v4_bx         0x20019274        0x0 linker stubs
+.v4_bx          0x20019378        0x0
+ .v4_bx         0x20019378        0x0 linker stubs
 
-.iplt           0x20019274        0x0
- .iplt          0x20019274        0x0 ./build/obj/_unit.o
+.iplt           0x20019378        0x0
+ .iplt          0x20019378        0x0 ./build/obj/_unit.o
 
-.rel.dyn        0x20019274        0x0
- .rel.iplt      0x20019274        0x0 ./build/obj/_unit.o
+.rel.dyn        0x20019378        0x0
+ .rel.iplt      0x20019378        0x0 ./build/obj/_unit.o
 
-.rodata         0x20019274        0x0
-                0x20019274                . = ALIGN (0x4)
-                0x20019274                _rodata_start = .
+.rodata         0x20019378        0x0
+                0x20019378                . = ALIGN (0x4)
+                0x20019378                _rodata_start = .
  *(.rodata)
  *(.rodata.*)
-                0x20019274                . = ALIGN (0x4)
-                0x20019274                _rodata_end = .
+                0x20019378                . = ALIGN (0x4)
+                0x20019378                _rodata_end = .
 
-.data           0x20019278        0x8
-                0x20019278                . = ALIGN (0x8)
-                0x20019278                _data_start = .
+.data           0x20019378        0x8
+                0x20019378                . = ALIGN (0x8)
+                0x20019378                _data_start = .
  *(.data)
- .data          0x20019278        0x0 ./build/obj/_unit.o
- .data          0x20019278        0x4 ./build/obj/flanger.o
-                0x20019278                lfo_speed
+ .data          0x20019378        0x0 ./build/obj/_unit.o
+ .data          0x20019378        0x4 ./build/obj/flanger.o
+                0x20019378                lfo_speed
  *(.data.*)
-                0x20019280                . = ALIGN (0x8)
- *fill*         0x2001927c        0x4 
-                0x20019280                _data_end = .
+                0x20019380                . = ALIGN (0x8)
+ *fill*         0x2001937c        0x4 
+                0x20019380                _data_end = .
 
-.igot.plt       0x20019280        0x0
- .igot.plt      0x20019280        0x0 ./build/obj/_unit.o
+.igot.plt       0x20019380        0x0
+ .igot.plt      0x20019380        0x0 ./build/obj/_unit.o
 
-.bss            0x20019280       0x30
-                0x20019280                . = ALIGN (0x4)
-                0x20019280                _bss_start = .
+.bss            0x20019380       0x30
+                0x20019380                . = ALIGN (0x4)
+                0x20019380                _bss_start = .
  *(.bss)
- .bss           0x20019280        0x0 ./build/obj/_unit.o
- .bss           0x20019280       0x30 ./build/obj/flanger.o
-                0x2001929c                s_mix
-                0x200192a0                gain
-                0x200192a4                wetXNL
-                0x200192a8                wetXNR
-                0x200192ac                bpm_valf
+ .bss           0x20019380        0x0 ./build/obj/_unit.o
+ .bss           0x20019380       0x30 ./build/obj/flanger.o
+                0x2001939c                s_mix
+                0x200193a0                gain
+                0x200193a4                wetXNL
+                0x200193a8                wetXNR
+                0x200193ac                bpm_valf
  *(.bss.*)
  *(COMMON)
-                0x200192b0                . = ALIGN (0x4)
-                0x200192b0                _bss_end = .
+                0x200193b0                . = ALIGN (0x4)
+                0x200193b0                _bss_end = .
 
-.ARM.extab      0x200192b0        0x0
-                0x200192b0                . = ALIGN (0x4)
-                0x200192b0                __extab_start = .
+.ARM.extab      0x200193b0        0x0
+                0x200193b0                . = ALIGN (0x4)
+                0x200193b0                __extab_start = .
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x200192b0                . = ALIGN (0x4)
-                0x200192b0                __extab_end = .
+                0x200193b0                . = ALIGN (0x4)
+                0x200193b0                __extab_end = .
 
-.ARM.exidx      0x200192b0        0x0
-                0x200192b0                __exidx_start = .
+.ARM.exidx      0x200193b0        0x0
+                0x200193b0                __exidx_start = .
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x200192b0                __exidx_end = .
+                0x200193b0                __exidx_end = .
 
-.eh_frame_hdr   0x200192b0        0x0
-                0x200192b0                . = ALIGN (0x4)
-                0x200192b0                _eh_frame_hdr_start = .
+.eh_frame_hdr   0x200193b0        0x0
+                0x200193b0                . = ALIGN (0x4)
+                0x200193b0                _eh_frame_hdr_start = .
  *(.eh_frame_hdr)
-                0x200192b0                . = ALIGN (0x4)
-                0x200192b0                _eh_frame_hdr_end = .
+                0x200193b0                . = ALIGN (0x4)
+                0x200193b0                _eh_frame_hdr_end = .
 
-.eh_frame       0x200192b0        0x0
-                0x200192b0                . = ALIGN (0x4)
-                0x200192b0                _eh_frame_start = .
+.eh_frame       0x200193b0        0x0
+                0x200193b0                . = ALIGN (0x4)
+                0x200193b0                _eh_frame_start = .
  *(.eh_frame)
-                0x200192b0                . = ALIGN (0x4)
-                0x200192b0                _eh_frame_end = .
+                0x200193b0                . = ALIGN (0x4)
+                0x200193b0                _eh_frame_end = .
 
 .sdram          0xc0420000    0xbb800
                 0xc0420000                . = ALIGN (0x4)
@@ -158,17 +158,17 @@ LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc
 END GROUP
 OUTPUT(build/FlangerFX.elf elf32-littlearm)
 
-.debug_info     0x00000000     0x11c3
+.debug_info     0x00000000     0x131e
  .debug_info    0x00000000      0x51f ./build/obj/_unit.o
- .debug_info    0x0000051f      0xca4 ./build/obj/flanger.o
+ .debug_info    0x0000051f      0xdff ./build/obj/flanger.o
 
 .debug_abbrev   0x00000000      0x580
  .debug_abbrev  0x00000000      0x1f4 ./build/obj/_unit.o
  .debug_abbrev  0x000001f4      0x38c ./build/obj/flanger.o
 
-.debug_loc      0x00000000      0x41b
+.debug_loc      0x00000000      0x4b7
  .debug_loc     0x00000000       0xb9 ./build/obj/_unit.o
- .debug_loc     0x000000b9      0x362 ./build/obj/flanger.o
+ .debug_loc     0x000000b9      0x3fe ./build/obj/flanger.o
 
 .debug_aranges  0x00000000       0x48
  .debug_aranges
@@ -176,15 +176,15 @@ OUTPUT(build/FlangerFX.elf elf32-littlearm)
  .debug_aranges
                 0x00000020       0x28 ./build/obj/flanger.o
 
-.debug_line     0x00000000      0x60d
+.debug_line     0x00000000      0x663
  .debug_line    0x00000000      0x233 ./build/obj/_unit.o
- .debug_line    0x00000233      0x3da ./build/obj/flanger.o
+ .debug_line    0x00000233      0x430 ./build/obj/flanger.o
 
-.debug_str      0x00000000      0xd8d
+.debug_str      0x00000000      0xdb5
  .debug_str     0x00000000      0x539 ./build/obj/_unit.o
                                 0x5b6 (size before relaxing)
- .debug_str     0x00000539      0x854 ./build/obj/flanger.o
-                                0xa90 (size before relaxing)
+ .debug_str     0x00000539      0x87c ./build/obj/flanger.o
+                                0xab8 (size before relaxing)
 
 .comment        0x00000000       0x6e
  .comment       0x00000000       0x6e ./build/obj/_unit.o
@@ -198,12 +198,12 @@ OUTPUT(build/FlangerFX.elf elf32-littlearm)
  .ARM.attributes
                 0x00000039       0x39 ./build/obj/flanger.o
 
-.debug_frame    0x00000000       0xf4
+.debug_frame    0x00000000      0x10c
  .debug_frame   0x00000000       0x88 ./build/obj/_unit.o
- .debug_frame   0x00000088       0x6c ./build/obj/flanger.o
+ .debug_frame   0x00000088       0x84 ./build/obj/flanger.o
 
-.debug_ranges   0x00000000      0x138
- .debug_ranges  0x00000000      0x138 ./build/obj/flanger.o
+.debug_ranges   0x00000000      0x1a8
+ .debug_ranges  0x00000000      0x1a8 ./build/obj/flanger.o
 
 Cross Reference Table
 

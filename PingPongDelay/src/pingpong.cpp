@@ -85,8 +85,8 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
 
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
-    *(x+1) = *(x+1) + fastertanhf(waveshape(wetXNR));
+    *x += fastertanhf(waveshape(wetXNL));
+    *(x+1) += fastertanhf(waveshape(wetXNR));
   }
 }
 

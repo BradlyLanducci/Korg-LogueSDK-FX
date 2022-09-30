@@ -326,7 +326,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
 
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
+    *x += fastertanhf(waveshape(wetXNL));
 200191f6:	eddf 2a6c 	vldr	s5, [pc, #432]	; 200193a8 <_hook_process+0x1e8>
 200191fa:	ed9f 3a6c 	vldr	s6, [pc, #432]	; 200193ac <_hook_process+0x1ec>
 200191fe:	eddf 3a6c 	vldr	s7, [pc, #432]	; 200193b0 <_hook_process+0x1f0>
@@ -365,7 +365,7 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
 
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
+    *x += fastertanhf(waveshape(wetXNL));
 20019234:	eef0 1a63 	vmov.f32	s3, s7
      * @param pos Offset from write index
      * @return Sample at given position from write index
@@ -483,7 +483,7 @@ float __fast_inline waveshape(float in)
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
 
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
+    *x += fastertanhf(waveshape(wetXNL));
 200192ca:	eeb0 1a65 	vmov.f32	s2, s11
 200192ce:	ee67 7a88 	vmul.f32	s15, s15, s16
 200192d2:	edc0 7a00 	vstr	s15, [r0]
@@ -518,7 +518,7 @@ float __fast_inline waveshape(float in)
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
 
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
+    *x += fastertanhf(waveshape(wetXNL));
 200192f4:	eef0 6a43 	vmov.f32	s13, s6
 200192f8:	eee7 6aa2 	vfma.f32	s13, s15, s5
 200192fc:	eee6 1aa7 	vfma.f32	s3, s13, s15
@@ -535,7 +535,7 @@ float __fast_inline waveshape(float in)
 20019328:	eec1 6a81 	vdiv.f32	s13, s3, s2
 2001932c:	ee77 7aa6 	vadd.f32	s15, s15, s13
 20019330:	ed45 7a02 	vstr	s15, [r5, #-8]
-    *(x+1) = *(x+1) + fastertanhf(waveshape(wetXNR));
+    *(x+1) += fastertanhf(waveshape(wetXNR));
 20019334:	edd3 6a0f 	vldr	s13, [r3, #60]	; 0x3c
 float wetXNL, wetXNR;
 float bpm_valf;
@@ -550,8 +550,8 @@ float __fast_inline waveshape(float in)
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
 
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
-    *(x+1) = *(x+1) + fastertanhf(waveshape(wetXNR));
+    *x += fastertanhf(waveshape(wetXNL));
+    *(x+1) += fastertanhf(waveshape(wetXNR));
 20019344:	eeb0 7a43 	vmov.f32	s14, s6
 float wetXNL, wetXNR;
 float bpm_valf;
@@ -564,8 +564,8 @@ float __fast_inline waveshape(float in)
     s_delayL.write(feedback * (*(x+1) + delSampleR));
     s_delayR.write(feedback * delSampleL);
 
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
-    *(x+1) = *(x+1) + fastertanhf(waveshape(wetXNR));
+    *x += fastertanhf(waveshape(wetXNL));
+    *(x+1) += fastertanhf(waveshape(wetXNR));
 2001934c:	eef0 6a63 	vmov.f32	s13, s7
 20019350:	eea7 7aa2 	vfma.f32	s14, s15, s5
 20019354:	eeb0 2a65 	vmov.f32	s4, s11
@@ -592,8 +592,8 @@ float __fast_inline waveshape(float in)
 20019390:	e744      	b.n	2001921c <_hook_process+0x5c>
     s_delayR.write(feedback * delSampleL);
 
-    *x = (*x) + fastertanhf(waveshape(wetXNL));
-    *(x+1) = *(x+1) + fastertanhf(waveshape(wetXNR));
+    *x += fastertanhf(waveshape(wetXNL));
+    *(x+1) += fastertanhf(waveshape(wetXNR));
   }
 }
 20019392:	ecbd 8b02 	vpop	{d8}

@@ -86,57 +86,56 @@ LOAD ./build/obj/monodelay.o
 .igot.plt       0x200193a0        0x0
  .igot.plt      0x200193a0        0x0 ./build/obj/_unit.o
 
-.bss            0x200193a0       0x30
+.bss            0x200193a0       0x2c
                 0x200193a0                . = ALIGN (0x4)
                 0x200193a0                _bss_start = .
  *(.bss)
  .bss           0x200193a0        0x0 ./build/obj/_unit.o
- .bss           0x200193a0       0x30 ./build/obj/monodelay.o
+ .bss           0x200193a0       0x2c ./build/obj/monodelay.o
                 0x200193a0                s_len
                 0x200193b8                s_mix
                 0x200193bc                gain
                 0x200193c0                bpm_valf
                 0x200193c4                wetXNL
                 0x200193c8                wetXNR
-                0x200193cc                wetXN
  *(.bss.*)
  *(COMMON)
-                0x200193d0                . = ALIGN (0x4)
-                0x200193d0                _bss_end = .
+                0x200193cc                . = ALIGN (0x4)
+                0x200193cc                _bss_end = .
 
-.ARM.extab      0x200193d0        0x0
-                0x200193d0                . = ALIGN (0x4)
-                0x200193d0                __extab_start = .
+.ARM.extab      0x200193cc        0x0
+                0x200193cc                . = ALIGN (0x4)
+                0x200193cc                __extab_start = .
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x200193d0                . = ALIGN (0x4)
-                0x200193d0                __extab_end = .
+                0x200193cc                . = ALIGN (0x4)
+                0x200193cc                __extab_end = .
 
-.ARM.exidx      0x200193d0        0x0
-                0x200193d0                __exidx_start = .
+.ARM.exidx      0x200193cc        0x0
+                0x200193cc                __exidx_start = .
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x200193d0                __exidx_end = .
+                0x200193cc                __exidx_end = .
 
-.eh_frame_hdr   0x200193d0        0x0
-                0x200193d0                . = ALIGN (0x4)
-                0x200193d0                _eh_frame_hdr_start = .
+.eh_frame_hdr   0x200193cc        0x0
+                0x200193cc                . = ALIGN (0x4)
+                0x200193cc                _eh_frame_hdr_start = .
  *(.eh_frame_hdr)
-                0x200193d0                . = ALIGN (0x4)
-                0x200193d0                _eh_frame_hdr_end = .
+                0x200193cc                . = ALIGN (0x4)
+                0x200193cc                _eh_frame_hdr_end = .
 
-.eh_frame       0x200193d0        0x0
-                0x200193d0                . = ALIGN (0x4)
-                0x200193d0                _eh_frame_start = .
+.eh_frame       0x200193cc        0x0
+                0x200193cc                . = ALIGN (0x4)
+                0x200193cc                _eh_frame_start = .
  *(.eh_frame)
-                0x200193d0                . = ALIGN (0x4)
-                0x200193d0                _eh_frame_end = .
+                0x200193cc                . = ALIGN (0x4)
+                0x200193cc                _eh_frame_end = .
 
-.sdram          0xc0420000   0x1d4c00
+.sdram          0xc0420000    0xbb800
                 0xc0420000                . = ALIGN (0x4)
                 0xc0420000                _usr_sdram_start = .
  *(.sdram*)
- .sdram         0xc0420000   0x1d4c00 ./build/obj/monodelay.o
-                0xc05f4c00                . = ALIGN (0x4)
-                0xc05f4c00                _usr_sdram_end = .
+ .sdram         0xc0420000    0xbb800 ./build/obj/monodelay.o
+                0xc04db800                . = ALIGN (0x4)
+                0xc04db800                _usr_sdram_end = .
 LOAD ./ld/main_api.syms
                 0x0807b000                k_fx_api_version = 0x807b000
                 0x0807b004                k_fx_api_platform = 0x807b004
@@ -161,9 +160,9 @@ LOAD c:/users/bradl/desktop/code projects/korgfx/korgdelayfxset/delays/tools/gcc
 END GROUP
 OUTPUT(build/MonoDelay.elf elf32-littlearm)
 
-.debug_info     0x00000000     0x1002
+.debug_info     0x00000000      0xff1
  .debug_info    0x00000000      0x51f ./build/obj/_unit.o
- .debug_info    0x0000051f      0xae3 ./build/obj/monodelay.o
+ .debug_info    0x0000051f      0xad2 ./build/obj/monodelay.o
 
 .debug_abbrev   0x00000000      0x596
  .debug_abbrev  0x00000000      0x1f4 ./build/obj/_unit.o
@@ -183,11 +182,11 @@ OUTPUT(build/MonoDelay.elf elf32-littlearm)
  .debug_line    0x00000000      0x251 ./build/obj/_unit.o
  .debug_line    0x00000251      0x6b1 ./build/obj/monodelay.o
 
-.debug_str      0x00000000      0xa70
+.debug_str      0x00000000      0xacc
  .debug_str     0x00000000      0x541 ./build/obj/_unit.o
                                 0x5c4 (size before relaxing)
- .debug_str     0x00000541      0x52f ./build/obj/monodelay.o
-                                0x7bd (size before relaxing)
+ .debug_str     0x00000541      0x58b ./build/obj/monodelay.o
+                                0x7b7 (size before relaxing)
 
 .comment        0x00000000       0x6e
  .comment       0x00000000       0x6e ./build/obj/_unit.o
@@ -230,6 +229,5 @@ calculate_len(float)                              ./build/obj/monodelay.o
 gain                                              ./build/obj/monodelay.o
 s_len                                             ./build/obj/monodelay.o
 s_mix                                             ./build/obj/monodelay.o
-wetXN                                             ./build/obj/monodelay.o
 wetXNL                                            ./build/obj/monodelay.o
 wetXNR                                            ./build/obj/monodelay.o

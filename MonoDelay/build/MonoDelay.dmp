@@ -7,9 +7,9 @@ start address 0x20019053
 
 Program Header:
     LOAD off    0x00000000 vaddr 0x20010000 paddr 0x20010000 align 2**16
-         filesz 0x000093a0 memsz 0x000093d0 flags rwx
+         filesz 0x000093a0 memsz 0x000093cc flags rwx
     LOAD off    0x00010000 vaddr 0xc0420000 paddr 0xc0420000 align 2**16
-         filesz 0x00000000 memsz 0x001d4c00 flags rw-
+         filesz 0x00000000 memsz 0x000bb800 flags rw-
 private flags = 5000400: [Version5 EABI] [hard-float ABI]
 
 Sections:
@@ -24,35 +24,35 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   4 .data         00000000  200193a0  200193a0  000093a0  2**3
                   CONTENTS, ALLOC, LOAD, DATA
-  5 .bss          00000030  200193a0  200193a0  000093a0  2**2
+  5 .bss          0000002c  200193a0  200193a0  000093a0  2**2
                   ALLOC
-  6 .ARM.extab    00000000  200193d0  200193d0  000093a0  2**2
+  6 .ARM.extab    00000000  200193cc  200193cc  000093a0  2**2
                   CONTENTS
-  7 .eh_frame_hdr 00000000  200193d0  200193d0  000093a0  2**2
+  7 .eh_frame_hdr 00000000  200193cc  200193cc  000093a0  2**2
                   CONTENTS
-  8 .eh_frame     00000000  200193d0  200193d0  000093a0  2**2
+  8 .eh_frame     00000000  200193cc  200193cc  000093a0  2**2
                   CONTENTS
-  9 .sdram        001d4c00  c0420000  c0420000  00010000  2**2
+  9 .sdram        000bb800  c0420000  c0420000  00010000  2**2
                   ALLOC
- 10 .debug_info   00001002  00000000  00000000  000093a0  2**0
+ 10 .debug_info   00000ff1  00000000  00000000  000093a0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_abbrev 00000596  00000000  00000000  0000a3a2  2**0
+ 11 .debug_abbrev 00000596  00000000  00000000  0000a391  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00000596  00000000  00000000  0000a938  2**0
+ 12 .debug_loc    00000596  00000000  00000000  0000a927  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_aranges 00000048  00000000  00000000  0000aece  2**0
+ 13 .debug_aranges 00000048  00000000  00000000  0000aebd  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   00000902  00000000  00000000  0000af16  2**0
+ 14 .debug_line   00000902  00000000  00000000  0000af05  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    00000a70  00000000  00000000  0000b818  2**0
+ 15 .debug_str    00000acc  00000000  00000000  0000b807  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .comment      0000006e  00000000  00000000  0000c288  2**0
+ 16 .comment      0000006e  00000000  00000000  0000c2d3  2**0
                   CONTENTS, READONLY
- 17 .ARM.attributes 00000039  00000000  00000000  0000c2f6  2**0
+ 17 .ARM.attributes 00000039  00000000  00000000  0000c341  2**0
                   CONTENTS, READONLY
- 18 .debug_frame  00000134  00000000  00000000  0000c330  2**2
+ 18 .debug_frame  00000134  00000000  00000000  0000c37c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 19 .debug_ranges 00000150  00000000  00000000  0000c464  2**0
+ 19 .debug_ranges 00000150  00000000  00000000  0000c4b0  2**0
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 20019000 l    d  .hooks	00000000 .hooks
@@ -61,9 +61,9 @@ SYMBOL TABLE:
 200193a0 l    d  .rodata	00000000 .rodata
 200193a0 l    d  .data	00000000 .data
 200193a0 l    d  .bss	00000000 .bss
-200193d0 l    d  .ARM.extab	00000000 .ARM.extab
-200193d0 l    d  .eh_frame_hdr	00000000 .eh_frame_hdr
-200193d0 l    d  .eh_frame	00000000 .eh_frame
+200193cc l    d  .ARM.extab	00000000 .ARM.extab
+200193cc l    d  .eh_frame_hdr	00000000 .eh_frame_hdr
+200193cc l    d  .eh_frame	00000000 .eh_frame
 c0420000 l    d  .sdram	00000000 .sdram
 00000000 l    d  .debug_info	00000000 .debug_info
 00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
@@ -80,12 +80,12 @@ c0420000 l    d  .sdram	00000000 .sdram
 00000000 l    df *ABS*	00000000 monodelay.cpp
 20019380 l     F .text	00000018 _GLOBAL__sub_I_s_len
 200193a4 l     O .bss	00000014 _ZL7s_delay
-c0420000 l     O .sdram	001d4c00 _ZL11s_delay_ram
+c0420000 l     O .sdram	000bb800 _ZL11s_delay_ram
 20019398 l     F .text	00000008 ___fx_get_bpmf_veneer
 0807bd0c g       *ABS*	00000000 bitres_lut_f
-200193d0 g       .eh_frame_hdr	00000000 _eh_frame_hdr_start
+200193cc g       .eh_frame_hdr	00000000 _eh_frame_hdr_start
 200193a0 g       .text	00000000 _text_end
-200193d0 g       .eh_frame_hdr	00000000 __exidx_end
+200193cc g       .eh_frame_hdr	00000000 __exidx_end
 0807c964 g       *ABS*	00000000 _fx_white
 20019350 g     F .text	00000030 _hook_param
 2001904a  w    F .text	00000002 _hook_resume
@@ -94,7 +94,7 @@ c0420000 l     O .sdram	001d4c00 _ZL11s_delay_ram
 200193a0 g     O .bss	00000004 s_len
 200193c0 g     O .bss	00000004 bpm_valf
 20019040 g       .hooks	00000000 _hooks_end
-200193d0 g       .eh_frame	00000000 _eh_frame_start
+200193cc g       .eh_frame	00000000 _eh_frame_start
 200193a0 g       .bss	00000000 _bss_start
 20019180 g     F .text	000001d0 _hook_process
 0807c92c g       *ABS*	00000000 _fx_rand
@@ -102,36 +102,35 @@ c0420000 l     O .sdram	001d4c00 _ZL11s_delay_ram
 c0420000 g       .sdram	00000000 _usr_sdram_start
 20019130 g     F .text	00000050 _hook_init
 200193b8 g     O .bss	00000004 s_mix
-200193d0 g       .eh_frame_hdr	00000000 __exidx_start
+200193cc g       .eh_frame_hdr	00000000 __exidx_start
 0807b504 g       *ABS*	00000000 tanpi_lut_f
 0807b000 g       *ABS*	00000000 k_fx_api_version
-200193d0 g       .bss	00000000 _bss_end
+200193cc g       .bss	00000000 _bss_end
 0807b100 g       *ABS*	00000000 sqrtm2log_lut_f
-200193d0 g       .eh_frame_hdr	00000000 _eh_frame_hdr_end
+200193cc g       .eh_frame_hdr	00000000 _eh_frame_hdr_end
 0807c114 g       *ABS*	00000000 schetzen_lut_f
 200193c4 g     O .bss	00000004 wetXNL
 200193a0 g       .data	00000000 _data_start
 0807c318 g       *ABS*	00000000 cubicsat_lut_f
-c05f4c00 g       .sdram	00000000 _usr_sdram_end
+c04db800 g       .sdram	00000000 _usr_sdram_end
 0807c920 g       *ABS*	00000000 _fx_mcu_hash
 0807ca88 g       *ABS*	00000000 _fx_get_bpm
 200193a0 g       .data	00000000 _data_end
 20019052 g     F .text	00000052 _entry
 20019000 g       .hooks	00000000 _hooks_start
 20019044 g       .init_array	00000000 __init_array_end
-200193d0 g       .eh_frame	00000000 _eh_frame_end
+200193cc g       .eh_frame	00000000 _eh_frame_end
 0807b004 g       *ABS*	00000000 k_fx_api_platform
 200193bc g     O .bss	00000004 gain
 0807b908 g       *ABS*	00000000 log_lut_f
 200190a4 g     F .text	0000008c _Z13calculate_lenf
 0807bf10 g       *ABS*	00000000 wt_sine_lut_f
-200193cc g     O .bss	00000004 wetXN
 200193a0 g       .rodata	00000000 _rodata_start
 0807c51c g       *ABS*	00000000 pow2_lut_f
-200193d0 g       .ARM.extab	00000000 __extab_start
+200193cc g       .ARM.extab	00000000 __extab_start
 2001904e  w    F .text	00000002 _hook_suspend
 20019040 g       .init_array	00000000 __init_array_start
-200193d0 g       .ARM.extab	00000000 __extab_end
+200193cc g       .ARM.extab	00000000 __extab_end
 200193c8 g     O .bss	00000004 wetXNR
 
 

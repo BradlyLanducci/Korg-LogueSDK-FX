@@ -49,16 +49,16 @@ void DELFX_PROCESS(float *xn, uint32_t frames)
   {
     const float lfo_cycle = s_lfo.sine_bi();
 
-    const float delSampleL = gain * (s_delay.read(288 + (240 * lfo_cycle)));
-    const float delSampleR = gain * (s_delay.read(288 + (240 * lfo_cycle)));
+    const float delSampleL = gain * (s_delay.readFrac(288 + (240 * lfo_cycle)));
+    const float delSampleR = gain * (s_delay.readFrac(288 + (240 * lfo_cycle)));
 
     s_lfo.cycle();
 
     wetXNL = wet * delSampleL;
     wetXNR = wet * delSampleR;
 
-    *x += wetXNL;
-    *(x + 1) += wetXNR;
+    *x += fastertanhf(waveshape(wetXNL));
+    *(x+1) += fastertanhf(waveshape(wetXNR));
 
     s_delay.write(*x);
     s_delay.write(*(x + 1));
